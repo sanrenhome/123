@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>人生重启协议</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #000;
+  color: #fff;
+  max-width: 720px;
+  margin: auto;
+  padding: 40px 20px;
+  line-height: 1.6;
+}
+h1 { font-size: 32px; }
+section { margin-bottom: 40px; }
+button {
+  padding: 12px 20px;
+  background: #fff;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+textarea, select, input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  background: #111;
+  color: #fff;
+  border: 1px solid #444;
+}
+.result {
+  border-top: 1px solid #444;
+  padding-top: 20px;
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<h1>人生重启协议</h1>
+<p>这不是安慰。这是一次结构重置。</p>
+
+<section>
+<h2>第一阶段：现实扫描</h2>
+
+<label>每天刷短视频多久？</label>
+<select id="video">
+<option value="1">少于1小时</option>
+<option value="2">1-3小时</option>
+<option value="3">3小时以上</option>
+</select>
+
+<label>未来三年方向是否清晰？</label>
+<select id="direction">
+<option value="1">清晰</option>
+<option value="2">模糊</option>
+<option value="3">完全没有</option>
+</select>
+
+<label>拖延频率？</label>
+<select id="delay">
+<option value="1">很少</option>
+<option value="2">偶尔</option>
+<option value="3">经常</option>
+</select>
+
+</section>
+
+<section>
+<h2>第二阶段：删除旧系统</h2>
+<textarea id="delete" placeholder="写下你必须停止的行为..."></textarea>
+</section>
+
+<section>
+<h2>第三阶段：未来重建</h2>
+<textarea id="future" placeholder="描述三年后的自己..."></textarea>
+</section>
+
+<button onclick="generate()">生成我的人生重启协议</button>
+
+<div id="output" class="result"></div>
+
+<script>
+function generate() {
+  let video = document.getElementById("video").value;
+  let direction = document.getElementById("direction").value;
+  let delay = document.getElementById("delay").value;
+  let del = document.getElementById("delete").value;
+  let future = document.getElementById("future").value;
+
+  let result = "";
+
+  if (video == "3") {
+    result += "你的时间并没有消失，它被低质量刺激吞噬。\n\n";
+  }
+
+  if (direction == "3") {
+    result += "目标模糊，是拖延最好的借口。\n\n";
+  }
+
+  if (delay == "3") {
+    result += "你不缺动力，你缺结构。\n\n";
+  }
+
+  result += "你已确认删除：\n" + del + "\n\n";
+  result += "三年后的人生方向：\n" + future + "\n\n";
+  result += "如果继续现在的生活方式，三年后不会有本质变化。\n今天是重置点。";
+
+  let chaos = Math.floor(Math.random() * 30) + 60;
+  let execute = Math.floor(Math.random() * 30) + 50;
+
+  document.getElementById("output").innerHTML =
+    "<h2>🔥 人生重启指数</h2>" +
+    "<p>混乱指数：" + chaos + "%<br>执行潜力：" + execute + "%</p>" +
+    "<h2>📜 人生重启协议 V1.0</h2>" +
+    "<p style='white-space: pre-line'>" + result + "</p>";
+}
+</script>
+
+</body>
+</html>
