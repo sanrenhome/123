@@ -7,95 +7,134 @@
 <style>
 body{
     margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-    background:#0f0f0f;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto;
+    background: radial-gradient(circle at 30% 30%, #1a1a2e, #0f0f0f 60%);
     color:white;
     text-align:center;
+    overflow-x:hidden;
 }
-.section{
-    padding:80px 20px;
-    max-width:800px;
-    margin:auto;
+
+.container{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
 }
+
 h1{
-    font-size:40px;
-    line-height:1.4;
+    font-size:52px;
+    font-weight:600;
+    line-height:1.3;
+    max-width:800px;
+    margin:0;
 }
-p{
+
+.subtitle{
+    margin-top:30px;
     font-size:20px;
-    line-height:1.6;
-    opacity:0.85;
+    opacity:0.6;
+    max-width:600px;
 }
+
 button{
-    margin-top:40px;
-    padding:15px 30px;
+    margin-top:60px;
+    padding:16px 36px;
     font-size:18px;
-    border:none;
-    border-radius:8px;
+    border-radius:30px;
+    border:1px solid rgba(255,255,255,0.2);
+    background:rgba(255,255,255,0.05);
+    color:white;
+    backdrop-filter: blur(10px);
+    cursor:pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover{
     background:white;
     color:black;
-    cursor:pointer;
+    transform:translateY(-2px);
 }
-button:hover{
+
+.protocol{
+    margin-top:120px;
+    max-width:700px;
+    padding:40px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.04);
+    backdrop-filter: blur(15px);
+    display:none;
+}
+
+.protocol h2{
+    margin-top:0;
+    font-weight:500;
+}
+
+.protocol p{
     opacity:0.8;
-}
-.challenge{
-    margin-top:40px;
-    background:#1c1c1c;
-    padding:30px;
-    border-radius:10px;
+    line-height:1.8;
 }
 </style>
 </head>
+
 <body>
 
-<div class="section">
+<div class="container">
+
 <h1>
-你不是废物。<br>
-你只是从来没有<br>
-系统性重启过自己。
+你不是失败。<br>
+你只是还没有<br>
+重启自己。
 </h1>
 
-<p>
-大多数人卡住，不是因为能力不够。<br>
-而是因为生活失去了结构。
+<p class="subtitle">
+如果你愿意给自己 24 小时。<br>
+我们启动一次完整的人生重构。
 </p>
 
-<button onclick="scrollToChallenge()">开始24小时人生重启</button>
-</div>
+<button onclick="startProtocol()">
+启动重启协议
+</button>
 
-<div class="section challenge" id="challenge">
-<h2>24小时人生重启协议</h2>
+<div class="protocol" id="protocol">
+
+<h2>24 小时重启协议</h2>
 
 <p>
-第一步：清理环境（1小时）<br>
-删除干扰源，整理空间。
+第一阶段：环境重置（1小时）<br>
+清理空间，删除干扰源。
 </p>
 
 <p>
-第二步：身体重启（2小时）<br>
+第二阶段：身体激活（2小时）<br>
 运动 + 冷水洗脸 + 早睡。
 </p>
 
 <p>
-第三步：目标重构（2小时）<br>
+第三阶段：目标重构（2小时）<br>
 写下未来一年唯一最重要目标。
 </p>
 
 <p>
-第四步：执行第一步（当天完成）<br>
-立刻做第一步行动。
+第四阶段：立即行动（当天完成）<br>
+做出第一步现实行动。
 </p>
 
-<p style="margin-top:40px;font-size:22px;">
+<p style="margin-top:40px;font-size:22px;opacity:1;">
 人生不会突然变好。<br>
 但你可以突然变清醒。
 </p>
+
+</div>
+
 </div>
 
 <script>
-function scrollToChallenge(){
-    document.getElementById("challenge").scrollIntoView({behavior:"smooth"});
+function startProtocol(){
+    document.getElementById("protocol").style.display="block";
+    document.getElementById("protocol").scrollIntoView({behavior:"smooth"});
 }
 </script>
 
