@@ -3,78 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>人生重启协议</title>
+<title>Life Reset System</title>
+
 <style>
 body{
     margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto;
-    background: radial-gradient(circle at 30% 30%, #1a1a2e, #0f0f0f 60%);
-    color:white;
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(180deg,#0b0f1a,#000000);
+    color:#e6f1ff;
     text-align:center;
-    overflow-x:hidden;
 }
 
 .container{
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:40px 20px;
+    padding:60px 20px;
+    max-width:800px;
+    margin:auto;
 }
 
 h1{
-    font-size:52px;
+    font-size:48px;
     font-weight:600;
     line-height:1.3;
-    max-width:800px;
-    margin:0;
 }
 
 .subtitle{
-    margin-top:30px;
-    font-size:20px;
     opacity:0.6;
-    max-width:600px;
+    margin-top:20px;
 }
 
 button{
-    margin-top:60px;
-    padding:16px 36px;
-    font-size:18px;
+    margin-top:40px;
+    padding:14px 30px;
     border-radius:30px;
-    border:1px solid rgba(255,255,255,0.2);
-    background:rgba(255,255,255,0.05);
-    color:white;
-    backdrop-filter: blur(10px);
+    border:1px solid #2f80ed;
+    background:transparent;
+    color:#2f80ed;
+    font-size:16px;
     cursor:pointer;
-    transition: all 0.3s ease;
+    transition:0.3s;
 }
 
 button:hover{
-    background:white;
+    background:#2f80ed;
     color:black;
-    transform:translateY(-2px);
 }
 
-.protocol{
-    margin-top:120px;
-    max-width:700px;
-    padding:40px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.04);
-    backdrop-filter: blur(15px);
+.hidden{
     display:none;
 }
 
-.protocol h2{
-    margin-top:0;
-    font-weight:500;
+.panel{
+    margin-top:60px;
+    padding:30px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
 }
 
-.protocol p{
-    opacity:0.8;
-    line-height:1.8;
+input{
+    margin-top:20px;
+    padding:12px;
+    width:80%;
+    border-radius:10px;
+    border:none;
+    font-size:16px;
+}
+
+#timer{
+    font-size:28px;
+    margin-top:20px;
+    color:#2f80ed;
 }
 </style>
 </head>
@@ -84,57 +82,73 @@ button:hover{
 <div class="container">
 
 <h1>
-你不是失败。<br>
-你只是还没有<br>
-重启自己。
+LIFE RESET<br>
+SYSTEM v1.0
 </h1>
 
 <p class="subtitle">
-如果你愿意给自己 24 小时。<br>
-我们启动一次完整的人生重构。
+你不是失败。你只是没有重新启动。
 </p>
 
-<button onclick="startProtocol()">
-启动重启协议
-</button>
+<button onclick="startSystem()">启动系统</button>
 
-<div class="protocol" id="protocol">
+<div id="systemPanel" class="panel hidden">
 
-<h2>24 小时重启协议</h2>
+<h2>24小时重启倒计时</h2>
+<div id="timer">24:00:00</div>
 
-<p>
-第一阶段：环境重置（1小时）<br>
-清理空间，删除干扰源。
-</p>
+<h3 style="margin-top:40px;">输入你当前最大的困扰</h3>
+<input id="userInput" placeholder="例如：焦虑 / 拖延 / 迷茫">
+<br>
+<button onclick="generateResponse()">生成重启指令</button>
 
-<p>
-第二阶段：身体激活（2小时）<br>
-运动 + 冷水洗脸 + 早睡。
-</p>
-
-<p>
-第三阶段：目标重构（2小时）<br>
-写下未来一年唯一最重要目标。
-</p>
-
-<p>
-第四阶段：立即行动（当天完成）<br>
-做出第一步现实行动。
-</p>
-
-<p style="margin-top:40px;font-size:22px;opacity:1;">
-人生不会突然变好。<br>
-但你可以突然变清醒。
-</p>
+<div id="response" style="margin-top:40px;font-size:20px;"></div>
 
 </div>
 
 </div>
 
 <script>
-function startProtocol(){
-    document.getElementById("protocol").style.display="block";
-    document.getElementById("protocol").scrollIntoView({behavior:"smooth"});
+let countdown;
+let totalSeconds = 86400;
+
+function startSystem(){
+    document.getElementById("systemPanel").classList.remove("hidden");
+    document.getElementById("systemPanel").scrollIntoView({behavior:"smooth"});
+    startTimer();
+}
+
+function startTimer(){
+    countdown = setInterval(function(){
+        totalSeconds--;
+        let hours = Math.floor(totalSeconds/3600);
+        let minutes = Math.floor((totalSeconds%3600)/60);
+        let seconds = totalSeconds%60;
+        document.getElementById("timer").innerText =
+            String(hours).padStart(2,'0') + ":" +
+            String(minutes).padStart(2,'0') + ":" +
+            String(seconds).padStart(2,'0');
+        if(totalSeconds<=0){
+            clearInterval(countdown);
+        }
+    },1000);
+}
+
+function generateResponse(){
+    let input = document.getElementById("userInput").value;
+    let response = "";
+
+    if(input.includes("焦虑")){
+        response = "系统指令：减少输入。停止过度思考。行动优先。";
+    } else if(input.includes("拖延")){
+        response = "系统指令：缩小任务。5分钟开始。立即执行。";
+    } else if(input.includes("迷茫")){
+        response = "系统指令：写下一个方向。执行7天。再评估。";
+    } else {
+        response = "系统指令：重建秩序。从最小行动开始。";
+    }
+
+    document.getElementById("response").innerText = response;
 }
 </script>
 
