@@ -3,289 +3,242 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>一天人生重启工作台 - 精简深度版 v2</title>
+  <title>旧我删除协议 · 2026新生代码</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f9fafb;
-      color: #111827;
-      line-height: 1.7;
-      margin: 0;
-      padding: 20px;
+    :root {
+      --primary: #a78bfa; --dark: #7c3aed; --accent: #d8b4fe; --gold: #fbbf24; --bg: linear-gradient(135deg, #0f0f23, #1e1b4b);
+      --card: rgba(30, 30, 60, 0.95); --text: #f0efff;
     }
-    .container { max-width: 680px; margin: 0 auto; }
-    h1 { text-align: center; color: #1e40af; margin-bottom: 0.4em; }
-    .progress-container {
-      margin: 1em 0 2em;
-      background: #e5e7eb;
-      border-radius: 999px;
-      height: 8px;
-      overflow: hidden;
+    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:16px; }
+    #app { width:100%; max-width:420px; }
+    .progress { height:8px; background:#2d2d4a; border-radius:4px; margin:16px 0; overflow:hidden; }
+    .progress-bar { height:100%; width:0; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width 0.6s ease; }
+    .card {
+      background:var(--card); border-radius:28px; padding:36px 24px; margin:20px 0;
+      box-shadow:0 24px 48px rgba(0,0,0,0.6); border:1px solid #3a3a7a; display:none; opacity:0; transform:translateY(30px);
+      transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      transition: width 0.4s ease;
+    .card.active { display:block; opacity:1; transform:translateY(0); }
+    h1 { font-size:2.4em; color:var(--accent); text-align:center; text-shadow:0 4px 16px rgba(167,139,250,0.5); margin-bottom:16px; }
+    .intro { font-size:1.15em; line-height:1.7; color:#d1d5ff; text-align:center; margin:20px 0; }
+    .option-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
+    .option {
+      background:#1e1e3a; border:2px solid #3a3a6e; border-radius:18px; padding:18px 14px; text-align:center; cursor:pointer;
+      transition:all 0.35s; font-size:1.02em; position:relative;
     }
-    .section {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 1.8em;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: all 0.3s;
+    .option:hover { transform:translateY(-6px); box-shadow:0 16px 32px rgba(139,92,246,0.25); border-color:var(--primary); }
+    .option.selected { border-color:var(--primary); background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(216,180,254,0.1)); box-shadow:0 12px 28px rgba(139,92,246,0.3); }
+    .option.selected::after { content:"✓"; position:absolute; top:10px; right:10px; background:var(--primary); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; }
+    textarea { width:100%; padding:14px; margin:16px 0; border-radius:12px; border:1px solid #444; background:#141426; color:white; min-height:80px; }
+    button { background:linear-gradient(135deg,var(--dark),var(--primary)); color:white; border:none; padding:16px; font-size:1.15em; border-radius:999px; width:100%; margin:20px 0 12px; cursor:pointer; box-shadow:0 10px 30px rgba(124,58,237,0.45); transition:all 0.3s; }
+    button:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(124,58,237,0.55); }
+    #certificate {
+      background:linear-gradient(145deg,#1e1e40,#2a1a50,#3a2a70); padding:48px 28px; border-radius:32px; border:4px dashed var(--accent);
+      text-align:center; position:relative; overflow:hidden; margin:28px 0; box-shadow:0 20px 60px rgba(124,58,237,0.4);
     }
-    .section.completed {
-      background: #ecfdf5;
-      border-color: #a7f3d0;
-    }
-    h2 {
-      color: #1e40af;
-      margin: 0 0 1.2em;
-      font-size: 1.4em;
-    }
-    label {
-      display: block;
-      margin: 1.4em 0 0.4em;
-      font-weight: 600;
-      color: #374151;
-    }
-    textarea {
-      width: 100%;
-      min-height: 80px;
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 1.05em;
-      resize: vertical;
-    }
-    .tip {
-      font-size: 0.9em;
-      color: #6b7280;
-      margin: 0.4em 0 0.8em;
-    }
-    .ai-btn {
-      background: #e0f2fe;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 0.9em;
-      cursor: pointer;
-      margin: 0.6em 0;
-    }
-    .ai-btn:hover { background: #dbeafe; }
-    .btn {
-      background: #3b82f6;
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-size: 1.05em;
-      cursor: pointer;
-      margin: 1.5em 1em 0.5em 0;
-    }
-    .btn:hover { background: #2563eb; }
-    .btn-primary { background: #10b981; }
-    .btn-primary:hover { background: #059669; }
-    #status { text-align: center; color: #4b5563; margin: 1em 0; font-weight: 500; }
+    #cert-title { font-size:2.1em; color:var(--gold); text-shadow:0 4px 12px rgba(251,191,36,0.5); margin-bottom:20px; }
+    .code-big { font-size:4em; font-weight:900; letter-spacing:12px; color:var(--accent); text-shadow:0 6px 24px rgba(216,180,254,0.7); margin:20px 0; }
+    .rarity { font-size:1.8em; color:var(--gold); margin:16px 0; font-weight:bold; }
+    .tag { display:inline-block; background:rgba(216,180,254,0.2); color:#e9d5ff; padding:10px 20px; border-radius:999px; margin:10px 8px; border:1px solid var(--accent); box-shadow:0 4px 12px rgba(216,180,254,0.25); }
+    .watermark { font-size:0.9em; color:#888; margin-top:40px; opacity:0.7; }
+    #shareText { width:100%; height:130px; margin:16px 0; padding:16px; background:#1a1a30; color:#e0e0ff; border:1px solid #444; border-radius:16px; font-size:1em; resize:none; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>一天人生重启工作台</h1>
-  <p style="text-align:center; color:#6b7280; margin-bottom:1.5em;">
-    每题≤100字 · 支持AI辅助 · 总时长约2–3小时
-  </p>
+<div id="app">
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-  <div id="status">进度：0%（共4阶段）</div>
-
-  <div class="section" id="section0">
-    <h2>开始前</h2>
-    <p>今天日期：<input type="date" id="todayDate"></p>
-    <label>
-      <input type="checkbox" id="quickMode"> 快速模式（只做3个核心问题，约30分钟）
-    </label>
-    <label>
-      <input type="checkbox" id="promise" checked> 我愿意认真回答每个问题
-    </label>
-    <button class="btn" onclick="start()">开始重启</button>
+  <!-- 开场 -->
+  <div class="card active" id="page1">
+    <h1>旧我删除协议</h1>
+    <p class="intro">你不是懒，你只是太爱那个虽然痛苦但熟悉的旧自己。</p>
+    <p class="intro" style="color:#ff9999; font-weight:bold;">5分钟后，你会看到5年后最惨的自己，然后拿到专属“新生代码”。</p>
+    <p class="intro">敢玩的人，都不简单。</p>
+    <button onclick="nextPage(2)">我敢 → 开始</button>
   </div>
 
-  <div class="section" id="section1" style="display:none;">
-    <h2>1. 看见最不想成为的自己</h2>
-    <label>5年后最让你崩溃的身体/生活状态（一句话或短描述）：</label>
-    <textarea id="anti1" maxlength="200" placeholder="例：每天靠药活着，走路都费劲……"></textarea>
-    <button class="ai-btn" onclick="suggestAI(1)">AI帮我写得更真实</button>
+  <!-- 反向愿景 -->
+  <div class="card" id="page2">
+    <h1>第一步：看见最惨的未来</h1>
+    <p class="intro">选出最扎心的画面（多选），最后补一句最痛的话。</p>
+    <div class="option-grid">
+      <div class="option" data-value="每天刷手机到凌晨，第二天继续麻木">每天刷手机到凌晨，第二天继续麻木</div>
+      <div class="option" data-value="工资刚够房租，梦想早被磨平">工资刚够房
 
-    <label>最孤独/最空虚的一天会是怎样的？（一句话）</label>
-    <textarea id="anti2" maxlength="200"></textarea>
-
-    <label>拖延的根源：我在保护的那个“旧我”是什么角色？（一句话）</label>
-    <textarea id="root1" maxlength="120"></textarea>
-    <button class="ai-btn" onclick="suggestAI('root')">AI帮我挖根源</button>
-
-    <button class="btn" onclick="completeStage(1)">完成阶段1</button>
+租，梦想早被磨平</div>
+      <div class="option" data-value="朋友圈全是别人结婚买房，我在点赞">朋友圈全是别人结婚买房，我在点赞</div>
+      <div class="option" data-value="身体发福脱发，却懒得动">身体发福脱发，却懒得动</div>
+      <div class="option" data-value="十年后还在说“明年就努力”">十年后还在说“明年就努力”</div>
+      <div class="option" data-value="父母问我过得怎么样，我只能苦笑">父母问我过得怎么样，我只能苦笑</div>
+      <div class="option" data-value="深夜emo到哭，却不知道为谁哭">深夜emo到哭，却不知道为谁哭</div>
+      <div class="option" data-value="镜子里的人越来越像我最讨厌的样子">镜子里的人越来越像我最讨厌的样子</div>
+    </div>
+    <textarea id="anti-custom" placeholder="最扎心的一句话总结（选填，50字内）"></textarea>
+    <button onclick="nextPage(3)">写完了 → 生成新生代码</button>
   </div>
 
-  <div class="section" id="section2" style="display:none;">
-    <h2>2. 我真正想成为的人</h2>
-    <label>理想的我，每天会自然做的3–5件小事（每条一句话）</label>
-    <textarea id="new1" maxlength="300" placeholder="例：1. 早上先写500字 2. 拒绝无效会议……"></textarea>
+  <!-- 新生代码 -->
+  <div class="card" id="page3">
+    <h1>第二步：选择你的新生代码</h1>
+    <p class="intro">每个维度选最贴近你的那一项（单选），生成专属代码 + 稀有度</p>
 
-    <label>从今天起，我是谁？（写1–3句“我是……”）</label>
-    <textarea id="new2" maxlength="200"></textarea>
-    <button class="ai-btn" onclick="suggestAI('identity')">AI帮我润色宣言</button>
+    <h3 style="color:#c4b5fd; margin:28px 0 12px;">觉醒度</h3>
+    <div class="option-grid">
+      <div class="option" data-axis="A" data-value="A">主动觉醒者</div>
+      <div class="option" data-axis="A" data-value="a">被动沉睡者</div>
+    </div>
 
-    <label>真正想做的一件事（最让你兴奋的那个，1–2句）</label>
-    <textarea id="new3" maxlength="150"></textarea>
+    <h3 style="color:#c4b5fd; margin:28px 0 12px;">创造度</h3>
+    <div class="option-grid">
+      <div class="option" data-axis="C" data-value="C">价值创造者</div>
+      <div class="option" data-axis="C" data-value="c">被动消费者</div>
+    </div>
 
-    <button class="btn" onclick="completeStage(2)">完成阶段2</button>
+    <h3 style="color:#c4b5fd; margin:28px 0 12px;">价值向</h3>
+    <div class="option-grid">
+      <div class="option" data-axis="V" data-value="V">长期价值导向</div>
+      <div class="option" data-axis="V" data-value="v">短期舒适导向</div>
+    </div>
+
+    <h3 style="color:#c4b5fd; margin:28px 0 12px;">扩展度</h3>
+    <div class="option-grid">
+      <div class="option" data-axis="E" data-value="E">主动扩展者</div>
+      <div class="option" data-axis="E" data-value="e">安全收缩者</div>
+    </div>
+
+    <input type="text" id="nickname" placeholder="你的新生昵称（选填）" style="width:100%; padding:16px; margin:24px 0; border-radius:16px; border:1px solid #555; background:#1a1a2e; color:white; font-size:1.1em;"/>
+
+    <button onclick="nextPage(4)">生成我的代码 →</button>
   </div>
 
-  <div class="section" id="section3" style="display:none;">
-    <h2>3. 简单可执行计划</h2>
-    <label>最重要的一件事（1周内必须启动的）：</label>
-    <textarea id="plan1" maxlength="150"></textarea>
+  <!-- 证书 -->
+  <div class="card" id="page4">
+    <h1>新生已激活 ✨</h1>
+    <div id="certificate">
+      <div id="cert-title">旧我删除协议 · 永久生效</div>
+      <p id="cert-nick" style="font-size:1.9em; margin:20px 0;"></p>
+      <div class="code-big" id="code-display"></div>
+      <div class="rarity" id="rarity-text"></div>
+      <div id="tags-container" style="margin:24px 0;"></div>
+      <p id="cert-date" style="margin:32px 0; font-size:1.1em;"></p>
+      <p class="watermark">由「旧我删除协议」生成 · 2026重启见证 · 分享你的新生代码</p>
+    </div>
 
-    <label>每天最关键的仪式（一句话，早或晚）</label>
-    <textarea id="plan2" maxlength="100"></textarea>
+    <select id="shareStyle" style="width:100%; padding:14px; margin:16px 0; border-radius:16px; background:#1a1a30; color:white; border:1px solid #555;">
+      <option value="0">温柔共鸣版</option>
+      <option value="1">狠戳痛点版</option>
+      <option value="2">凡尔赛炫耀版</option>
+    </select>
 
-    <label>我会用什么方式逼自己完成？（选一个或写一个）</label>
-    <textarea id="plan3" maxlength="150" placeholder="例：发朋友圈公开承诺 + 没完成捐款50元"></textarea>
+    <textarea id="shareText" rows="6"></textarea>
 
-    <button class="btn" onclick="completeStage(3)">完成阶段3</button>
-  </div>
-
-  <div class="section" id="section4" style="display:none;">
-    <h2>已完成！你的重启记录</h2>
-    <p>所有内容已保存在浏览器，可随时回来修改。</p>
-
-    <button class="btn btn-primary" onclick="copyAll()">一键复制全部内容</button>
-    <button class="btn" onclick="exportImage()">导出为图片保存</button>
-    <button class="btn" onclick="saveData()">保存进度</button>
-
-    <div id="preview" style="margin-top:2em; background:#f1f5f9; padding:16px; border-radius:8px; white-space:pre-wrap; font-size:0.95em;"></div>
+    <button onclick="saveCertificate()">保存证书长图（长按发朋友圈）</button>
+    <button onclick="restart()" style="background:#4b5563; margin-top:12px;">重新开始</button>
   </div>
 </div>
 
 <script>
-  const stages = 4;
-  let completed = 0;
+  let currentPage = 1;
+  const total = 4;
+  const progress = document.getElementById('progressBar');
 
   function updateProgress() {
-    completed = document.querySelectorAll('.section.completed').length;
-    const percent = Math.round((completed / stages) * 100);
-    document.getElementById('progressBar').style.width = percent + '%';
-    document.getElementById('status').textContent = `进度：${percent}%（已完成${completed}/${stages}阶段）`;
+    progress.style.width = (currentPage / total * 100) + '%';
   }
 
-  function start() {
-    if (!document.getElementById('promise').checked) {
-      alert('请先勾选承诺');
-      return;
-    }
-    document.getElementById('section0').style.display = 'none';
-    document.getElementById('section1').style.display = 'block';
-    scrollTo('section1');
-    saveData(); // 初始保存
-  }
-
-  function completeStage(n) {
-    document.getElementById(`section${n}`).classList.add('completed');
-    const next = n + 1;
-    if (next <= 3 || (next === 4 && !document.getElementById('quickMode').checked)) {
-      document.getElementById(`section${next}`).style.display = 'block';
-      scrollTo(`section${next}`);
-    } else {
-      document.getElementById('section4').style.display = 'block';
-      scrollTo('section4');
-      showPreview();
-    }
+  function nextPage(n) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    document.getElementById(`page${n}`).classList.add('active');
+    currentPage = n;
     updateProgress();
-    saveData();
-  }
-
-  function scrollTo(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function suggestAI(type) {
-    let prompt = '';
-    if (type === 1) prompt = `基于用户写的反向愿景草稿，帮我写得更具体、更痛苦（60–100字）：\n${document.getElementById('anti1').value || '(空，先帮我想一个最惨的健康场景)'}`;
-    else if (type === 'root') prompt = `帮我挖掘拖延根源，给出“我在保护的旧身份”最可能的3种角色，并简短解释（每种20–30字）：`;
-    else if (type === 'identity') prompt = `帮我把“我是谁”宣言润色得更坚定、具体、有力量（2–3句，每句20–40字）。用户草稿：${document.getElementById('new2').value || '(空，先给一个通用模板)'}。`;
-
-    alert(`复制下面这段提示词 → 去Claude / GPT / 豆包 等模型生成，再粘贴回来：\n\n${prompt}`);
-  }
-
-  function showPreview() {
-    let text = `重启日期：${document.getElementById('todayDate').value || new Date().toLocaleDateString('zh-CN')}\n\n`;
-    text += `1. 反向愿景 & 根源\n${[
-      '最惨状态：' + document.getElementById('anti1').value,
-      '最孤独一天：' + document.getElementById('anti2').value,
-      '保护的旧我：' + document.getElementById('root1').value
-    ].filter(Boolean).join('\n')}\n\n`;
-    text += `2. 新身份\n${[
-      '自然小事：' + document.getElementById('new1').value,
-      '我是谁：' + document.getElementById('new2').value,
-      '真正想做：' + document.getElementById('new3').value
-    ].filter(Boolean).join('\n')}\n\n`;
-    text += `3. 计划\n${[
-      '最重要一件事：' + document.getElementById('plan1').value,
-      '每日仪式：' + document.getElementById('plan2').value,
-      '强制机制：' + document.getElementById('plan3').value
-    ].filter(Boolean).join('\n')}\n\n`;
-
-    document.getElementById('preview').textContent = text;
-  }
-
-  function copyAll() {
-    const text = document.getElementById('preview').textContent;
-    navigator.clipboard.writeText(text).then(() => alert('已复制，可粘贴到笔记/文档'));
-  }
-
-  function exportImage() {
-    html2canvas(document.querySelector('.container'), {scale: 2}).then(canvas => {
-      const a = document.createElement('a');
-      a.href = canvas.toDataURL('image/png');
-      a.download = '重启记录-' + new Date().toISOString().slice(0,10) + '.png';
-      a.click();
-    });
-  }
-
-  function saveData() {
-    const data = {};
-    document.querySelectorAll('input, textarea').forEach(el => {
-      data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
-    });
-    localStorage.setItem('restart2026', JSON.stringify(data));
-  }
-
-  window.onload = () => {
-    const saved = localStorage.getItem('restart2026');
-    if (saved) {
-      const data = JSON.parse(saved);
-      Object.keys(data).forEach(k => {
-        const el = document.getElementById(k);
-        if (el) {
-          if (el.type === 'checkbox') el.checked = data[k];
-          else el.value = data[k];
-        }
-      });
-      alert('已恢复上次进度，继续吧');
-      updateProgress();
+    if (n === 4) {
+      generateResult();
+      launchConfetti();
     }
-  };
+  }
 
-  // 每2分钟自动保存一次
-  setInterval(saveData, 120000);
+  function launchConfetti() {
+    const duration = 5000;
+    const end = Date.now() + duration;
+    const colors = ['#a78bfa','#d8b4fe','#c4b5fd','#7c3aed','#fbbf24'];
+
+    (function frame() {
+      confetti({ particleCount: 10, angle: 60, spread: 70, origin: { x: 0 }, colors });
+      confetti({ particleCount: 10, angle: 120, spread: 70, origin: { x: 1 }, colors });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    }());
+  }
+
+  function generateResult() {
+    const nick = document.getElementById('nickname').value.trim() || "新生觉醒者";
+    const date = new Date().toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric'});
+
+    document.getElementById('cert-nick').textContent = nick;
+    document.getElementById('cert-date').textContent = `激活日期：${date}`;
+
+    const axes = {};
+    document.querySelectorAll('#page3 .option.selected').forEach(opt => {
+      if (opt.dataset.axis) axes[opt.dataset.axis] = opt.dataset.value;
+    });
+
+    const code = (axes.A || 'A') + (axes.C || 'C') + (axes.V || 'V') + (axes.E || 'E');
+    document.getElementById('code-display').textContent = code;
+
+    const rarityRoll = Math.random();
+    let rarity = "普通";
+    if (rarityRoll < 0.05) rarity = "传说级";
+    else if (rarityRoll < 0.2) rarity = "史诗级";
+    else if (rarityRoll < 0.4) rarity = "稀有级";
+    document.getElementById('rarity-text').textContent = rarity + '新生代码';
+
+    const tagsContainer = document.getElementById('tags-container');
+    tagsContainer.innerHTML = '';
+    [rarity, code + '型人格', '旧我已删除', '2026重启中'].forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.textContent = t;
+      tagsContainer.appendChild(span);
+    });
+
+    const style = document.getElementById('shareStyle').value;
+    let txt = '';
+    if (style === '0') txt = `今天做了「旧我删除协议」，第一次敢直面最惨的未来……\n新生代码：${code}（${rarity}）\n感觉终于可以和旧自己说再见了。\n你也来试试？\n${location.href}`;
+    else if (style === '1') txt = `我承认，我一直在保护那个loser。\n写完反向愿景想吐，但代码出来后，我知道有救了。\n新生代码：${code}（${rarity}）\n从今天起，不再原谅自己。\n你敢吗？`;
+    else txt = `新生代码加载完成：${code}（${rarity}）✨\n旧我已死，2026开始上分。\n谁来挑战我的传说级稀有度？🔥\n测一测：${location.href}`;
+    document.getElementById('shareText').value = txt;
+  }
+
+  function saveCertificate() {
+    launchConfetti();
+    html2canvas(document.getElementById('certificate'), {scale: 2.8}).then(canvas => {
+      const a = document.createElement('a');
+      a.download = '新生代码.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      alert('证书已生成！长按保存 → 发朋友圈/小红书炫耀你的新生代码');
+    });
+  }
+
+  function restart() {
+    document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+    document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+    nextPage(1);
+  }
+
+  document.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const axis = opt.dataset.axis;
+      if (axis) {
+        document.querySelectorAll(`[data-axis="${axis}"]`).forEach(o => o.classList.remove('selected'));
+      }
+      opt.classList.toggle('selected');
+    });
+  });
+
+  updateProgress();
 </script>
 </body>
 </html>
