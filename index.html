@@ -1,334 +1,183 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>人生修复指南 · 2026新生代码</title>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
-body{
-background:radial-gradient(circle at top,#1a002e,#000);
-color:#fff;
-overflow-x:hidden;
-}
-
-.container{
-max-width:480px;
-margin:auto;
-padding:20px;
-}
-
-.page{
-display:none;
-animation:fade 0.6s ease;
-}
-
-.page.active{display:block}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
-}
-
-h1{
-font-size:28px;
-background:linear-gradient(90deg,#ff00cc,#6a00ff);
--webkit-background-clip:text;
-color:transparent;
-text-shadow:0 0 20px #ff00cc;
-margin-bottom:10px;
-}
-
-.subtitle{
-opacity:.7;
-margin-bottom:20px;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:15px;
-border:none;
-border-radius:10px;
-background:linear-gradient(90deg,#ff00cc,#6a00ff);
-color:#fff;
-font-weight:bold;
-font-size:15px;
-}
-
-input,textarea,select{
-width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:8px;
-border:none;
-background:#111;
-color:#fff;
-}
-
-.option{
-background:#111;
-padding:10px;
-border-radius:8px;
-margin:8px 0;
-cursor:pointer;
-border:1px solid #222;
-}
-
-.option.selected{
-border:1px solid #ff00cc;
-box-shadow:0 0 10px #ff00cc;
-}
-
-.progress{
-height:6px;
-background:#222;
-border-radius:5px;
-margin-bottom:15px;
-}
-
-.progress-bar{
-height:6px;
-background:linear-gradient(90deg,#ff00cc,#6a00ff);
-border-radius:5px;
-width:0%;
-}
-
-#certificate{
-width:100%;
-padding:25px;
-border-radius:20px;
-background:linear-gradient(135deg,#240046,#3c096c,#5a189a);
-text-align:center;
-}
-
-.badge{
-margin-top:10px;
-padding:5px 10px;
-border-radius:20px;
-display:inline-block;
-font-size:12px;
-}
-
-.legendary{background:gold;color:#000}
-.epic{background:#9d4edd}
-.rare{background:#4361ee}
-.common{background:#555}
-
-.watermark{
-margin-top:30px;
-font-size:12px;
-opacity:.5;
-text-align:center;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>人生修复指南 | Life Repair Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #fcfaf7; color: #1c1917; }
+    .serif { font-family: 'Noto Serif SC', serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #fcfaf7; }
+    ::-webkit-scrollbar-thumb { background: #e7e5e4; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #d6d3d1; }
+    @media print { .no-print { display: none !important; } }
+  </style>
 </head>
-
 <body>
-<div class="container">
+  <div id="root"></div>
 
-<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { AlertTriangle, ArrowDown, CheckCircle2, Copy, Printer, ShieldAlert, Zap, Target, Sparkles, Loader2, Compass } = lucideReact;
 
-<!-- 1 开场 -->
-<div class="page active" id="page1">
-<h1>人生修复指南 · 2026新生代码</h1>
-<p class="subtitle">如果你敢直视自己的失败，你就已经比90%的人强。</p>
-<p style="margin:10px 0;">敢玩的人，都不简单。</p>
-<input id="nickname" placeholder="输入你的昵称（选填）">
-<button onclick="nextPage()">开始重启</button>
-</div>
+    const QUOTES = [
+      { cn: "你想拥有的生活，建立在你不敢放手的废墟之上。", en: "The life you want is built on the ruins of the life you are afraid to let go of." },
+      { cn: "如果你不知道自己想要什么，看看你讨厌什么。反向愿景通常比正向目标更具动力。", en: "If you don't know what you want, look at what you hate. Anti-vision is often more motivating than positive goals." },
+      { cn: "身份驱动行为。除非你改变‘我是谁’，否则你的‘做什么’永远只是痛苦的博弈。", en: "Identity drives behavior. Until you change who you are, what you do will always be a struggle." },
+      { cn: "平庸是一种缓慢的死亡。意识到这一点并不残忍，无视它才残忍。", en: "Mediocrity is a slow death. Realizing this isn't cruel; ignoring it is." }
+    ];
 
-<!-- 2 反向愿景 -->
-<div class="page" id="page2">
-<h1>先看清你正在走向什么</h1>
-<p class="subtitle">选择最扎心的</p>
+    const INITIAL_STATE = {
+      date: new Date().toISOString().split('T')[0],
+      commitment: false,
+      antiVision: { health: '', relationships: '', finance: '', work: '', selfTalk: '', summary: '', rootCause: '' },
+      newIdentity: { naturalActions: '', iAmStatements: '', drivers: '', trueTodoList: '' },
+      planning: { skills: Array(4).fill({ name: '', level: 0, unlockCondition: '' }), mechanismsDetail: '', milestones: '' },
+      completedPhases: [],
+      aiOptimalPath: ''
+    };
 
-<div id="painOptions"></div>
+    const App = () => {
+      const [state, setState] = useState(() => {
+        const saved = localStorage.getItem('life-reset-data');
+        return saved ? JSON.parse(saved) : INITIAL_STATE;
+      });
+      const [isExpanding, setIsExpanding] = useState(null);
 
-<textarea id="painSummary" maxlength="50" placeholder="一句话总结你最害怕的人生（50字内）"></textarea>
+      useEffect(() => localStorage.setItem('life-reset-data', JSON.stringify(state)), [state]);
 
-<button onclick="showAIPrompt()">AI辅助</button>
-<button onclick="nextPage()">继续</button>
-</div>
+      const updateState = (path, value) => {
+        const keys = path.split('.');
+        setState(prev => {
+          const newState = JSON.parse(JSON.stringify(prev));
+          let current = newState;
+          for (let i = 0; i < keys.length - 1; i++) current = current[keys[i]];
+          current[keys[keys.length - 1]] = value;
+          return newState;
+        });
+      };
 
-<!-- 3 新身份代码 -->
-<div class="page" id="page3">
-<h1>选择你的新身份维度</h1>
-<div id="identityOptions"></div>
-<button onclick="generateCode()">生成我的新生代码</button>
-<div id="codeResult" style="margin-top:20px"></div>
-<button onclick="nextPage()">继续</button>
-</div>
+      const togglePhaseCompletion = (phaseId) => {
+        setState(prev => ({
+          ...prev,
+          completedPhases: prev.completedPhases.includes(phaseId)
+            ? prev.completedPhases.filter(id => id !== phaseId)
+            : [...prev.completedPhases, phaseId]
+        }));
+      };
 
-<!-- 4 计划页 -->
-<div class="page" id="page4">
-<h1>简单行动计划</h1>
-<input id="goal" placeholder="你真正想做的事">
-<input id="daily" placeholder="每日最小行动仪式">
-<input id="force" placeholder="强制机制（公开/金钱/打卡）">
-<button onclick="nextPage()">完成计划</button>
-</div>
+      const scrollToNext = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-<!-- 5 证书 -->
-<div class="page" id="page5">
-<div id="certificate">
-<h2 id="certName"></h2>
-<h1 id="certCode"></h1>
-<div id="certBadge"></div>
-<p id="certTags"></p>
-</div>
+      const handleAIExpand = (fieldPath, fieldTitle, fieldDescription, currentValue) => {
+        if (!currentValue.trim()) {
+          alert("请先输入一些您的初步想法，AI 才能为您扩写。");
+          return;
+        }
+        const prompt = `你是一位深度心理咨询专家和 Dan Koe 哲学的践行者。
+当前模块：${fieldTitle}
+模块说明：${fieldDescription}
+用户输入的初步想法：${currentValue}
 
-<select id="copyText">
-<option value="温柔">温柔版</option>
-<option value="狠">狠人版</option>
-<option value="凡尔赛">凡尔赛版</option>
-</select>
+请基于 Dan Koe 的理念（反向愿景、身份驱动、系统化执行），对用户的输入进行扩写和深化。
+要求：语言深刻、严肃、有冲击力，直接输出扩写后的文本。`;
 
-<button onclick="exportImage()">导出证书</button>
-<button onclick="copyShare()">复制分享文案</button>
-</div>
+        navigator.clipboard.writeText(prompt);
+        alert("提示词已复制到剪贴板！去Claude/GPT/豆包生成后粘贴回来");
+        setIsExpanding(fieldPath);
+        setTimeout(() => setIsExpanding(null), 3000);
+      };
 
-<!-- 6 结尾 -->
-<div class="page" id="page6">
-<h1>2026 新生已激活</h1>
-<p>分享你的新生代码，让更多人重启。</p>
-<div class="watermark">
-人生修复指南 · 新生代码<br>
-挑战入口：你的域名.com
-</div>
-</div>
+      const exportAsText = () => {
+        const content = `人生修复指南摘要 - ${state.date}\n\n反向愿景总结：${state.antiVision.summary}\n新身份宣言：${state.newIdentity.iAmStatements}\n真正想做：${state.newIdentity.trueTodoList}\n技能树：${state.planning.skills.map(s => s.name).filter(Boolean).join(', ')}\n里程碑：${state.planning.milestones}`;
+        navigator.clipboard.writeText(content);
+        alert('已复制全部内容');
+      };
 
-</div>
+      const exportImage = () => {
+        html2canvas(document.body, { scale: 2 }).then(canvas => {
+          const a = document.createElement('a');
+          a.href = canvas.toDataURL('image/png');
+          a.download = '人生修复指南.png';
+          a.click();
+        });
+      };
 
-<script>
-let currentPage=1
-const totalPages=6
-const progressBar=document.getElementById("progressBar")
+      const ReflectionBox = ({ title, description, value, onChange, onExpand, isExpanding, icon, minimal = false }) => (
+        <div className={`space-y-4 ${minimal ? '' : 'group'} relative`}>
+          <div className="flex justify-between items-start">
+            <div className="space-y-1">
+              {!minimal && <div className="flex items-center gap-2">{icon}<h3 className="serif font-bold text-lg text-stone-800">{title}</h3></div>}
+              {minimal && <h4 className="text-xs font-bold text-stone-400 uppercase tracking-widest">{title}</h4>}
+            </div>
+            {onExpand && (
+              <button onClick={onExpand} disabled={isExpanding} className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 text-stone-500 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-amber-50 hover:text-amber-700 transition-all disabled:opacity-50">
+                {isExpanding ? <Loader2 className="animate-spin" size={12} /> : <Sparkles size={12} />}
+                {isExpanding ? "扩写中..." : "AI扩写"}
+              </button>
+            )}
+          </div>
+          <p className="text-stone-400 text-xs leading-relaxed">{description}</p>
+          <textarea value={value} onChange={e => onChange(e.target.value)} placeholder="开始你的深度自省..." className="w-full bg-white border border-stone-200 rounded-2xl p-6 text-stone-800 focus:outline-none focus:ring-4 focus:ring-stone-50 min-h-[160px] transition-all placeholder:text-stone-200 leading-relaxed shadow-sm resize-none" />
+        </div>
+      );
 
-function nextPage(){
-if(currentPage<totalPages){
-document.getElementById("page"+currentPage).classList.remove("active")
-currentPage++
-document.getElementById("page"+currentPage).classList.add("active")
-progressBar.style.width=(currentPage-1)/(totalPages-1)*100+"%"
-if(currentPage==5){
-createCertificate()
-confetti()
-}
-}
-localStorage.setItem("lifeData",JSON.stringify(getData()))
-}
+      const NavItem = ({ label, onClick, completed }) => (
+        <button onClick={onClick} className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] transition-all ${completed ? 'text-emerald-600' : 'text-stone-400 hover:text-stone-900'}`}>
+          {completed && <CheckCircle2 size={10} />}
+          {label}
+        </button>
+      );
 
-function confetti(){
-confetti({particleCount:200,spread:100})
-}
+      return (
+        <div className="min-h-screen text-stone-900 bg-[#fcfaf7] px-4 py-12 md:px-0 transition-colors duration-500">
+          <div className="max-w-3xl mx-auto space-y-32 mb-32">
+            {/* Intro */}
+            <section id="intro" className="min-h-[80vh] flex flex-col justify-center items-center text-center space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter serif text-stone-900">人生修复指南</h1>
+                <p className="text-stone-400 text-lg md:text-xl font-medium tracking-widest uppercase">Life Repair Guide</p>
+              </div>
+              <div className="bg-white border border-stone-200 p-8 rounded-3xl max-w-2xl text-left space-y-6 shadow-sm">
+                <div className="flex items-start gap-4 text-amber-600">
+                  <AlertTriangle size={24} />
+                  <p className="text-sm font-medium leading-relaxed">警告：这不是一次轻松的心理测试。你即将面对的是对旧自我的解构。这需要你预留一整天（8-10小时）的绝对专注。</p>
+                </div>
+                <div className="space-y-4 pt-4">
+                  {QUOTES.map((q, idx) => (
+                    <div key={idx} className="space-y-1">
+                      <p className="text-stone-700 serif text-lg leading-relaxed">“{q.cn}”</p>
+                      <p className="text-stone-400 italic text-xs">{q.en}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-6 pt-8 w-full max-w-sm">
+                <input type="date" value={state.date} onChange={e => updateState('date', e.target.value)} className="bg-white border border-stone-200 rounded-xl p-3 text-stone-900 w-full" />
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input type="checkbox" checked={state.commitment} onChange={e => updateState('commitment', e.target.checked)} className="w-5 h-5 rounded border-stone-300 bg-white" />
+                  <span className="text-stone-500">我承诺今天花一整天深度自省</span>
+                </label>
+                <button disabled={!state.commitment} onClick={() => scrollToNext('phase-1')} className={`w-full py-4 rounded-full font-bold text-lg transition-all ${state.commitment ? 'bg-stone-900 text-stone-50 hover:bg-stone-800' : 'bg-stone-200 text-stone-400'}`}>
+                  开始修复 <ArrowDown className="inline ml-2" size={18} />
+                </button>
+              </div>
+            </section>
 
-const pains=[
-"30岁还在为钱焦虑",
-"刷短视频到深夜",
-"对梦想越来越沉默",
-"假装很忙其实没产出",
-"羡慕别人却不行动",
-"害怕被评价",
-"拖延到自我厌恶",
-"稳定但毫无激情",
-"明明不差却没突破",
-"日子过得越来越快"
-]
-
-const painDiv=document.getElementById("painOptions")
-pains.forEach(text=>{
-let div=document.createElement("div")
-div.className="option"
-div.innerText=text
-div.onclick=()=>div.classList.toggle("selected")
-painDiv.appendChild(div)
-})
-
-function showAIPrompt(){
-alert("复制到AI：\n我最害怕的人生是："+document.getElementById("painSummary").value+"\n帮我分析我在逃避什么旧身份。")
-}
-
-const identities={
-觉醒:["A","B","C"],
-创造:["D","E","F"],
-价值:["G","H","I"],
-扩展:["J","K","L"]
-}
-
-const idDiv=document.getElementById("identityOptions")
-Object.keys(identities).forEach(key=>{
-let select=document.createElement("select")
-identities[key].forEach(v=>{
-let op=document.createElement("option")
-op.value=v
-op.innerText=key+"-"+v
-select.appendChild(op)
-})
-idDiv.appendChild(select)
-})
-
-let generatedCode=""
-let rarity=""
-
-function generateCode(){
-let selects=idDiv.querySelectorAll("select")
-generatedCode=""
-selects.forEach(s=>generatedCode+=s.value)
-let rand=Math.random()
-if(rand<0.05){rarity="传说";className="legendary"}
-else if(rand<0.25){rarity="史诗";className="epic"}
-else if(rand<0.6){rarity="稀有";className="rare"}
-else{rarity="觉醒";className="common"}
-document.getElementById("codeResult").innerHTML="代码："+generatedCode+"<br>稀有度："+rarity
-}
-
-function getData(){
-return{
-nickname:document.getElementById("nickname").value,
-code:generatedCode,
-rarity:rarity
-}
-}
-
-function createCertificate(){
-let data=getData()
-document.getElementById("certName").innerText=(data.nickname||"匿名")+" · 新生代码"
-document.getElementById("certCode").innerText=data.code
-let badge=document.getElementById("certBadge")
-badge.innerText=data.rarity
-badge.className="badge "+(data.rarity=="传说"?"legendary":data.rarity=="史诗"?"epic":data.rarity=="稀有"?"rare":"common")
-document.getElementById("certTags").innerText="2026 · 身份升级完成"
-}
-
-function exportImage(){
-html2canvas(document.getElementById("certificate")).then(canvas=>{
-let link=document.createElement("a")
-link.download="新生代码.png"
-link.href=canvas.toDataURL()
-link.click()
-})
-}
-
-function copyShare(){
-let type=document.getElementById("copyText").value
-let text=""
-if(type=="温柔"){
-text="我给自己做了一次人生修复，拿到了新生代码："+generatedCode+"。"
-}
-if(type=="狠"){
-text="旧的我已清除。新身份代码："+generatedCode+"。敢挑战吗？"
-}
-if(type=="凡尔赛"){
-text="随手测了下，居然是"+rarity+"级新生代码："+generatedCode+"。"
-}
-navigator.clipboard.writeText(text)
-alert("已复制")
-}
-</script>
-</body>
-</html>
+            {/* Phase 1 */}
+            <section id="phase-1" className={`space-y-12 transition-all duration-700 ${state.completedPhases.includes('p1') ? 'opacity-40 grayscale-[0.5]' : 'opacity-100'}`}>
+              <header className="space-y-4">
+                <div className="flex items-center gap-3 text-stone-400 uppercase tracking-widest text-xs font-bold">
+                  <span className="bg-stone-100 px-2 py-1 rounded">阶段 01</span>
+                  <span>上午重点：挖掘痛苦根源</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight serif text-stone-900">反向
