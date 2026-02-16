@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>一天人生重启工作台 - 精简深度版</title>
+  <title>一天人生重启工作台 - 精简深度版 v2</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -13,34 +13,48 @@
       margin: 0;
       padding: 20px;
     }
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
+    .container { max-width: 680px; margin: 0 auto; }
+    h1 { text-align: center; color: #1e40af; margin-bottom: 0.4em; }
+    .progress-container {
+      margin: 1em 0 2em;
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
     }
-    h1 { text-align: center; color: #1e40af; margin-bottom: 0.5em; }
-    h2 {
-      color: #1e40af;
-      border-left: 5px solid #3b82f6;
-      padding-left: 12px;
-      margin: 2.5em 0 1em;
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      transition: width 0.4s ease;
     }
     .section {
       background: white;
       border: 1px solid #e5e7eb;
       border-radius: 12px;
       padding: 24px;
-      margin-bottom: 2em;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      margin-bottom: 1.8em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+    }
+    .section.completed {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+    h2 {
+      color: #1e40af;
+      margin: 0 0 1.2em;
+      font-size: 1.4em;
     }
     label {
       display: block;
-      margin: 1.4em 0 0.5em;
+      margin: 1.4em 0 0.4em;
       font-weight: 600;
       color: #374151;
     }
     textarea {
       width: 100%;
-      min-height: 90px;
+      min-height: 80px;
       padding: 12px;
       border: 1px solid #d1d5db;
       border-radius: 8px;
@@ -50,7 +64,7 @@
     .tip {
       font-size: 0.9em;
       color: #6b7280;
-      margin-top: 0.3em;
+      margin: 0.4em 0 0.8em;
     }
     .ai-btn {
       background: #e0f2fe;
@@ -60,7 +74,7 @@
       border-radius: 6px;
       font-size: 0.9em;
       cursor: pointer;
-      margin-top: 8px;
+      margin: 0.6em 0;
     }
     .ai-btn:hover { background: #dbeafe; }
     .btn {
@@ -74,212 +88,204 @@
       margin: 1.5em 1em 0.5em 0;
     }
     .btn:hover { background: #2563eb; }
-    .completed { background: #ecfdf5 !important; border-color: #a7f3d0; }
-    .completed h2 { border-left-color: #10b981; }
+    .btn-primary { background: #10b981; }
+    .btn-primary:hover { background: #059669; }
+    #status { text-align: center; color: #4b5563; margin: 1em 0; font-weight: 500; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>一天人生重启工作台（精简深度版）</h1>
-  <p style="text-align:center; color:#6b7280; margin-bottom:2em;">
-    基于Dan Koe协议 · 每题控制在100字以内 · 支持AI辅助
+  <h1>一天人生重启工作台</h1>
+  <p style="text-align:center; color:#6b7280; margin-bottom:1.5em;">
+    每题≤100字 · 支持AI辅助 · 总时长约2–3小时
   </p>
 
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div id="status">进度：0%（共4阶段）</div>
+
   <div class="section" id="section0">
-    <h2>0. 开始前承诺</h2>
-    <p>今天日期：<input type="date" id="todayDate" required></p>
+    <h2>开始前</h2>
+    <p>今天日期：<input type="date" id="todayDate"></p>
     <label>
-      <input type="checkbox" id="promise"> 我承诺认真完成每个问题（每题≤100字），今天至少花2–4小时。
+      <input type="checkbox" id="quickMode"> 快速模式（只做3个核心问题，约30分钟）
     </label>
-    <button class="btn" onclick="start()">我已准备好，开始</button>
+    <label>
+      <input type="checkbox" id="promise" checked> 我愿意认真回答每个问题
+    </label>
+    <button class="btn" onclick="start()">开始重启</button>
   </div>
 
   <div class="section" id="section1" style="display:none;">
-    <h2>1. 看见不想成为的未来（反向愿景）</h2>
-    <p class="tip">每题写出最真实、最痛的一面，控制在100字内。</p>
+    <h2>1. 看见最不想成为的自己</h2>
+    <label>5年后最让你崩溃的身体/生活状态（一句话或短描述）：</label>
+    <textarea id="anti1" maxlength="200" placeholder="例：每天靠药活着，走路都费劲……"></textarea>
+    <button class="ai-btn" onclick="suggestAI(1)">AI帮我写得更真实</button>
 
-    <label>5年后身体/健康最惨的样子（具体症状、镜子里的自己）：</label>
-    <textarea id="anti1" maxlength="200" placeholder="例：每天靠止痛药入睡，走几步就喘……"></textarea>
-    <button class="ai-btn" onclick="suggestAI(1)">AI帮我扩展</button>
-
-    <label>关系/亲密最孤独的场景（别人怎么看我，我怎么对待他们）：</label>
+    <label>最孤独/最空虚的一天会是怎样的？（一句话）</label>
     <textarea id="anti2" maxlength="200"></textarea>
-    <button class="ai-btn" onclick="suggestAI(2)">AI帮我扩展</button>
 
-    <label>金钱/生活质量最绝望的状态（收入、焦虑、日常感受）：</label>
-    <textarea id="anti3" maxlength="200"></textarea>
-    <button class="ai-btn" onclick="suggestAI(3)">AI帮我扩展</button>
+    <label>拖延的根源：我在保护的那个“旧我”是什么角色？（一句话）</label>
+    <textarea id="root1" maxlength="120"></textarea>
+    <button class="ai-btn" onclick="suggestAI('root')">AI帮我挖根源</button>
 
-    <label>工作/意义最空虚的一天是怎样的？</label>
-    <textarea id="anti4" maxlength="200"></textarea>
-    <button class="ai-btn" onclick="suggestAI(4)">AI帮我扩展</button>
-
-    <label>一句话浓缩最让你想吐的未来：</label>
-    <textarea id="anti5" maxlength="120" style="font-weight:bold;"></textarea>
-
-    <button class="btn" onclick="markComplete(1)">完成阶段1 →</button>
+    <button class="btn" onclick="completeStage(1)">完成阶段1</button>
   </div>
 
   <div class="section" id="section2" style="display:none;">
-    <h2>2. 挖拖延根源（为什么一直做不到）</h2>
+    <h2>2. 我真正想成为的人</h2>
+    <label>理想的我，每天会自然做的3–5件小事（每条一句话）</label>
+    <textarea id="new1" maxlength="300" placeholder="例：1. 早上先写500字 2. 拒绝无效会议……"></textarea>
 
-    <label>我在保护的旧身份/角色是？（例：受害者、好孩子、没天赋的人）</label>
-    <textarea id="root1" maxlength="100"></textarea>
-    <button class="ai-btn" onclick="suggestAI('root1')">AI帮我挖掘</button>
+    <label>从今天起，我是谁？（写1–3句“我是……”）</label>
+    <textarea id="new2" maxlength="200"></textarea>
+    <button class="ai-btn" onclick="suggestAI('identity')">AI帮我润色宣言</button>
 
-    <label>保持现状的最大“隐形好处”是什么？（安全、免责、同情……）</label>
-    <textarea id="root2" maxlength="100"></textarea>
+    <label>真正想做的一件事（最让你兴奋的那个，1–2句）</label>
+    <textarea id="new3" maxlength="150"></textarea>
 
-    <label>如果真的成功了，我最怕失去什么？（关系、形象、舒适……）</label>
-    <textarea id="root3" maxlength="100"></textarea>
-
-    <label>拖延时最想逃避的情绪/感觉是？</label>
-    <textarea id="root4" maxlength="100"></textarea>
-
-    <button class="btn" onclick="markComplete(2)">完成阶段2 →</button>
+    <button class="btn" onclick="completeStage(2)">完成阶段2</button>
   </div>
 
   <div class="section" id="section3" style="display:none;">
-    <h2>3. 定义新身份（我是谁）</h2>
+    <h2>3. 简单可执行计划</h2>
+    <label>最重要的一件事（1周内必须启动的）：</label>
+    <textarea id="plan1" maxlength="150"></textarea>
 
-    <label>理想版本的我，每天会自然做哪些小事？（列5–8条，简短）</label>
-    <textarea id="new1" maxlength="200" placeholder="例：每天早上先写500字 / 拒绝无效社交……"></textarea>
+    <label>每天最关键的仪式（一句话，早或晚）</label>
+    <textarea id="plan2" maxlength="100"></textarea>
 
-    <label>从今天起，我是谁？（3–4句“我是……”开头）</label>
-    <textarea id="new2" maxlength="200"></textarea>
-    <button class="ai-btn" onclick="suggestAI('new2')">AI帮我润色宣言</button>
+    <label>我会用什么方式逼自己完成？（选一个或写一个）</label>
+    <textarea id="plan3" maxlength="150" placeholder="例：发朋友圈公开承诺 + 没完成捐款50元"></textarea>
 
-    <label>真正想做的事（基于新身份自然会做的，3–5项）</label>
-    <textarea id="new3" maxlength="200"></textarea>
-
-    <button class="btn" onclick="markComplete(3)">完成阶段3 →</button>
+    <button class="btn" onclick="completeStage(3)">完成阶段3</button>
   </div>
 
   <div class="section" id="section4" style="display:none;">
-    <h2>4. 计划 + 强制执行</h2>
+    <h2>已完成！你的重启记录</h2>
+    <p>所有内容已保存在浏览器，可随时回来修改。</p>
 
-    <label>核心3–5个技能/任务（当前等级0–10 + 下一级怎么做）</label>
-    <textarea id="plan1" maxlength="300" placeholder="例：专注写作（当前3）→ 下一级：每天2小时不中断"></textarea>
-
-    <label>短期里程碑（1周内必须完成的一件事）</label>
-    <textarea id="plan2" maxlength="100"></textarea>
-
-    <label>每日仪式（早/晚各一句话）</label>
-    <textarea id="plan3" maxlength="150"></textarea>
-
-    <label>我选择的强制机制（至少选2种，写明怎么执行）</label>
-    <textarea id="plan4" maxlength="200" placeholder="例：公开承诺发朋友圈 + 没完成捐款50元"></textarea>
-
-    <button class="btn" onclick="markComplete(4)">全部完成</button>
-  </div>
-
-  <div class="section" id="section5" style="display:none;">
-    <h2>已完成！下一步</h2>
-    <p>你的重启文档已保存在浏览器，可随时返回编辑。</p>
-    <button class="btn" onclick="copyAll()">复制全部内容</button>
-    <button class="btn" onclick="exportImage()">导出长图保存</button>
+    <button class="btn btn-primary" onclick="copyAll()">一键复制全部内容</button>
+    <button class="btn" onclick="exportImage()">导出为图片保存</button>
     <button class="btn" onclick="saveData()">保存进度</button>
-    <div id="preview" style="margin-top:2em; white-space:pre-wrap; background:#f1f5f9; padding:16px; border-radius:8px;"></div>
+
+    <div id="preview" style="margin-top:2em; background:#f1f5f9; padding:16px; border-radius:8px; white-space:pre-wrap; font-size:0.95em;"></div>
   </div>
 </div>
 
 <script>
+  const stages = 4;
+  let completed = 0;
+
+  function updateProgress() {
+    completed = document.querySelectorAll('.section.completed').length;
+    const percent = Math.round((completed / stages) * 100);
+    document.getElementById('progressBar').style.width = percent + '%';
+    document.getElementById('status').textContent = `进度：${percent}%（已完成${completed}/${stages}阶段）`;
+  }
+
   function start() {
-    if (!document.getElementById('promise').checked || !document.getElementById('todayDate').value) {
-      alert('请填写日期并勾选承诺');
+    if (!document.getElementById('promise').checked) {
+      alert('请先勾选承诺');
       return;
     }
     document.getElementById('section0').style.display = 'none';
     document.getElementById('section1').style.display = 'block';
     scrollTo('section1');
+    saveData(); // 初始保存
   }
 
-  function markComplete(n) {
+  function completeStage(n) {
     document.getElementById(`section${n}`).classList.add('completed');
     const next = n + 1;
-    if (next <= 4) {
+    if (next <= 3 || (next === 4 && !document.getElementById('quickMode').checked)) {
       document.getElementById(`section${next}`).style.display = 'block';
       scrollTo(`section${next}`);
     } else {
-      document.getElementById('section5').style.display = 'block';
-      scrollTo('section5');
+      document.getElementById('section4').style.display = 'block';
+      scrollTo('section4');
       showPreview();
     }
+    updateProgress();
+    saveData();
   }
 
   function scrollTo(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function suggestAI(field) {
-    let prompt;
-    if (typeof field === 'number') {
-      prompt = `请帮我把反向愿景写得更具体、更痛苦（控制在80–100字），基于以下关键词或句子：\n用户输入：${document.getElementById('anti'+field).value || '(空，先帮我想一个最惨的健康/关系场景)'}\n输出一段描述性文字。`;
-    } else if (field === 'root1') {
-      prompt = `帮我挖掘“我在保护的旧身份”是什么，给出3–4种可能角色，并简短解释为什么会导致拖延（每种30字内）。`;
-    } else if (field === 'new2') {
-      prompt = `帮我把“我是谁”宣言润色得更坚定、具体、有力量（3–4句，每句20–40字）。基于用户草稿：${document.getElementById('new2').value || '(空，先给一个通用模板)'}。`;
-    }
-    alert(`复制下面提示词 → 去Claude/GPT/豆包等模型生成，再粘贴回来：\n\n${prompt}`);
+  function suggestAI(type) {
+    let prompt = '';
+    if (type === 1) prompt = `基于用户写的反向愿景草稿，帮我写得更具体、更痛苦（60–100字）：\n${document.getElementById('anti1').value || '(空，先帮我想一个最惨的健康场景)'}`;
+    else if (type === 'root') prompt = `帮我挖掘拖延根源，给出“我在保护的旧身份”最可能的3种角色，并简短解释（每种20–30字）：`;
+    else if (type === 'identity') prompt = `帮我把“我是谁”宣言润色得更坚定、具体、有力量（2–3句，每句20–40字）。用户草稿：${document.getElementById('new2').value || '(空，先给一个通用模板)'}。`;
+
+    alert(`复制下面这段提示词 → 去Claude / GPT / 豆包 等模型生成，再粘贴回来：\n\n${prompt}`);
   }
 
   function showPreview() {
-    let text = `重启日期：${document.getElementById('todayDate').value}\n\n`;
-    text += `1. 反向愿景\n${getValues('anti',1,5)}\n`;
-    text += `2. 根源\n${getValues('root',1,4)}\n`;
-    text += `3. 新身份\n${getValues('new',1,3)}\n`;
-    text += `4. 计划\n${getValues('plan',1,4)}\n`;
-    document.getElementById('preview').textContent = text;
-  }
+    let text = `重启日期：${document.getElementById('todayDate').value || new Date().toLocaleDateString('zh-CN')}\n\n`;
+    text += `1. 反向愿景 & 根源\n${[
+      '最惨状态：' + document.getElementById('anti1').value,
+      '最孤独一天：' + document.getElementById('anti2').value,
+      '保护的旧我：' + document.getElementById('root1').value
+    ].filter(Boolean).join('\n')}\n\n`;
+    text += `2. 新身份\n${[
+      '自然小事：' + document.getElementById('new1').value,
+      '我是谁：' + document.getElementById('new2').value,
+      '真正想做：' + document.getElementById('new3').value
+    ].filter(Boolean).join('\n')}\n\n`;
+    text += `3. 计划\n${[
+      '最重要一件事：' + document.getElementById('plan1').value,
+      '每日仪式：' + document.getElementById('plan2').value,
+      '强制机制：' + document.getElementById('plan3').value
+    ].filter(Boolean).join('\n')}\n\n`;
 
-  function getValues(prefix, start, end) {
-    let s = '';
-    for (let i = start; i <= end; i++) {
-      const val = document.getElementById(prefix + i)?.value.trim();
-      if (val) s += `问题${i}：${val}\n`;
-    }
-    return s || '(未填写)\n';
+    document.getElementById('preview').textContent = text;
   }
 
   function copyAll() {
     const text = document.getElementById('preview').textContent;
-    navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板'));
+    navigator.clipboard.writeText(text).then(() => alert('已复制，可粘贴到笔记/文档'));
   }
 
   function exportImage() {
     html2canvas(document.querySelector('.container'), {scale: 2}).then(canvas => {
       const a = document.createElement('a');
       a.href = canvas.toDataURL('image/png');
-      a.download = '重启工作台-' + new Date().toISOString().slice(0,10) + '.png';
+      a.download = '重启记录-' + new Date().toISOString().slice(0,10) + '.png';
       a.click();
     });
   }
 
   function saveData() {
     const data = {};
-    document.querySelectorAll('textarea, input[type="date"], input[type="checkbox"]').forEach(el => {
+    document.querySelectorAll('input, textarea').forEach(el => {
       data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
     });
-    localStorage.setItem('restartData', JSON.stringify(data));
-    alert('进度已保存');
+    localStorage.setItem('restart2026', JSON.stringify(data));
   }
 
-  // 加载保存的数据
   window.onload = () => {
-    const saved = localStorage.getItem('restartData');
+    const saved = localStorage.getItem('restart2026');
     if (saved) {
       const data = JSON.parse(saved);
-      Object.keys(data).forEach(key => {
-        const el = document.getElementById(key);
+      Object.keys(data).forEach(k => {
+        const el = document.getElementById(k);
         if (el) {
-          if (el.type === 'checkbox') el.checked = data[key];
-          else el.value = data[key];
+          if (el.type === 'checkbox') el.checked = data[k];
+          else el.value = data[k];
         }
       });
-      alert('已恢复上次进度');
+      alert('已恢复上次进度，继续吧');
+      updateProgress();
     }
   };
+
+  // 每2分钟自动保存一次
+  setInterval(saveData, 120000);
 </script>
 </body>
 </html>
