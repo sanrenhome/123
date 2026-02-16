@@ -1,759 +1,334 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>旧我删除协议 · 2026新生代码</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        neon: {
-                            pink: '#FF2E99',
-                            purple: '#9D2EFF',
-                            blue: '#2E86FF',
-                            yellow: '#FFD166',
-                        },
-                        dark: {
-                            900: '#0A0A0F',
-                            800: '#121218',
-                            700: '#1A1A23',
-                            600: '#23232D',
-                        }
-                    },
-                    fontFamily: {
-                        cyber: ['Orbitron', 'sans-serif'],
-                        body: ['Inter', 'sans-serif'],
-                    },
-                    animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        glow: {
-                            '0%': { textShadow: '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF2E99, 0 0 20px #FF2E99' },
-                            '100%': { textShadow: '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF2E99, 0 0 40px #FF2E99' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow-neon {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF2E99, 0 0 20px #FF2E99;
-            }
-            .bg-gradient-neon {
-                background: linear-gradient(135deg, #9D2EFF 0%, #FF2E99 100%);
-            }
-            .border-glow {
-                box-shadow: 0 0 5px #FF2E99, 0 0 10px #FF2E99;
-            }
-            .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-            }
-            .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            .text-stroke {
-                -webkit-text-stroke: 1px #FF2E99;
-            }
-            .text-stroke-white {
-                -webkit-text-stroke: 1px #ffffff;
-            }
-        }
-    </style>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生修复指南 · 2026新生代码</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+body{
+background:radial-gradient(circle at top,#1a002e,#000);
+color:#fff;
+overflow-x:hidden;
+}
+
+.container{
+max-width:480px;
+margin:auto;
+padding:20px;
+}
+
+.page{
+display:none;
+animation:fade 0.6s ease;
+}
+
+.page.active{display:block}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+h1{
+font-size:28px;
+background:linear-gradient(90deg,#ff00cc,#6a00ff);
+-webkit-background-clip:text;
+color:transparent;
+text-shadow:0 0 20px #ff00cc;
+margin-bottom:10px;
+}
+
+.subtitle{
+opacity:.7;
+margin-bottom:20px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#ff00cc,#6a00ff);
+color:#fff;
+font-weight:bold;
+font-size:15px;
+}
+
+input,textarea,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:none;
+background:#111;
+color:#fff;
+}
+
+.option{
+background:#111;
+padding:10px;
+border-radius:8px;
+margin:8px 0;
+cursor:pointer;
+border:1px solid #222;
+}
+
+.option.selected{
+border:1px solid #ff00cc;
+box-shadow:0 0 10px #ff00cc;
+}
+
+.progress{
+height:6px;
+background:#222;
+border-radius:5px;
+margin-bottom:15px;
+}
+
+.progress-bar{
+height:6px;
+background:linear-gradient(90deg,#ff00cc,#6a00ff);
+border-radius:5px;
+width:0%;
+}
+
+#certificate{
+width:100%;
+padding:25px;
+border-radius:20px;
+background:linear-gradient(135deg,#240046,#3c096c,#5a189a);
+text-align:center;
+}
+
+.badge{
+margin-top:10px;
+padding:5px 10px;
+border-radius:20px;
+display:inline-block;
+font-size:12px;
+}
+
+.legendary{background:gold;color:#000}
+.epic{background:#9d4edd}
+.rare{background:#4361ee}
+.common{background:#555}
+
+.watermark{
+margin-top:30px;
+font-size:12px;
+opacity:.5;
+text-align:center;
+}
+</style>
 </head>
-<body class="bg-dark-900 text-white font-body overflow-x-hidden">
-    <!-- 进度条 -->
-    <div id="progressBar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-neon-purple to-neon-pink w-0 z-50 transition-all duration-500"></div>
-    
-    <!-- 页面容器 -->
-    <div id="app" class="flex flex-col h-screen overflow-hidden">
-        <!-- 页面1: 开场页 -->
-        <div id="page1" class="page flex-1 flex flex-col justify-center items-center p-6 transition-all duration-500">
-            <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                <div id="stars" class="absolute inset-0"></div>
-            </div>
-            
-            <div class="z-10 text-center max-w-md">
-                <h1 class="font-cyber text-[clamp(2rem,8vw,3.5rem)] font-bold mb-4 animate-glow text-white">
-                    旧我删除协议
-                </h1>
-                <p class="text-neon-pink font-cyber text-[clamp(1.2rem,4vw,1.8rem)] mb-6">
-                    · 2026新生代码 ·
-                </p>
-                <p class="text-gray-300 mb-8 text-lg">
-                    "敢玩的人都不简单"
-                </p>
-                <p class="text-gray-400 mb-10">
-                    这不是测试，这是<span class="text-neon-pink font-bold">身份格式化程序</span><br>
-                    5分钟，删除旧我，生成全新身份代码
-                </p>
-                
-                <div class="mb-8">
-                    <input type="text" id="nickname" placeholder="留下你的代号（可选）" 
-                           class="w-full bg-dark-700 border border-neon-purple/30 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-neon-pink focus:border-glow transition-all">
-                </div>
-                
-                <button id="toPage2" class="bg-gradient-neon hover:opacity-90 text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-neon-pink/30">
-                    启动格式化程序
-                </button>
-            </div>
-        </div>
-        
-        <!-- 页面2: 反向愿景页 -->
-        <div id="page2" class="page hidden flex-1 overflow-y-auto p-6 scrollbar-hide">
-            <div class="max-w-md mx-auto">
-                <div class="mb-8">
-                    <a href="#" id="backToPage1" class="text-neon-pink hover:text-white transition-colors mb-4 inline-flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        返回
-                    </a>
-                    
-                    <h2 class="font-cyber text-[clamp(1.5rem,5vw,2.5rem)] font-bold mb-4 text-white">
-                        反向愿景
-                    </h2>
-                    <p class="text-gray-400 mb-6">
-                        选择3-5个你<span class="text-neon-pink font-bold">最恐惧成为的样子</span>
-                    </p>
-                </div>
-                
-                <div id="fearsList" class="space-y-3 mb-8">
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">30年后依然在做自己不喜欢的工作</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">为了稳定放弃所有梦想</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">变成自己曾经讨厌的那种人</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">被房贷和车贷困住一生</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">看着同龄人成功而自己一事无成</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">在临死前后悔没有真正活过</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">为了迎合他人而失去自我</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">每天重复着毫无意义的生活</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">因为害怕失败而不敢尝试任何新事物</span>
-                    </label>
-                    
-                    <label class="flex items-start p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-neon-purple/50 cursor-pointer transition-all group">
-                        <input type="checkbox" class="mt-1 text-neon-pink focus:ring-neon-purple h-5 w-5">
-                        <span class="ml-3 text-gray-300 group-hover:text-white">被社交媒体和他人的生活标准绑架</span>
-                    </label>
-                </div>
-                
-                <div class="mb-8">
-                    <label class="block text-gray-300 mb-2">最扎心总结（50字内）</label>
-                    <textarea id="coreFear" rows="2" placeholder>"我最害怕的是..." 
-"我最恐惧的未来是..."
-"我绝不能成为..."
-"如果我继续这样，我会..."
-"我的生活正在走向..."
-"我内心深处的恐惧是..."
-"我必须避免的结局是..."
-"我无法接受的自己是..."
-"我不想重蹈覆辙的是..."
-"我最想逃离的命运是..."
-"我的人生预警信号是..."
-"我不能再忽视的真相是..."
-"我的舒适区正在毁掉我..."
-"我必须打破的循环是..."
-"我需要立即改变的是..."
-"我的未来取决于现在的选择..."
-"我不能再拖延的原因是..."
-"我必须面对的现实是..."
-"我需要勇气去改变的是..."
-"我的人生转折点现在开始..."
-"我不再害怕面对真相..."
-"我选择拥抱改变和成长..."
-"我相信自己可以创造新的未来..."
-"我不再被过去的恐惧束缚..."
-"我选择成为自己想成为的人..."
-"我的未来由我自己定义..."
-"我有能力改变自己的命运..."
-"我不再让恐惧控制我的生活..."
-"我选择勇敢地追求自己的梦想..."
-"我相信每一次尝试都是成长的机会..."
-"我不再害怕失败，因为失败是成功的一部分..."
-"我选择积极面对生活中的挑战..."
-"我相信自己的潜力是无限的..."
-"我不再被他人的期望左右..."
-"我选择为自己的人生负责..."
-"我相信改变永远不会太晚..."
-"我选择每天进步一点点..."
-"我相信坚持和努力会带来回报..."
-"我不再找借口，而是寻找解决办法..."
-"我选择专注于自己的目标..."
-"我相信自己可以克服任何困难..."
-"我选择保持积极的心态..."
-"我相信每一个小步骤都会带来大改变..."
-"我不再害怕未知，因为未知是成长的机会..."
-"我选择相信自己的直觉..."
-"我相信自己的价值不取决于他人的认可..."
-"我选择放下过去，拥抱未来..."
-"我相信自己值得拥有美好的生活..."
-"我选择珍惜每一个当下..."
-"我相信自己可以创造自己想要的生活..."
-"我不再让恐惧阻止我前进..."
-"我选择勇敢地迈出第一步..."
-"我相信自己的能力和智慧..."
-"我选择对自己有耐心和同情心..."
-"我相信成长是一个持续的过程..."
-"我不再比较自己和他人..."
-"我选择专注于自己的旅程..."
-"我相信每一次经历都是学习的机会..."
-"我选择接受自己的不完美..."
-"我相信自己可以变得更好..."
-"我选择原谅自己的过去..."
-"我相信自己有能力实现自己的目标..."
-"我选择保持开放的心态..."
-"我相信变化是生活的一部分..."
-"我选择适应变化，而不是抗拒它..."
-"我相信自己可以从每一个挑战中学习..."
-"我选择保持好奇心和求知欲..."
-"我相信自己可以不断成长和进步..."
-"我不再害怕表达自己的真实想法..."
-"我选择做真实的自己..."
-"我相信自己的声音有价值..."
-"我选择建立健康的边界..."
-"我相信自己值得被尊重和爱..."
-"我选择照顾好自己的身心健康..."
-"我相信自我关爱是成长的基础..."
-"我选择设定清晰的目标..."
-"我相信自己可以实现这些目标..."
-"我选择采取行动，而不是仅仅思考..."
-"我相信行动是实现梦想的关键..."
-"我选择保持专注和自律..."
-"我相信自律是自由的基础..."
-"我选择培养积极的习惯..."
-"我相信习惯塑造性格，性格决定命运..."
-"我选择保持感恩的心态..."
-"我相信感恩可以带来更多的幸福..."
-"我选择与积极的人为伍..."
-"我相信环境对成长有重要影响..."
-"我选择不断学习和提升自己..."
-"我相信知识和技能是成长的工具..."
-"我选择面对自己的恐惧..."
-"我相信勇气不是没有恐惧，而是尽管恐惧仍然前进..."
-"我选择接受挑战，而不是逃避它们..."
-"我相信挑战是成长的机会..."
-"我选择保持坚韧不拔的精神..."
-"我相信坚持可以克服一切困难..."
-"我选择相信自己的直觉和判断力..."
-"我相信自己可以做出正确的决策..."
-"我选择对自己的人生负责..."
-"我相信自己是自己人生的创造者..."
-"我选择保持乐观的态度..."
-"我相信乐观可以吸引积极的结果..."
-"我选择放下过去的遗憾..."
-"我相信过去的经历是成长的教训，而不是负担..."
-"我选择活在当下..."
-"我相信当下是唯一真实的时刻..."
-"我选择珍惜时间..."
-"我相信时间是最宝贵的资源..."
-"我选择投资自己..."
-"我相信自我投资是最有价值的投资..."
-"我选择保持健康的生活方式..."
-"我相信健康是幸福的基础..."
-"我选择培养良好的人际关系..."
-"我相信人际关系是生活的重要组成部分..."
-"我选择表达自己的情感..."
-"我相信情感表达是健康的表现..."
-"我选择寻求帮助和支持..."
-"我相信没有人可以独自成功..."
-"我选择保持谦逊的态度..."
-"我相信谦逊是智慧的标志..."
-"我选择保持开放的心态..."
-"我相信开放的心态可以带来新的机会..."
-"我选择保持好奇心..."
-"我相信好奇心是学习的动力..."
-"我选择保持创造力..."
-"我相信创造力是解决问题的关键..."
-"我选择保持灵活性..."
-"我相信灵活性是适应变化的能力..."
-"我选择保持责任感..."
-"我相信责任感是成熟的标志..."
-"我选择保持诚实和正直..."
-"我相信诚实和正直是信任的基础..."
-"我选择保持宽容和理解..."
-"我相信宽容和理解可以建立良好的关系..."
-"我选择保持耐心..."
-"我相信耐心是成功的关键..."
-"我选择保持毅力..."
-"我相信毅力可以克服一切障碍..."
-"我选择保持自信..."
-"我相信自信是成功的基石..."
-"我选择保持自我意识..."
-"我相信自我意识是成长的起点..."
-"我选择保持自我反思..."
-"我相信自我反思是成长的关键..."
-"我选择保持自我激励..."
-"我相信自我激励是实现目标的动力..."
-"我选择保持自我约束..."
-"我相信自我约束是实现目标的必要条件..."
-"我选择保持自我关爱..."
-"我相信自我关爱是成长的基础..."
-"我选择保持自我接纳..."
-"我相信自我接纳是幸福的关键..."
-"我选择保持自我成长..."
-"我相信自我成长是一生的旅程..."
-"我选择保持自我实现..."
-"我相信自我实现是人生的最高目标..."
-"我选择保持平衡..."
-"我相信平衡是幸福的关键..."
-"我选择保持和谐..."
-"我相信和谐是生活的理想状态..."
-"我选择保持内心的平静..."
-"我相信内心的平静是幸福的源泉..."
-"我选择保持感恩的心态..."
-"我相信感恩可以带来更多的幸福..."
-"我选择保持积极的心态..."
-"我相信积极的心态可以吸引积极的结果..."
-"我选择保持乐观的态度..."
-"我相信乐观的态度可以克服困难..."
-"我选择保持希望..."
-"我相信希望是生活的动力..."
-"我选择保持信仰..."
-"我相信信仰可以给予力量..."
-"我选择保持爱..."
-"我相信爱是生活的意义..."
-"我选择保持善良..."
-"我相信善良可以改变世界..."
-"我选择保持同情心..."
-"我相信同情心可以建立连接..."
-"我选择保持同理心..."
-"我相信同理心可以促进理解..."
-"我选择保持尊重..."
-"我相信尊重是良好关系的基础..."
-"我选择保持包容..."
-"我相信包容可以创造和谐..."
-"我选择保持公正..."
-"我相信公正是社会的基石..."
-"我选择保持勇气..."
-"我相信勇气是面对恐惧的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是克服困难的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义..."
-"我选择保持满足..."
-"我相信满足是内心的平静..."
-"我选择保持宁静..."
-"我相信宁静是心灵的归宿..."
-"我选择保持和平..."
-"我相信和平是世界的理想..."
-"我选择保持自由..."
-"我相信自由是人类的追求..."
-"我选择保持平等..."
-"我相信平等是社会的基础..."
-"我选择保持正义..."
-"我相信正义是社会的良知..."
-"我选择保持真理..."
-"我相信真理是知识的基础..."
-"我选择保持诚实..."
-"我相信诚实是信任的基础..."
-"我选择保持正直..."
-"我相信正直是品格的核心..."
-"我选择保持勇气..."
-"我相信勇气是行动的力量..."
-"我选择保持坚韧..."
-"我相信坚韧是成功的关键..."
-"我选择保持智慧..."
-"我相信智慧是生活的指南..."
-"我选择保持知识..."
-"我相信知识是力量..."
-"我选择保持学习..."
-"我相信学习是成长的途径..."
-"我选择保持创新..."
-"我相信创新是进步的动力..."
-"我选择保持创造..."
-"我相信创造是表达自我的方式..."
-"我选择保持艺术..."
-"我相信艺术是生活的升华..."
-"我选择保持美..."
-"我相信美是生活的享受..."
-"我选择保持快乐..."
-"我相信快乐是生活的目标..."
-"我选择保持幸福..."
-"我相信幸福是生活的意义
+
+<body>
+<div class="container">
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- 1 开场 -->
+<div class="page active" id="page1">
+<h1>人生修复指南 · 2026新生代码</h1>
+<p class="subtitle">如果你敢直视自己的失败，你就已经比90%的人强。</p>
+<p style="margin:10px 0;">敢玩的人，都不简单。</p>
+<input id="nickname" placeholder="输入你的昵称（选填）">
+<button onclick="nextPage()">开始重启</button>
+</div>
+
+<!-- 2 反向愿景 -->
+<div class="page" id="page2">
+<h1>先看清你正在走向什么</h1>
+<p class="subtitle">选择最扎心的</p>
+
+<div id="painOptions"></div>
+
+<textarea id="painSummary" maxlength="50" placeholder="一句话总结你最害怕的人生（50字内）"></textarea>
+
+<button onclick="showAIPrompt()">AI辅助</button>
+<button onclick="nextPage()">继续</button>
+</div>
+
+<!-- 3 新身份代码 -->
+<div class="page" id="page3">
+<h1>选择你的新身份维度</h1>
+<div id="identityOptions"></div>
+<button onclick="generateCode()">生成我的新生代码</button>
+<div id="codeResult" style="margin-top:20px"></div>
+<button onclick="nextPage()">继续</button>
+</div>
+
+<!-- 4 计划页 -->
+<div class="page" id="page4">
+<h1>简单行动计划</h1>
+<input id="goal" placeholder="你真正想做的事">
+<input id="daily" placeholder="每日最小行动仪式">
+<input id="force" placeholder="强制机制（公开/金钱/打卡）">
+<button onclick="nextPage()">完成计划</button>
+</div>
+
+<!-- 5 证书 -->
+<div class="page" id="page5">
+<div id="certificate">
+<h2 id="certName"></h2>
+<h1 id="certCode"></h1>
+<div id="certBadge"></div>
+<p id="certTags"></p>
+</div>
+
+<select id="copyText">
+<option value="温柔">温柔版</option>
+<option value="狠">狠人版</option>
+<option value="凡尔赛">凡尔赛版</option>
+</select>
+
+<button onclick="exportImage()">导出证书</button>
+<button onclick="copyShare()">复制分享文案</button>
+</div>
+
+<!-- 6 结尾 -->
+<div class="page" id="page6">
+<h1>2026 新生已激活</h1>
+<p>分享你的新生代码，让更多人重启。</p>
+<div class="watermark">
+人生修复指南 · 新生代码<br>
+挑战入口：你的域名.com
+</div>
+</div>
+
+</div>
+
+<script>
+let currentPage=1
+const totalPages=6
+const progressBar=document.getElementById("progressBar")
+
+function nextPage(){
+if(currentPage<totalPages){
+document.getElementById("page"+currentPage).classList.remove("active")
+currentPage++
+document.getElementById("page"+currentPage).classList.add("active")
+progressBar.style.width=(currentPage-1)/(totalPages-1)*100+"%"
+if(currentPage==5){
+createCertificate()
+confetti()
+}
+}
+localStorage.setItem("lifeData",JSON.stringify(getData()))
+}
+
+function confetti(){
+confetti({particleCount:200,spread:100})
+}
+
+const pains=[
+"30岁还在为钱焦虑",
+"刷短视频到深夜",
+"对梦想越来越沉默",
+"假装很忙其实没产出",
+"羡慕别人却不行动",
+"害怕被评价",
+"拖延到自我厌恶",
+"稳定但毫无激情",
+"明明不差却没突破",
+"日子过得越来越快"
+]
+
+const painDiv=document.getElementById("painOptions")
+pains.forEach(text=>{
+let div=document.createElement("div")
+div.className="option"
+div.innerText=text
+div.onclick=()=>div.classList.toggle("selected")
+painDiv.appendChild(div)
+})
+
+function showAIPrompt(){
+alert("复制到AI：\n我最害怕的人生是："+document.getElementById("painSummary").value+"\n帮我分析我在逃避什么旧身份。")
+}
+
+const identities={
+觉醒:["A","B","C"],
+创造:["D","E","F"],
+价值:["G","H","I"],
+扩展:["J","K","L"]
+}
+
+const idDiv=document.getElementById("identityOptions")
+Object.keys(identities).forEach(key=>{
+let select=document.createElement("select")
+identities[key].forEach(v=>{
+let op=document.createElement("option")
+op.value=v
+op.innerText=key+"-"+v
+select.appendChild(op)
+})
+idDiv.appendChild(select)
+})
+
+let generatedCode=""
+let rarity=""
+
+function generateCode(){
+let selects=idDiv.querySelectorAll("select")
+generatedCode=""
+selects.forEach(s=>generatedCode+=s.value)
+let rand=Math.random()
+if(rand<0.05){rarity="传说";className="legendary"}
+else if(rand<0.25){rarity="史诗";className="epic"}
+else if(rand<0.6){rarity="稀有";className="rare"}
+else{rarity="觉醒";className="common"}
+document.getElementById("codeResult").innerHTML="代码："+generatedCode+"<br>稀有度："+rarity
+}
+
+function getData(){
+return{
+nickname:document.getElementById("nickname").value,
+code:generatedCode,
+rarity:rarity
+}
+}
+
+function createCertificate(){
+let data=getData()
+document.getElementById("certName").innerText=(data.nickname||"匿名")+" · 新生代码"
+document.getElementById("certCode").innerText=data.code
+let badge=document.getElementById("certBadge")
+badge.innerText=data.rarity
+badge.className="badge "+(data.rarity=="传说"?"legendary":data.rarity=="史诗"?"epic":data.rarity=="稀有"?"rare":"common")
+document.getElementById("certTags").innerText="2026 · 身份升级完成"
+}
+
+function exportImage(){
+html2canvas(document.getElementById("certificate")).then(canvas=>{
+let link=document.createElement("a")
+link.download="新生代码.png"
+link.href=canvas.toDataURL()
+link.click()
+})
+}
+
+function copyShare(){
+let type=document.getElementById("copyText").value
+let text=""
+if(type=="温柔"){
+text="我给自己做了一次人生修复，拿到了新生代码："+generatedCode+"。"
+}
+if(type=="狠"){
+text="旧的我已清除。新身份代码："+generatedCode+"。敢挑战吗？"
+}
+if(type=="凡尔赛"){
+text="随手测了下，居然是"+rarity+"级新生代码："+generatedCode+"。"
+}
+navigator.clipboard.writeText(text)
+alert("已复制")
+}
+</script>
+</body>
+</html>
