@@ -1,155 +1,240 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Life Reset System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>一天重启人生 - 旧我删除协议</title>
+  <!-- html2canvas 用于生成图片证书 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f0f1a;
+      color: #e0e0ff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-<style>
-body{
-    margin:0;
-    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(180deg,#0b0f1a,#000000);
-    color:#e6f1ff;
-    text-align:center;
-}
+    #app {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
 
-.container{
-    padding:60px 20px;
-    max-width:800px;
-    margin:auto;
-}
+    .card {
+      background: rgba(20, 20, 40, 0.9);
+      border-radius: 16px;
+      padding: 32px 24px;
+      margin: 20px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 1px solid #333366;
+      display: none;
+      text-align: center;
+    }
 
-h1{
-    font-size:48px;
-    font-weight:600;
-    line-height:1.3;
-}
+    .card.active {
+      display: block;
+    }
 
-.subtitle{
-    opacity:0.6;
-    margin-top:20px;
-}
+    h1, h2 {
+      color: #a78bfa;
+      margin-bottom: 20px;
+    }
 
-button{
-    margin-top:40px;
-    padding:14px 30px;
-    border-radius:30px;
-    border:1px solid #2f80ed;
-    background:transparent;
-    color:#2f80ed;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
-}
+    .lead {
+      font-size: 1.3em;
+      margin: 16px 0;
+    }
 
-button:hover{
-    background:#2f80ed;
-    color:black;
-}
+    .warning {
+      color: #ff6b6b;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin: 24px 0;
+    }
 
-.hidden{
-    display:none;
-}
+    textarea, input {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #1a1a2e;
+      color: white;
+      font-size: 1em;
+      min-height: 60px;
+      box-sizing: border-box;
+    }
 
-.panel{
-    margin-top:60px;
-    padding:30px;
-    border-radius:15px;
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(15px);
-}
+    button {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      font-size: 1.1em;
+      border-radius: 50px;
+      margin-top: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(124,58,237,0.4);
+    }
 
-input{
-    margin-top:20px;
-    padding:12px;
-    width:80%;
-    border-radius:10px;
-    border:none;
-    font-size:16px;
-}
+    button:hover {
+      transform: scale(1.05);
+    }
 
-#timer{
-    font-size:28px;
-    margin-top:20px;
-    color:#2f80ed;
-}
-</style>
+    #certificate {
+      background: linear-gradient(135deg, #1e1e3f, #2a1a4a);
+      padding: 30px;
+      border-radius: 16px;
+      border: 3px dashed #a78bfa;
+      margin: 20px 0;
+    }
+
+    #cert-name, #cert-date, #cert-slogan {
+      font-size: 1.4em;
+      margin: 12px 0;
+      color: #e0e0ff;
+    }
+
+    .watermark {
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 30px;
+    }
+
+    .skill {
+      margin: 16px 0;
+      text-align: left;
+    }
+
+    .skill label {
+      display: block;
+      margin-bottom: 6px;
+      color: #c4b5fd;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
+<div id="app">
+  <!-- 页面1: 开场警告 -->
+  <div class="card active" id="page1">
+    <h1>旧我删除协议</h1>
+    <p class="lead">大多数人看到这句话就会关掉：</p>
+    <p>你不是缺乏自律，<br>你只是在拼命保护那个你讨厌的旧身份。</p>
+    <p class="warning">你敢花20分钟，彻底看清自己最恐惧的未来吗？</p>
+    <button onclick="nextPage(2)">我敢 → 开始重启</button>
+  </div>
 
-<h1>
-LIFE RESET<br>
-SYSTEM v1.0
-</h1>
+  <!-- 页面2: 反向愿景（最狠的部分） -->
+  <div class="card" id="page2">
+    <h2>第一步：反向愿景（Anti-Vision）</h2>
+    <p>写出你继续现在的生活，5年后最惨、最恶心、最让你崩溃的样子。<br>越具体越痛越好，不要骗自己。</p>
+    
+    <textarea id="anti1" placeholder="5年后你最常说的一句话是？（例：早知道当时就...）"></textarea>
+    <textarea id="anti2" placeholder="你最怕每天醒来面对的生活场景是？"></textarea>
+    <textarea id="anti3" placeholder="你在保护的那个“loser身份”具体是什么？（例：永远的受害者、没人在乎的失败者）"></textarea>
+    <textarea id="anti4" placeholder="把上面浓缩成一句最扎心的总结：我绝不允许自己变成……"></textarea>
+    
+    <button onclick="nextPage(3)">写完了，继续</button>
+  </div>
 
-<p class="subtitle">
-你不是失败。你只是没有重新启动。
-</p>
+  <!-- 页面3: 正向身份声明 -->
+  <div class="card" id="page3">
+    <h2>第二步：新身份宣言</h2>
+    <p>现在，写下你真正想成为的那个人。</p>
+    
+    <input type="text" id="name" placeholder="你的昵称 / 新名字" />
+    <textarea id="vision" placeholder="5年后理想的你，每天醒来是什么状态？具体描述"></textarea>
+    <textarea id="identity" placeholder="从今天起，我是谁？（例：我是专注创造价值的人，我是掌控自己人生的人）"></textarea>
+    
+    <button onclick="nextPage(4)">写好了，生成技能树</button>
+  </div>
 
-<button onclick="startSystem()">启动系统</button>
+  <!-- 页面4: 简单技能树 -->
+  <div class="card" id="page4">
+    <h2>第三步：人生技能树（游戏化）</h2>
+    <p>把你的目标拆成4个主技能，现在给每个打当前等级（0-10）。</p>
+    
+    <div class="skill">
+      <label>技能1（例：搞钱/创作/健康）</label>
+      <input type="number" min="0" max="10" value="0" id="skill1"/>
+    </div>
+    <div class="skill">
+      <label>技能2</label>
+      <input type="number" min="0" max="10" value="0" id="skill2"/>
+    </div>
+    <div class="skill">
+      <label>技能3</label>
+      <input type="number" min="0" max="10" value="0" id="skill3"/>
+    </div>
+    <div class="skill">
+      <label>技能4（最想爆发的那个）</label>
+      <input type="number" min="0" max="10" value="0" id="skill4"/>
+    </div>
+    
+    <button onclick="nextPage(5)">升级路线想好了 → 生成证书</button>
+  </div>
 
-<div id="systemPanel" class="panel hidden">
-
-<h2>24小时重启倒计时</h2>
-<div id="timer">24:00:00</div>
-
-<h3 style="margin-top:40px;">输入你当前最大的困扰</h3>
-<input id="userInput" placeholder="例如：焦虑 / 拖延 / 迷茫">
-<br>
-<button onclick="generateResponse()">生成重启指令</button>
-
-<div id="response" style="margin-top:40px;font-size:20px;"></div>
-
-</div>
-
+  <!-- 页面5: 证书生成页 -->
+  <div class="card" id="page5">
+    <h2>重启完成！</h2>
+    <div id="certificate">
+      <h3>旧我删除协议 · 生效</h3>
+      <p id="cert-name">新身份：待填写</p>
+      <p id="cert-date">重启日期：待生成</p>
+      <p id="cert-slogan">从今天起，我拒绝保护那个loser身份</p>
+      <p class="watermark">由「一天重启人生」生成 分享给朋友圈见证</p>
+    </div>
+    
+    <button onclick="generateImage()">长按保存证书（或截图）</button>
+    <button onclick="restart()">再来一次重启</button>
+  </div>
 </div>
 
 <script>
-let countdown;
-let totalSeconds = 86400;
+  let currentPage = 1;
 
-function startSystem(){
-    document.getElementById("systemPanel").classList.remove("hidden");
-    document.getElementById("systemPanel").scrollIntoView({behavior:"smooth"});
-    startTimer();
-}
-
-function startTimer(){
-    countdown = setInterval(function(){
-        totalSeconds--;
-        let hours = Math.floor(totalSeconds/3600);
-        let minutes = Math.floor((totalSeconds%3600)/60);
-        let seconds = totalSeconds%60;
-        document.getElementById("timer").innerText =
-            String(hours).padStart(2,'0') + ":" +
-            String(minutes).padStart(2,'0') + ":" +
-            String(seconds).padStart(2,'0');
-        if(totalSeconds<=0){
-            clearInterval(countdown);
-        }
-    },1000);
-}
-
-function generateResponse(){
-    let input = document.getElementById("userInput").value;
-    let response = "";
-
-    if(input.includes("焦虑")){
-        response = "系统指令：减少输入。停止过度思考。行动优先。";
-    } else if(input.includes("拖延")){
-        response = "系统指令：缩小任务。5分钟开始。立即执行。";
-    } else if(input.includes("迷茫")){
-        response = "系统指令：写下一个方向。执行7天。再评估。";
-    } else {
-        response = "系统指令：重建秩序。从最小行动开始。";
+  function nextPage(n) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    document.getElementById(`page${n}`).classList.add('active');
+    currentPage = n;
+    
+    // 到证书页时填充数据
+    if (n === 5) {
+      const name = document.getElementById('name').value.trim() || "新身份觉醒者";
+      const date = new Date().toLocaleDateString('zh-CN');
+      
+      document.getElementById('cert-name').textContent = `新身份：${name}`;
+      document.getElementById('cert-date').textContent = `重启日期：${date}`;
     }
+  }
 
-    document.getElementById("response").innerText = response;
-}
+  function generateImage() {
+    const cert = document.getElementById('certificate');
+    html2canvas(cert, {scale: 2}).then(canvas => {
+      const link = document.createElement('a');
+      link.download = '重启证书.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      alert('证书已生成！长按图片保存，或直接分享朋友圈见证你的重启！');
+    }).catch(err => {
+      alert('生成图片失败：' + err.message + '\n请尝试截屏或换浏览器');
+    });
+  }
+
+  function restart() {
+    // 清空输入
+    document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+    nextPage(1);
+  }
+
+  // 启动第一页
+  nextPage(1);
 </script>
 
 </body>
