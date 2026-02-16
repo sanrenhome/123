@@ -3,340 +3,281 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>一天人生重启工作台 - 基于Dan Koe协议</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <title>一天人生重启工作台 - 精简深度版</title>
   <style>
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #f8f9fa;
-      color: #1a1a1a;
+      font-family: system-ui, sans-serif;
+      background: #f9fafb;
+      color: #111827;
       line-height: 1.7;
       margin: 0;
       padding: 20px;
     }
     .container {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
     }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 0.8em;
-    }
+    h1 { text-align: center; color: #1e40af; margin-bottom: 0.5em; }
     h2 {
-      color: #34495e;
-      border-left: 5px solid #3498db;
+      color: #1e40af;
+      border-left: 5px solid #3b82f6;
       padding-left: 12px;
       margin: 2.5em 0 1em;
     }
-    .warning {
-      background: #fff3cd;
-      border: 1px solid #ffeeba;
-      color: #856404;
-      padding: 16px;
-      border-radius: 8px;
-      margin: 1.5em 0;
-    }
     .section {
       background: white;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
       padding: 24px;
       margin-bottom: 2em;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
     label {
       display: block;
-      margin: 1.2em 0 0.4em;
+      margin: 1.4em 0 0.5em;
       font-weight: 600;
-      color: #495057;
+      color: #374151;
     }
     textarea {
       width: 100%;
-      min-height: 140px;
+      min-height: 90px;
       padding: 12px;
-      border: 1px solid #ced4da;
-      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
       font-size: 1.05em;
-      line-height: 1.6;
       resize: vertical;
     }
-    .checkbox-group {
-      margin: 1.2em 0;
+    .tip {
+      font-size: 0.9em;
+      color: #6b7280;
+      margin-top: 0.3em;
     }
+    .ai-btn {
+      background: #e0f2fe;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .ai-btn:hover { background: #dbeafe; }
     .btn {
-      display: inline-block;
-      background: #3498db;
+      background: #3b82f6;
       color: white;
       border: none;
-      padding: 12px 24px;
-      border-radius: 6px;
-      font-size: 1.1em;
-      cursor: pointer;
-      margin: 1em 0.8em 0.4em 0;
-      transition: background 0.2s;
-    }
-    .btn:hover { background: #2980b9; }
-    .btn-save { background: #27ae60; }
-    .btn-save:hover { background: #219653; }
-    .btn-export { background: #8e44ad; }
-    .btn-export:hover { background: #7d3c98; }
-    .completed {
-      background: #e8f5e9 !important;
-      border-color: #a5d6a7;
-    }
-    .completed h2 { border-left-color: #27ae60; }
-    #exportPreview {
-      margin-top: 2em;
-      padding: 20px;
-      background: #f8f9fa;
-      border: 1px dashed #aaa;
+      padding: 12px 28px;
       border-radius: 8px;
-      white-space: pre-wrap;
+      font-size: 1.05em;
+      cursor: pointer;
+      margin: 1.5em 1em 0.5em 0;
     }
-    .tips {
-      font-size: 0.95em;
-      color: #6c757d;
-      margin-top: 1.5em;
-    }
+    .btn:hover { background: #2563eb; }
+    .completed { background: #ecfdf5 !important; border-color: #a7f3d0; }
+    .completed h2 { border-left-color: #10b981; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>一天人生重启工作台</h1>
-  <p style="text-align:center; color:#6c757d; margin-bottom:3em;">
-    基于 Dan Koe 《How to Fix Your Entire Life in 1 Day》<br>
-    这不是测试工具，而是一个需要专注一整天的自我重启协议。
+  <h1>一天人生重启工作台（精简深度版）</h1>
+  <p style="text-align:center; color:#6b7280; margin-bottom:2em;">
+    基于Dan Koe协议 · 每题控制在100字以内 · 支持AI辅助
   </p>
 
-  <div class="warning">
-    <strong>重要提醒：</strong><br>
-    • 请找一个安静、无干扰的环境<br>
-    • 建议关闭手机通知，真正花4–8小时深度自省<br>
-    • 写得越具体、越痛苦、越诚实，效果越好<br>
-    • 完成后可导出保存，每周复盘一次
-  </div>
-
-  <!-- 阶段 0: 承诺 -->
   <div class="section" id="section0">
-    <h2>0. 承诺与开始</h2>
-    <p>今天是 <input type="date" id="todayDate" required> </p>
-    
-    <div class="checkbox-group">
-      <label>
-        <input type="checkbox" id="promise">
-        我承诺今天抽出至少4–8小时，诚实面对自己，完成这个重启过程。
-      </label>
-    </div>
-
-    <button class="btn" onclick="if(document.getElementById('promise').checked && document.getElementById('todayDate').value) startProcess(); else alert('请先填写日期并勾选承诺');">
-      我已准备好，开始重启
-    </button>
+    <h2>0. 开始前承诺</h2>
+    <p>今天日期：<input type="date" id="todayDate" required></p>
+    <label>
+      <input type="checkbox" id="promise"> 我承诺认真完成每个问题（每题≤100字），今天至少花2–4小时。
+    </label>
+    <button class="btn" onclick="start()">我已准备好，开始</button>
   </div>
 
-  <!-- 阶段 1 -->
   <div class="section" id="section1" style="display:none;">
-    <h2>1. 反向愿景 + 拖延根源挖掘（上午重点）</h2>
-    <p class="tips">先写出不改变会走向的未来，越具体越残酷越好。目的是制造“继续这样活下去比改变更痛苦”的认知。</p>
+    <h2>1. 看见不想成为的未来（反向愿景）</h2>
+    <p class="tip">每题写出最真实、最痛的一面，控制在100字内。</p>
 
-    <label>5–10年后最惨的身体/健康状态（具体症状、镜子里的样子、活动能力）：</label>
-    <textarea id="anti-health"></textarea>
+    <label>5年后身体/健康最惨的样子（具体症状、镜子里的自己）：</label>
+    <textarea id="anti1" maxlength="200" placeholder="例：每天靠止痛药入睡，走几步就喘……"></textarea>
+    <button class="ai-btn" onclick="suggestAI(1)">AI帮我扩展</button>
 
-    <label>关系/亲密：最亲近的人会怎么看我？我会如何对待他们？我会孤独到什么程度？</label>
-    <textarea id="anti-relation"></textarea>
+    <label>关系/亲密最孤独的场景（别人怎么看我，我怎么对待他们）：</label>
+    <textarea id="anti2" maxlength="200"></textarea>
+    <button class="ai-btn" onclick="suggestAI(2)">AI帮我扩展</button>
 
-    <label>金钱/物质：收入、生活质量、财务焦虑会到什么地步？</label>
-    <textarea id="anti-money"></textarea>
+    <label>金钱/生活质量最绝望的状态（收入、焦虑、日常感受）：</label>
+    <textarea id="anti3" maxlength="200"></textarea>
+    <button class="ai-btn" onclick="suggestAI(3)">AI帮我扩展</button>
 
-    <label>工作/意义：每天大部分时间在做什么？成就感为零的感觉？</label>
-    <textarea id="anti-work"></textarea>
+    <label>工作/意义最空虚的一天是怎样的？</label>
+    <textarea id="anti4" maxlength="200"></textarea>
+    <button class="ai-btn" onclick="suggestAI(4)">AI帮我扩展</button>
 
-    <label>自我感受：最讨厌的自我对话、最常用来安慰自己的借口？</label>
-    <textarea id="anti-self"></textarea>
+    <label>一句话浓缩最让你想吐的未来：</label>
+    <textarea id="anti5" maxlength="120" style="font-weight:bold;"></textarea>
 
-    <label>浓缩总结：一句话最扎心、最让我想吐的未来描述</label>
-    <textarea id="anti-summary" style="font-weight:bold;"></textarea>
-
-    <h3>拖延根源（为什么我一直做不到？）</h3>
-    <label>我在保护哪个旧身份/角色？（受害者、完美主义者、没天赋的人……）</label>
-    <textarea id="root-identity"></textarea>
-
-    <label>保持现状的最大“好处”是什么？（安全感、免于失败、被同情……）</label>
-    <textarea id="root-benefit"></textarea>
-
-    <label>如果我真的成功了，最怕失去什么？</label>
-    <textarea id="root-fear-lose"></textarea>
-
-    <label>拖延时大脑在回避的真正情绪是什么？</label>
-    <textarea id="root-emotion"></textarea>
-
-    <button class="btn" onclick="markComplete('section1')">完成阶段1 →</button>
+    <button class="btn" onclick="markComplete(1)">完成阶段1 →</button>
   </div>
 
-  <!-- 阶段 2 -->
   <div class="section" id="section2" style="display:none;">
-    <h2>2. 新身份定义（下午转折）</h2>
-    <p class="tips">身份先行，行为自然跟随。写出“我是……”而不是“我要……”</p>
+    <h2>2. 挖拖延根源（为什么一直做不到）</h2>
 
-    <label>如果我已经是理想版本的自己，我每天会自然做哪些小事？（列10–20条具体行为，不要写大目标）</label>
-    <textarea id="new-behavior"></textarea>
+    <label>我在保护的旧身份/角色是？（例：受害者、好孩子、没天赋的人）</label>
+    <textarea id="root1" maxlength="100"></textarea>
+    <button class="ai-btn" onclick="suggestAI('root1')">AI帮我挖掘</button>
 
-    <label>从今天起，我是谁？（写3–5句“我是……”开头，语气坚定、具体、可信）</label>
-    <textarea id="new-identity"></textarea>
+    <label>保持现状的最大“隐形好处”是什么？（安全、免责、同情……）</label>
+    <textarea id="root2" maxlength="100"></textarea>
 
-    <label>我的核心驱动力排序（前3名）：意义/影响 > 自由 > 成长 > 金钱 > 认可 > ……</label>
-    <textarea id="core-drive"></textarea>
+    <label>如果真的成功了，我最怕失去什么？（关系、形象、舒适……）</label>
+    <textarea id="root3" maxlength="100"></textarea>
 
-    <label>真正想做的事清单（必须基于新身份自然会做的事，不要写“应该”）</label>
-    <textarea id="true-desire"></textarea>
+    <label>拖延时最想逃避的情绪/感觉是？</label>
+    <textarea id="root4" maxlength="100"></textarea>
 
-    <button class="btn" onclick="markComplete('section2')">完成阶段2 →</button>
+    <button class="btn" onclick="markComplete(2)">完成阶段2 →</button>
   </div>
 
-  <!-- 阶段 3 -->
   <div class="section" id="section3" style="display:none;">
-    <h2>3. 游戏化计划 + 强制完成机制</h2>
+    <h2>3. 定义新身份（我是谁）</h2>
 
-    <label>核心技能树 / 主线任务（4–6个，每个后面写当前等级0–10 + 下一级解锁条件）</label>
-    <textarea id="skill-tree" placeholder="示例：\n深度专注（当前3级）- 下一级：每天专注写作2小时不中断\n价值创作（当前2级）- 下一级：每周输出1篇高质量内容"></textarea>
+    <label>理想版本的我，每天会自然做哪些小事？（列5–8条，简短）</label>
+    <textarea id="new1" maxlength="200" placeholder="例：每天早上先写500字 / 拒绝无效社交……"></textarea>
 
-    <label>短期里程碑（1周 / 1月 / 3月具体、可衡量目标）</label>
-    <textarea id="milestone"></textarea>
+    <label>从今天起，我是谁？（3–4句“我是……”开头）</label>
+    <textarea id="new2" maxlength="200"></textarea>
+    <button class="ai-btn" onclick="suggestAI('new2')">AI帮我润色宣言</button>
 
-    <label>每日仪式（建议早晚各10分钟）</label>
-    <textarea id="daily-ritual" placeholder="示例：\n早上：读反向愿景1遍 + 新身份宣言3遍\n晚上：复盘今天做了几件‘新身份会做的事’ + 明天最重要的一件事"></textarea>
+    <label>真正想做的事（基于新身份自然会做的，3–5项）</label>
+    <textarea id="new3" maxlength="200"></textarea>
 
-    <h3>强制机制（选3个以上组合使用）</h3>
-    <div class="checkbox-group">
-      <label><input type="checkbox"> 公开承诺：把新身份 + 主线任务发到小红书/朋友圈，@3位监督者</label>
-      <label><input type="checkbox"> 惩罚机制：没完成每日仪式 → 捐款100元给不喜欢的事业，或发朋友圈承认</label>
-      <label><input type="checkbox"> 进度可视化：用Notion/Excel做技能树，每周更新等级</label>
-      <label><input type="checkbox"> 手机提醒：每天3–5次随机弹出“我在保护旧身份吗？”</label>
-      <label><input type="checkbox"> 其他自我约束（请写在这里）：</label>
-      <textarea id="force-other" style="margin-top:0.5em;"></textarea>
-    </div>
-
-    <button class="btn" onclick="markComplete('section3')">完成阶段3 →</button>
+    <button class="btn" onclick="markComplete(3)">完成阶段3 →</button>
   </div>
 
-  <!-- 结尾 -->
   <div class="section" id="section4" style="display:none;">
-    <h2>完成！你的重启文档</h2>
-    <p>所有内容已保存在浏览器本地，可随时返回编辑。</p>
+    <h2>4. 计划 + 强制执行</h2>
 
-    <button class="btn btn-save" onclick="saveAll()">保存进度（本地）</button>
-    <button class="btn btn-export" onclick="exportAsImage()">导出为长图（保存/打印）</button>
-    <button class="btn" onclick="copyAll()">复制全部文本到剪贴板</button>
+    <label>核心3–5个技能/任务（当前等级0–10 + 下一级怎么做）</label>
+    <textarea id="plan1" maxlength="300" placeholder="例：专注写作（当前3）→ 下一级：每天2小时不中断"></textarea>
 
-    <div id="exportPreview"></div>
+    <label>短期里程碑（1周内必须完成的一件事）</label>
+    <textarea id="plan2" maxlength="100"></textarea>
+
+    <label>每日仪式（早/晚各一句话）</label>
+    <textarea id="plan3" maxlength="150"></textarea>
+
+    <label>我选择的强制机制（至少选2种，写明怎么执行）</label>
+    <textarea id="plan4" maxlength="200" placeholder="例：公开承诺发朋友圈 + 没完成捐款50元"></textarea>
+
+    <button class="btn" onclick="markComplete(4)">全部完成</button>
+  </div>
+
+  <div class="section" id="section5" style="display:none;">
+    <h2>已完成！下一步</h2>
+    <p>你的重启文档已保存在浏览器，可随时返回编辑。</p>
+    <button class="btn" onclick="copyAll()">复制全部内容</button>
+    <button class="btn" onclick="exportImage()">导出长图保存</button>
+    <button class="btn" onclick="saveData()">保存进度</button>
+    <div id="preview" style="margin-top:2em; white-space:pre-wrap; background:#f1f5f9; padding:16px; border-radius:8px;"></div>
   </div>
 </div>
 
 <script>
-  // 阶段完成标记
-  function markComplete(sectionId) {
-    document.getElementById(sectionId).classList.add('completed');
-    const next = parseInt(sectionId.replace('section','')) + 1;
-    if (next <= 3) {
+  function start() {
+    if (!document.getElementById('promise').checked || !document.getElementById('todayDate').value) {
+      alert('请填写日期并勾选承诺');
+      return;
+    }
+    document.getElementById('section0').style.display = 'none';
+    document.getElementById('section1').style.display = 'block';
+    scrollTo('section1');
+  }
+
+  function markComplete(n) {
+    document.getElementById(`section${n}`).classList.add('completed');
+    const next = n + 1;
+    if (next <= 4) {
       document.getElementById(`section${next}`).style.display = 'block';
-      window.scrollTo({ top: document.getElementById(`section${next}`).offsetTop - 80, behavior: 'smooth' });
+      scrollTo(`section${next}`);
     } else {
-      document.getElementById('section4').style.display = 'block';
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      document.getElementById('section5').style.display = 'block';
+      scrollTo('section5');
+      showPreview();
     }
   }
 
-  // 开始流程
-  function startProcess() {
-    document.getElementById('section0').style.display = 'none';
-    document.getElementById('section1').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // 保存到 localStorage
-  function saveAll() {
-    const data = {
-      date: document.getElementById('todayDate').value,
-      promise: document.getElementById('promise').checked,
-      antiHealth: document.getElementById('anti-health').value,
-      antiRelation: document.getElementById('anti-relation').value,
-      antiMoney: document.getElementById('anti-money').value,
-      antiWork: document.getElementById('anti-work').value,
-      antiSelf: document.getElementById('anti-self').value,
-      antiSummary: document.getElementById('anti-summary').value,
-      rootIdentity: document.getElementById('root-identity').value,
-      rootBenefit: document.getElementById('root-benefit').value,
-      rootFearLose: document.getElementById('root-fear-lose').value,
-      rootEmotion: document.getElementById('root-emotion').value,
-      newBehavior: document.getElementById('new-behavior').value,
-      newIdentity: document.getElementById('new-identity').value,
-      coreDrive: document.getElementById('core-drive').value,
-      trueDesire: document.getElementById('true-desire').value,
-      skillTree: document.getElementById('skill-tree').value,
-      milestone: document.getElementById('milestone').value,
-      dailyRitual: document.getElementById('daily-ritual').value,
-      forceOther: document.getElementById('force-other').value,
-      // checkbox 可以后续扩展
-    };
-    localStorage.setItem('restartData', JSON.stringify(data));
-    alert('进度已保存到浏览器本地，下次打开自动加载');
+  function suggestAI(field) {
+    let prompt;
+    if (typeof field === 'number') {
+      prompt = `请帮我把反向愿景写得更具体、更痛苦（控制在80–100字），基于以下关键词或句子：\n用户输入：${document.getElementById('anti'+field).value || '(空，先帮我想一个最惨的健康/关系场景)'}\n输出一段描述性文字。`;
+    } else if (field === 'root1') {
+      prompt = `帮我挖掘“我在保护的旧身份”是什么，给出3–4种可能角色，并简短解释为什么会导致拖延（每种30字内）。`;
+    } else if (field === 'new2') {
+      prompt = `帮我把“我是谁”宣言润色得更坚定、具体、有力量（3–4句，每句20–40字）。基于用户草稿：${document.getElementById('new2').value || '(空，先给一个通用模板)'}。`;
+    }
+    alert(`复制下面提示词 → 去Claude/GPT/豆包等模型生成，再粘贴回来：\n\n${prompt}`);
   }
 
-  // 复制全部文本
+  function showPreview() {
+    let text = `重启日期：${document.getElementById('todayDate').value}\n\n`;
+    text += `1. 反向愿景\n${getValues('anti',1,5)}\n`;
+    text += `2. 根源\n${getValues('root',1,4)}\n`;
+    text += `3. 新身份\n${getValues('new',1,3)}\n`;
+    text += `4. 计划\n${getValues('plan',1,4)}\n`;
+    document.getElementById('preview').textContent = text;
+  }
+
+  function getValues(prefix, start, end) {
+    let s = '';
+    for (let i = start; i <= end; i++) {
+      const val = document.getElementById(prefix + i)?.value.trim();
+      if (val) s += `问题${i}：${val}\n`;
+    }
+    return s || '(未填写)\n';
+  }
+
   function copyAll() {
-    let text = "一天人生重启工作台\n\n";
-    text += "日期：" + document.getElementById('todayDate').value + "\n\n";
-    text += "1. 反向愿景与根源\n";
-    text += "健康/身体：\n" + document.getElementById('anti-health').value + "\n\n";
-    text += "关系/亲密：\n" + document.getElementById('anti-relation').value + "\n\n";
-    // ... 依次添加所有字段（这里省略完整拼接，实际可扩展）
-    text += "2. 新身份\n" + document.getElementById('new-identity').value + "\n\n";
-    text += "3. 计划与机制\n" + document.getElementById('skill-tree').value + "\n\n";
-    // 可继续补充
+    const text = document.getElementById('preview').textContent;
+    navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板'));
+  }
 
-    navigator.clipboard.writeText(text).then(() => {
-      alert('已复制到剪贴板，可粘贴到笔记/文档');
+  function exportImage() {
+    html2canvas(document.querySelector('.container'), {scale: 2}).then(canvas => {
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = '重启工作台-' + new Date().toISOString().slice(0,10) + '.png';
+      a.click();
     });
   }
 
-  // 导出长图
-  function exportAsImage() {
-    const container = document.querySelector('.container');
-    html2canvas(container, { scale: 2 }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = '人生重启工作台-' + new Date().toISOString().slice(0,10) + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+  function saveData() {
+    const data = {};
+    document.querySelectorAll('textarea, input[type="date"], input[type="checkbox"]').forEach(el => {
+      data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
     });
+    localStorage.setItem('restartData', JSON.stringify(data));
+    alert('进度已保存');
   }
 
-  // 页面加载时尝试恢复
+  // 加载保存的数据
   window.onload = () => {
     const saved = localStorage.getItem('restartData');
     if (saved) {
       const data = JSON.parse(saved);
-      document.getElementById('todayDate').value = data.date || '';
-      document.getElementById('promise').checked = data.promise || false;
-      document.getElementById('anti-health').value = data.antiHealth || '';
-      document.getElementById('anti-relation').value = data.antiRelation || '';
-      document.getElementById('anti-money').value = data.antiMoney || '';
-      document.getElementById('anti-work').value = data.antiWork || '';
-      document.getElementById('anti-self').value = data.antiSelf || '';
-      document.getElementById('anti-summary').value = data.antiSummary || '';
-      document.getElementById('root-identity').value = data.rootIdentity || '';
-      document.getElementById('root-benefit').value = data.rootBenefit || '';
-      document.getElementById('root-fear-lose').value = data.rootFearLose || '';
-      document.getElementById('root-emotion').value = data.rootEmotion || '';
-      document.getElementById('new-behavior').value = data.newBehavior || '';
-      document.getElementById('new-identity').value = data.newIdentity || '';
-      document.getElementById('core-drive').value = data.coreDrive || '';
-      document.getElementById('true-desire').value = data.trueDesire || '';
-      document.getElementById('skill-tree').value = data.skillTree || '';
-      document.getElementById('milestone').value = data.milestone || '';
-      document.getElementById('daily-ritual').value = data.dailyRitual || '';
-      document.getElementById('force-other').value = data.forceOther || '';
-      alert('已恢复上次进度，继续编辑吧');
+      Object.keys(data).forEach(key => {
+        const el = document.getElementById(key);
+        if (el) {
+          if (el.type === 'checkbox') el.checked = data[key];
+          else el.value = data[key];
+        }
+      });
+      alert('已恢复上次进度');
     }
   };
 </script>
