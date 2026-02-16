@@ -3,39 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>旧我删除协议 · 一天新生</title>
+  <title>旧我删除协议 · 5分钟测你5年后有多惨</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- canvas-confetti CDN，轻量粒子/彩纸爆炸 -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --primary: #a78bfa; --primary-dark: #7c3aed;
-      --accent: #c4b5fd; --danger: #f87171;
-      --bg: linear-gradient(135deg, #0f0f1a, #1e1b4b);
-      --card: rgba(30, 30, 60, 0.92);
-      --text: #e0e0ff; --subtext: #b0b0ff;
+      --accent: #d8b4fe; --danger: #f87171; --gold: #fcd34d;
+      --bg: linear-gradient(135deg, #0f0f1a, #1e1b4b, #2a1a50);
+      --card: rgba(25, 25, 55, 0.94);
+      --text: #f0efff; --sub: #c4b5fd;
     }
-    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; justify-content:center; align-items:center; padding:16px; overflow-x:hidden; }
-    #app { width:100%; max-width:420px; position:relative; }
+    body {
+      margin:0; font-family:system-ui, sans-serif;
+      background:var(--bg); color:var(--text);
+      min-height:100vh; padding:16px;
+      display:flex; justify-content:center; align-items:flex-start;
+    }
+    #app { width:100%; max-width:420px; }
     .progress { height:8px; background:#2d2d4a; border-radius:4px; margin:16px 0; overflow:hidden; }
-    .progress-bar { height:100%; width:0; background:linear-gradient(90deg,var(--primary),#d8b4fe); transition:width 0.6s ease; }
-    .card { background:var(--card); border-radius:28px; padding:36px 24px; margin:20px 0; box-shadow:0 24px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06); border:1px solid #3a3a7a; display:none; opacity:0; transform:translateY(30px); transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+    .progress-bar { height:100%; width:0%; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width 0.5s ease; }
+    .card {
+      background:var(--card); border-radius:24px; padding:32px 20px;
+      margin:16px 0; box-shadow:0 20px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+      border:1px solid #3a3a6e; display:none; opacity:0; transform:translateY(20px);
+      transition:all 0.5s ease-out;
+    }
     .card.active { display:block; opacity:1; transform:translateY(0); }
-    h1 { font-size:2.2em; color:var(--accent); margin-bottom:20px; text-shadow:0 2px 10px rgba(167,139,250,0.4); }
-    h2 { font-size:1.6em; color:var(--primary); margin-bottom:16px; }
-    .intro { font-size:1.15em; line-height:1.7; color:var(--subtext); margin-bottom:24px; }
-    .option-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:24px 0; }
-    .option { background:#1e1e3a; border:2px solid #3a3a6e; border-radius:18px; padding:18px 14px; text-align:center; cursor:pointer; transition:all 0.35s; font-size:1.02em; position:relative; }
-    .option:hover { transform:translateY(-6px); box-shadow:0 16px 32px rgba(139,92,246,0.25); border-color:var(--primary); }
-    .option.selected { border-color:var(--primary); background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(216,180,254,0.1)); box-shadow:0 12px 28px rgba(139,92,246,0.3); }
-    .option.selected::after { content:"✓"; position:absolute; top:10px; right:10px; background:var(--primary); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; }
-    .tag { display:inline-block; background:linear-gradient(135deg,rgba(139,92,246,0.25),rgba(216,180,254,0.15)); color:#e9d5ff; padding:10px 20px; border-radius:999px; margin:10px 8px; font-weight:600; border:1px solid var(--accent); box-shadow:0 4px 12px rgba(139,92,246,0.2); }
-    #certificate { background:linear-gradient(145deg,#1e1e40,#2a1a50,#3a2a70); padding:48px 28px; border-radius:32px; border:4px dashed var(--accent); text-align:center; position:relative; overflow:hidden; margin:28px 0; box-shadow:0 20px 60px rgba(124,58,237,0.4); }
-    #cert-title { font-size:2.1em; color:#d8b4fe; margin-bottom:20px; text-shadow:0 4px 12px rgba(216,180,254,0.5); }
-    .watermark { font-size:0.9em; color:#888; margin-top:40px; opacity:0.7; }
-    button { background:linear-gradient(135deg,var(--primary-dark),var(--primary)); color:white; border:none; padding:18px; font-size:1.15em; border-radius:999px; width:100%; margin:20px 0 12px; cursor:pointer; box-shadow:0 10px 30px rgba(124,58,237,0.45); transition:all 0.3s; }
-    button:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(124,58,237,0.55); }
-    #shareText { width:100%; height:110px; margin:16px 0; padding:16px; background:#1a1a30; color:#e0e0ff; border:1px solid #444; border-radius:16px; font-size:1em; resize:none; }
+    h1 { font-size:2.4em; color:var(--accent); text-shadow:0 4px 16px rgba(167,139,250,0.5); text-align:center; margin-bottom:20px; }
+    h2 { font-size:1.7em; color:var(--primary); margin:24px 0 16px; }
+    .intro { font-size:1.1em; line-height:1.65; color:#d1d5ff; margin-bottom:20px; }
+    .option-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+    .option {
+      background:#1e1e38; border:2px solid #3a3a6e; border-radius:16px;
+      padding:16px 12px; text-align:center; cursor:pointer; transition:all 0.3s;
+      font-size:0.98em; position:relative;
+    }
+    .option:hover { transform:translateY(-4px); box-shadow:0 12px 28px rgba(139,92,246,0.3); border-color:var(--primary); }
+    .option.selected { border-color:var(--primary); background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(216,180,254,0.1)); box-shadow:0 10px 24px rgba(167,139,250,0.35); }
+    .option.selected::after { content:"✓"; position:absolute; top:8px; right:8px; background:var(--primary); color:white; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.9em; }
+    textarea { width:100%; padding:14px; margin:16px 0; border-radius:12px; border:1px solid #444; background:#141426; color:white; font-size:1em; min-height:80px; resize:vertical; }
+    button {
+      background:linear-gradient(135deg,var(--primary-dark),var(--primary));
+      color:white; border:none; padding:16px; font-size:1.1em; border-radius:999px;
+      width:100%; margin:20px 0 12px; cursor:pointer; box-shadow:0 8px 24px rgba(124,58,237,0.5);
+      transition:all 0.3s;
+    }
+    button:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(124,58,237,0.6); }
+    #certificate {
+      background:linear-gradient(145deg,#1e1e3f,#2a1a4a,#3a2a70);
+      padding:40px 24px; border-radius:28px; border:4px dashed var(--accent);
+      text-align:center; position:relative; overflow:hidden; margin:24px 0;
+      box-shadow:0 20px 60px rgba(124,58,237,0.5), inset 0 0 30px rgba(216,180,254,0.15);
+    }
+    #cert-title { font-size:2.2em; color:var(--gold); text-shadow:0 4px 16px rgba(252,211,77,0.6); margin-bottom:24px; }
+    .code-big { font-size:3.8em; font-weight:900; letter-spacing:10px; color:var(--accent); text-shadow:0 6px 24px rgba(216,180,254,0.7); margin:20px 0; }
+    .rarity { font-size:1.4em; color:var(--gold); margin:12px 0; font-weight:bold; }
+    .tag { display:inline-block; background:rgba(216,180,254,0.18); color:#e9d5ff; padding:8px 18px; border-radius:999px; margin:8px 6px; border:1px solid var(--accent); box-shadow:0 4px 12px rgba(216,180,254,0.25); }
+    .watermark { font-size:0.9em; color:#777; margin-top:40px; opacity:0.8; }
+    #shareText { width:100%; height:120px; margin:16px 0; padding:16px; background:#1a1a30; color:#e0e0ff; border:1px solid #555; border-radius:16px; font-size:0.98em; resize:none; }
   </style>
 </head>
 <body>
@@ -46,100 +72,111 @@
   <!-- 屏1 开场 -->
   <div class="card active" id="page1">
     <h1>旧我删除协议</h1>
-    <p class="intro">你有没有过这种感觉：明明很想变，却总在最后一刻“原谅”自己？</p>
-    <p class="intro">不是你不够努力，而是你还在无意识地守护那个熟悉的、虽然痛苦但“安全”的旧身份。</p>
-    <p class="intro" style="color:#ff9999; font-weight:bold;">今天，我们不逼你“变强”，只请你诚实20分钟，看清它，然后轻轻放手。</p>
-    <button onclick="nextPage(2)">我愿意诚实 → 开始</button>
+    <p class="intro">你不是懒，你只是太爱那个虽然痛苦但熟悉的自己了。</p>
+    <p class="intro" style="color:#ff9999; font-weight:bold;">5分钟后，你可能会看到自己5年后最不想成为的样子……</p>
+    <p class="intro">敢继续吗？</p>
+    <button onclick="nextPage(2)">敢 → 开始</button>
   </div>
 
-  <!-- 屏2 反向愿景 -->
+  <!-- 屏2 反向愿景（狠选项） -->
   <div class="card" id="page2">
-    <h2>看见你最不想活成的样子</h2>
-    <p class="intro">选出让你瞬间心沉的那些画面（多选），最后补一句最扎心的。</p>
+    <h2>看见5年后最惨的你</h2>
+    <p class="intro">选出最让你脊背发凉的画面（多选），越具体越痛越真实。</p>
     <div class="option-grid">
-      <div class="option" data-value="每天重复一样的事，麻木到忘记自己想要什么">每天重复一样的事，麻木到忘记自己想要什么</div>
-      <div class="option" data-value="关系越来越浅，却越来越怕孤独">关系越来越浅，却越来越怕孤独</div>
-      <div class="option" data-value="才华被无效内耗一点点耗尽">才华被无效内耗一点点耗尽</div>
-      <div class="option" data-value="身体垮掉，才后悔没早点爱自己">身体垮掉，才后悔没早点爱自己</div>
-      <div class="option" data-value="永远在羡慕别人，却不敢迈出第一步">永远在羡慕别人，却不敢迈出第一步</div>
-      <div class="option" data-value="十年后还在说“明年就好了”">十年后还在说“明年就好了”</div>
-      <div class="option" data-value="最亲近的人都看得出你不开心，你却说“我没事”">最亲近的人都看得出你不开心，你却说“我没事”</div>
-      <div class="option" data-value="梦想变成了手机备忘录里的一行字">梦想变成了手机备忘录里的一行字</div>
+      <div class="option" data-value="每天刷手机到凌晨3点，第二天继续重复">每天刷手机到凌晨3点，第二天继续重复</div>
+      <div class="option" data-value="工资刚够房租，梦想早被生活磨平">工资刚够房租，梦想早被生活磨平</div>
+      <div class="option" data-value="朋友圈全是别人结婚生子买房，你在点赞">朋友圈全是别人结婚生子买房，你在点赞</div>
+      <div class="option" data-value="身体发福、脱发、腰酸背痛，却懒得动">身体发福、脱发、腰酸背痛，却懒得动</div>
+      <div class="option" data-value="十年后还在说“明年就努力了”">十年后还在说“明年就努力了”</div>
+      <div class="option" data-value="最亲近的人都看得出你不开心，你却说“我挺好的”">最亲近的人都看得出你不开心，你却说“我挺好的”</div>
+      <div class="option" data-value="才华烂在抖音评论区和无效内耗里">才华烂在抖音评论区和无效内耗里</div>
+      <div class="option" data-value="父母问你过得怎么样，你只能苦笑">父母问你过得怎么样，你只能苦笑</div>
+      <div class="option" data-value="深夜emo到哭，却不知道为谁哭">深夜emo到哭，却不知道为谁哭</div>
+      <div class="option" data-value="镜子里的自己越来越陌生，越来越像自己最讨厌的样子">镜子里的自己越来越陌生，越来越像自己最讨厌的样子</div>
     </div>
-    <textarea class="short" id="anti-custom" placeholder="最让你害怕的一句话总结（选填）..." style="margin-top:20px;"></textarea>
+    <textarea id="anti-custom" placeholder="最让你害怕的一句话（选填，比如“早知道当时就……”）"></textarea>
     <button onclick="nextPage(3)">我看见了 → 继续</button>
   </div>
 
-  <!-- 屏3 身份维度 -->
+  <!-- 屏3 新生代码（5维度） -->
   <div class="card" id="page3">
-    <h2>选择你的新身份代码</h2>
-    <p class="intro">每个维度选最贴近你的那一项（或两项），系统会生成你的专属“新生代码”</p>
-    
-    <h3 style="margin:28px 0 12px; color:#c4b5fd;">A - 觉醒度</h3>
+    <h2>选择你的新生代码</h2>
+    <p class="intro">每个维度选最真实的你，系统会生成专属代码 + 稀有度</p>
+
+    <h3>A - 觉醒度</h3>
     <div class="option-grid">
-      <div class="option" data-axis="A" data-value="A">觉醒者（主动重写人生）</div>
-      <div class="option" data-axis="A" data-value="a">沉睡者（被动等待改变）</div>
+      <div class="option" data-axis="A" data-value="A">主动觉醒者</div>
+      <div class="option" data-axis="A" data-value="a">被动麻木者</div>
+      <div class="option" data-axis="A" data-value="p">伪觉醒者</div>
     </div>
 
-    <h3 style="margin:28px 0 12px; color:#c4b5fd;">C - 创造度</h3>
+    <h3>C - 创造度</h3>
     <div class="option-grid">
-      <div class="option" data-axis="C" data-value="C">创造者（输出价值）</div>
-      <div class="option" data-axis="C" data-value="c">消费者（被动输入）</div>
+      <div class="option" data-axis="C" data-value="C">价值创造者</div>
+      <div class="option" data-axis="C" data-value="c">被动消费者</div>
+      <div class="option" data-axis="C" data-value="d">破坏式消耗者</div>
     </div>
 
-    <h3 style="margin:28px 0 12px; color:#c4b5fd;">V - 价值向</h3>
+    <h3>V - 价值向</h3>
     <div class="option-grid">
-      <div class="option" data-axis="V" data-value="V">价值导向（为他人/世界创造）</div>
-      <div class="option" data-axis="V" data-value="v">舒适导向（先求自己舒服）</div>
+      <div class="option" data-axis="V" data-value="V">长期价值导向</div>
+      <div class="option" data-axis="V" data-value="v">短期舒适导向</div>
+      <div class="option" data-axis="V" data-value="h">享乐即时导向</div>
     </div>
 
-    <h3 style="margin:28px 0 12px; color:#c4b5fd;">E - 扩展度</h3>
+    <h3>E - 扩展度</h3>
     <div class="option-grid">
-      <div class="option" data-axis="E" data-value="E">扩展者（拥抱不确定）</div>
-      <div class="option" data-axis="E" data-value="e">封闭者（守住安全区）</div>
+      <div class="option" data-axis="E" data-value="E">主动扩展者</div>
+      <div class="option" data-axis="E" data-value="e">防御收缩者</div>
+      <div class="option" data-axis="E" data-value="s">安全区守护者</div>
     </div>
 
-    <input type="text" id="name" placeholder="你的新生昵称（选填）" style="width:100%; padding:16px; margin:24px 0; border-radius:16px; border:1px solid #555; background:#1a1a2e; color:white; font-size:1.1em;"/>
+    <h3>T - 时间观</h3>
+    <div class="option-grid">
+      <div class="option" data-axis="T" data-value="T">永恒主义者</div>
+      <div class="option" data-axis="T" data-value="t">即时主义者</div>
+      <div class="option" data-axis="T" data-value="b">平衡主义者</div>
+    </div>
 
-    <button onclick="nextPage(4)">生成我的身份代码 →</button>
+    <input type="text" id="nickname" placeholder="你的新生昵称（选填）" style="width:100%; padding:16px; margin:24px 0; border-radius:16px; border:1px solid #555; background:#1a1a2e; color:white; font-size:1.1em;"/>
+
+    <button onclick="nextPage(4)">生成我的新生代码 →</button>
   </div>
 
-  <!-- 屏4 证书 + 粒子爆炸 -->
+  <!-- 屏4 证书 + 粒子 -->
   <div class="card" id="page4">
     <h2>新生已激活 ✨</h2>
     <div id="certificate">
       <div id="cert-title">旧我删除协议 · 永久生效</div>
-      <p id="cert-name" style="font-size:1.8em; margin:20px 0;">新生持有者</p>
-      <div id="code-display" style="font-size:3em; font-weight:bold; color:#d8b4fe; letter-spacing:8px; margin:20px 0; text-shadow:0 4px 20px rgba(216,180,254,0.6);"></div>
-      <div id="identity-desc" style="font-size:1.3em; color:#e0e0ff; margin:16px 0; line-height:1.6;"></div>
+      <p id="cert-nick" style="font-size:1.9em; margin:20px 0;"></p>
+      <div class="code-big" id="code-display"></div>
+      <div class="rarity" id="rarity-text"></div>
+      <div id="desc-text" style="font-size:1.25em; line-height:1.7; margin:20px 0;"></div>
       <div id="tags-container" style="margin:24px 0;"></div>
       <p id="cert-date" style="margin:32px 0; font-size:1.1em;"></p>
-      <p class="watermark">由「一天新生」见证 · 分享你的重启之旅</p>
+      <p class="watermark">由「旧我删除协议」生成 · 2026重启见证</p>
     </div>
 
-    <div style="margin:24px 0;">
-      <label>分享文案风格：</label><br>
-      <select id="shareStyle" style="width:100%; padding:12px; margin:8px 0; border-radius:12px; background:#1a1a30; color:white; border:1px solid #555;">
-        <option value="0">温柔共鸣版</option>
-        <option value="1">狠戳痛点版</option>
-        <option value="2">炫酷装X版</option>
-      </select>
-    </div>
+    <select id="shareStyle" style="width:100%; padding:14px; margin:16px 0; border-radius:16px; background:#1a1a30; color:white; border:1px solid #555;">
+      <option value="0">温柔共鸣版</option>
+      <option value="1">狠戳痛点版</option>
+      <option value="2">凡尔赛炫耀版</option>
+    </select>
 
-    <textarea id="shareText" rows="5"></textarea>
+    <textarea id="shareText" rows="6"></textarea>
 
-    <button onclick="generateImage()">保存新生画像（长按分享）</button>
-    <button onclick="restart()" style="background:#4b5563;">重新开始</button>
+    <button onclick="saveCertificate()">保存证书长图（长按分享朋友圈）</button>
+    <button onclick="restart()" style="background:#4b5563; margin-top:12px;">重新开始</button>
   </div>
 </div>
 
 <script>
   let currentPage = 1;
-  const total = 4;
+  const totalPages = 4;
   const progress = document.getElementById('progressBar');
 
   function updateProgress() {
-    progress.style.width = (currentPage / total * 100) + '%';
+    progress.style.width = (currentPage / totalPages * 100) + '%';
   }
 
   function nextPage(n) {
@@ -148,110 +185,90 @@
     currentPage = n;
     updateProgress();
     if (n === 4) {
-      generateCertificate();
-      launchConfetti();  // 到达证书页 → 触发粒子爆炸！
+      generateResult();
+      launchBigConfetti();
     }
   }
 
-  // 粒子爆炸函数（庆祝新生）
-  function launchConfetti() {
-    const duration = 4 * 1000;  // 持续4秒
-    const animationEnd = Date.now() + duration;
-    const colors = ['#a78bfa', '#c4b5fd', '#d8b4fe', '#7c3aed', '#e0e0ff'];
+  function launchBigConfetti() {
+    const duration = 5000;
+    const end = Date.now() + duration;
+    const colors = ['#a78bfa','#d8b4fe','#c4b5fd','#7c3aed','#fcd34d','#ffffff'];
 
     (function frame() {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors
-      });
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors
-      });
-
-      if (Date.now() < animationEnd) {
-        requestAnimationFrame(frame);
-      }
+      confetti({ particleCount: 8, angle: 60, spread: 70, origin: { x: 0 }, colors });
+      confetti({ particleCount: 8, angle: 120, spread: 70, origin: { x: 1 }, colors });
+      if (Date.now() < end) requestAnimationFrame(frame);
     }());
   }
 
-  function generateCertificate() {
-    const name = document.getElementById('name').value.trim() || "新生探索者";
-    const date = new Date().toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric'});
+  function generateResult() {
+    const nick = document.getElementById('nickname').value.trim() || "新生觉醒者";
+    const dateStr = new Date().toLocaleDateString('zh-CN', {year:'numeric',month:'long',day:'numeric'});
 
-    document.getElementById('cert-name').textContent = name;
-    document.getElementById('cert-date').textContent = `激活日期：${date}`;
+    document.getElementById('cert-nick').textContent = nick;
+    document.getElementById('cert-date').textContent = `激活日期：${dateStr}`;
 
-    // 身份代码计算（同之前）
+    // 代码生成
     const axes = {};
     document.querySelectorAll('#page3 .option.selected').forEach(opt => {
-      const axis = opt.dataset.axis;
-      const val = opt.dataset.value;
-      if (axis) axes[axis] = val.toUpperCase();
+      if (opt.dataset.axis) axes[opt.dataset.axis] = opt.dataset.value;
     });
 
-    const code = (axes.A || 'A') + (axes.C || 'C') + (axes.V || 'V') + (axes.E || 'E');
+    const code = (axes.A || 'A') + (axes.C || 'C') + (axes.V || 'V') + (axes.E || 'E') + (axes.T || 'T');
     document.getElementById('code-display').textContent = code;
 
-    const descMap = {
-      'A': '觉醒者 · 主动撕开旧有剧本',
-      'a': '沉睡者 · 还在等待外力唤醒',
-      'C': '创造者 · 把时间用来输出价值',
-      'c': '消费者 · 时间大多用来消费内容',
-      'V': '价值导向 · 人生以创造影响为主轴',
-      'v': '舒适导向 · 先把自己照顾好再说',
-      'E': '扩展者 · 主动迎接不确定性',
-      'e': '封闭者 · 更倾向守住已知安全区'
-    };
+    // 稀有度（简单概率）
+    const rarityRoll = Math.random();
+    let rarity = "普通";
+    let rarityColor = "#aaaaaa";
+    if (rarityRoll < 0.05) { rarity = "传说级"; rarityColor = "#fcd34d"; }
+    else if (rarityRoll < 0.15) { rarity = "史诗级"; rarityColor = "#c084fc"; }
+    else if (rarityRoll < 0.35) { rarity = "稀有"; rarityColor = "#60a5fa"; }
+    document.getElementById('rarity-text').textContent = rarity;
+    document.getElementById('rarity-text').style.color = rarityColor;
 
-    let desc = '';
-    for (let key in axes) {
-      desc += descMap[axes[key]] + '<br>';
-    }
-    document.getElementById('identity-desc').innerHTML = desc || '平衡型新生者 · 正在寻找属于自己的节奏';
+    // 描述（简化示例，实际可扩展成完整模板）
+    const desc = `你是${rarity}的${code}型人格。<br>你正在从麻木的循环中彻底撕开出口，走向价值创造与长期扩展的道路。<br>2026年，你将不再原谅“明年再努力”。`;
+    document.getElementById('desc-text').innerHTML = desc;
 
+    // 标签
     const tagsContainer = document.getElementById('tags-container');
     tagsContainer.innerHTML = '';
-    ['觉醒新生', code + '型人格', '旧我已删档'].forEach(t => {
+    [rarity, code + '型', '旧我已删档', '2026重启中'].forEach(t => {
       const span = document.createElement('span');
       span.className = 'tag';
       span.textContent = t;
       tagsContainer.appendChild(span);
     });
 
-    // 分享文案（同之前）
+    // 分享文案
     const style = document.getElementById('shareStyle').value;
-    let shareText = '';
+    let txt = '';
     if (style === '0') {
-      shareText = `今天完成了「旧我删除协议」\n看到了自己最不想成为的样子，也第一次清晰地选择了我想成为的身份：${code}\n${name} 已激活\n你也来试试吗？或许20分钟，就能改变轨迹。\n${location.href}`;
+      txt = `今天做了「旧我删除协议」，第一次敢直面5年后最惨的自己……\n结果新生代码是 ${code}（${rarity}）\n感觉终于可以和过去的loser说再见了。\n你也来试试？或许5分钟，就能改变轨迹。\n${location.href}`;
     } else if (style === '1') {
-      shareText = `我终于承认了：我一直在保护那个loser身份。\n但今天，我把它删了。\n新生代码：${code}\n从这一刻起，不再原谅麻木的自己。\n敢不敢一起？`;
+      txt = `我承认，我一直在保护那个废物自己。\n写完反向愿景想吐，但代码出来后，我知道有救了。\n新生代码：${code}（${rarity}）\n从今天起，不再给自己找借口。\n你敢测吗？`;
     } else {
-      shareText = `旧我已死，新生代码${code}加载完成✨\n稀有度：传说级觉醒者\n谁还不是个正在重启的人生玩家呢？\n链接戳我，一起上分！${location.href}`;
+      txt = `新生代码加载完成：${code}（${rarity}）✨\n旧我已死，2026从这一刻开始上分。\n谁来挑战我的传说级稀有度？🔥\n测一测：${location.href}`;
     }
-    document.getElementById('shareText').value = shareText;
+    document.getElementById('shareText').value = txt;
   }
 
-  function generateImage() {
-    // 保存时也可以加个小庆祝
-    launchConfetti();  // 再爆一次彩纸！
-    html2canvas(document.getElementById('certificate'), {scale: 2.5, backgroundColor: null}).then(canvas => {
+  function saveCertificate() {
+    launchBigConfetti(); // 保存再爆一次
+    const cert = document.getElementById('certificate');
+    html2canvas(cert, {scale: 2.8, backgroundColor: null}).then(canvas => {
       const a = document.createElement('a');
-      a.download = '新生画像.png';
+      a.download = '新生画像_旧我删除协议.png';
       a.href = canvas.toDataURL('image/png');
       a.click();
-      alert('画像已生成！长按保存，分享你的新生吧～');
-    }).catch(e => alert('生成出错：' + e.message + '\n试试截屏或换浏览器'));
+      alert('长图已生成！长按保存 → 发朋友圈见证你的新生～');
+    }).catch(e => alert('生成失败：' + e.message + '\n请尝试截屏'));
   }
 
   function restart() {
-    document.querySelectorAll('input, textarea, select').forEach(el => { if (el.tagName === 'SELECT') el.value=0; else el.value=''; });
+    document.querySelectorAll('input, textarea').forEach(el => el.value = '');
     document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
     nextPage(1);
   }
