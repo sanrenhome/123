@@ -180,4 +180,167 @@
                   <span className="bg-stone-100 px-2 py-1 rounded">阶段 01</span>
                   <span>上午重点：挖掘痛苦根源</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight serif text-stone-900">反向
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight serif text-stone-900">反向愿景 + 拖延根源挖掘</h2>
+              </header>
+              <div className="space-y-10">
+                <ReflectionBox title="健康与身体：5-10 年后最惨的样子" description="描述你的症状、镜子里的体型、逐渐衰退的精力。写出具体的画面感。" value={state.antiVision.health} onChange={val => updateState('antiVision.health', val)} onExpand={() => handleAIExpand('antiVision.health', "健康与身体反向愿景", "描述身体衰退后的痛苦", state.antiVision.health)} isExpanding={isExpanding === 'antiVision.health'} icon={<ShieldAlert className="text-orange-600/60" />} />
+                <ReflectionBox title="关系与亲密：你会如何被对待？" description="最亲近的人会如何看待你的消沉？你会把情绪发泄给谁？" value={state.antiVision.relationships} onChange={val => updateState('antiVision.relationships', val)} onExpand={() => handleAIExpand('antiVision.relationships', "关系反向愿景", "关系崩塌后的孤独与自责", state.antiVision.relationships)} isExpanding={isExpanding === 'antiVision.relationships'} icon={<ShieldAlert className="text-orange-600/60" />} />
+                <ReflectionBox title="金钱与物质：财务焦虑的深度" description="5年后你的收入与积蓄。想象你不得不放弃尊严的时刻。" value={state.antiVision.finance} onChange={val => updateState('antiVision.finance', val)} onExpand={() => handleAIExpand('antiVision.finance', "财务反向愿景", "匮乏感带来的压迫感", state.antiVision.finance)} isExpanding={isExpanding === 'antiVision.finance'} icon={<ShieldAlert className="text-orange-600/60" />} />
+                <ReflectionBox title="工作与成就：无意义感的吞噬" description="如果继续做讨厌的工作，想象成就感为零的感觉。" value={state.antiVision.work} onChange={val => updateState('antiVision.work', val)} onExpand={() => handleAIExpand('antiVision.work', "工作反向愿景", "每日重复劳动的空虚", state.antiVision.work)} isExpanding={isExpanding === 'antiVision.work'} icon={<ShieldAlert className="text-orange-600/60" />} />
+                <ReflectionBox title="自我对话：你最常对自己撒的谎" description="写下那些安慰自己的借口。写下你最讨厌的那个颓废灵魂的低语。" value={state.antiVision.selfTalk} onChange={val => updateState('antiVision.selfTalk', val)} onExpand={() => handleAIExpand('antiVision.selfTalk', "自我对话挖掘", "拆穿内心的防御机制", state.antiVision.selfTalk)} isExpanding={isExpanding === 'antiVision.selfTalk'} icon={<ShieldAlert className="text-orange-600/60" />} />
+                <div className="p-8 bg-orange-50/50 border border-orange-100 rounded-3xl space-y-8">
+                  <ReflectionBox title="我在保护哪个‘旧身份’？" description="拖延是为了回避什么情绪？" value={state.antiVision.rootCause} onChange={val => updateState('antiVision.rootCause', val)} onExpand={() => handleAIExpand('antiVision.rootCause', "旧身份挖掘", "找出舒适区的核心防御", state.antiVision.rootCause)} isExpanding={isExpanding === 'antiVision.rootCause'} minimal />
+                  <ReflectionBox title="浓缩总结：一句话最扎心的未来" description="用最直白的一句话总结如果不改变的下场。" value={state.antiVision.summary} onChange={val => updateState('antiVision.summary', val)} onExpand={() => handleAIExpand('antiVision.summary', "反向愿景总结", "浓缩的痛苦画像", state.antiVision.summary)} isExpanding={isExpanding === 'antiVision.summary'} minimal />
+                </div>
+              </div>
+              <div className="flex justify-end pt-8 border-t border-stone-200">
+                <button onClick={() => { togglePhaseCompletion('p1'); scrollToNext('phase-2'); }} className={`px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all ${state.completedPhases.includes('p1') ? 'bg-stone-200 text-stone-500' : 'bg-stone-900 text-stone-50'}`}>
+                  {state.completedPhases.includes('p1') ? '已确认' : '标记完成阶段 01'} <CheckCircle2 size={18} />
+                </button>
+              </div>
+            </section>
+
+            {/* Phase 2 */}
+            <section id="phase-2" className={`space-y-12 transition-all duration-700 ${state.completedPhases.includes('p2') ? 'opacity-40 grayscale-[0.5]' : 'opacity-100'}`}>
+              <header className="space-y-4">
+                <div className="flex items-center gap-3 text-stone-400 uppercase tracking-widest text-xs font-bold">
+                  <span className="bg-stone-100 px-2 py-1 rounded">阶段 02</span>
+                  <span>下午重点：身份先行</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight serif text-stone-900">新身份定义</h2>
+              </header>
+              <div className="space-y-10">
+                <ReflectionBox title="理想自我的‘自然行为’清单" description="如果是理想版本的你，每天会‘自然而然’地做哪些事？" value={state.newIdentity.naturalActions} onChange={val => updateState('newIdentity.naturalActions', val)} onExpand={() => handleAIExpand('newIdentity.naturalActions', "行为模式清单", "新身份的自动化习惯", state.newIdentity.naturalActions)} isExpanding={isExpanding === 'newIdentity.naturalActions'} icon={<Zap className="text-amber-500/80" />} />
+                <ReflectionBox title="我是谁：坚定具体的宣言" description="写下 3-5 句以‘我是……的人’开头的陈述。" value={state.newIdentity.iAmStatements} onChange={val => updateState('newIdentity.iAmStatements', val)} onExpand={() => handleAIExpand('newIdentity.iAmStatements', "新身份宣言", "明确、有力的身份锚点", state.newIdentity.iAmStatements)} isExpanding={isExpanding === 'newIdentity.iAmStatements'} icon={<Zap className="text-amber-500/80" />} />
+                <ReflectionBox title="核心驱动力：前三名排序" description="自由、成长、金钱、影响、认可、宁静。找出核心动力。" value={state.newIdentity.drivers} onChange={val => updateState('newIdentity.drivers', val)} onExpand={() => handleAIExpand('newIdentity.drivers', "驱动力排序", "深层价值观分析", state.newIdentity.drivers)} isExpanding={isExpanding === 'newIdentity.drivers'} icon={<Zap className="text-amber-500/80" />} />
+                <ReflectionBox title="真正想做的事" description="如果你的新身份已经成真，你最想投入精力创造什么？" value={state.newIdentity.trueTodoList} onChange={val => updateState('newIdentity.trueTodoList', val)} onExpand={() => handleAIExpand('newIdentity.trueTodoList', "愿景创造清单", "基于热忱而非恐惧的行动", state.newIdentity.trueTodoList)} isExpanding={isExpanding === 'newIdentity.trueTodoList'} icon={<Zap className="text-amber-500/80" />} />
+              </div>
+              <div className="flex justify-end pt-8 border-t border-stone-200">
+                <button onClick={() => { togglePhaseCompletion('p2'); scrollToNext('phase-3'); }} className={`px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all ${state.completedPhases.includes('p2') ? 'bg-stone-200 text-stone-500' : 'bg-stone-900 text-stone-50'}`}>
+                  {state.completedPhases.includes('p2') ? '已确认' : '标记完成阶段 02'} <CheckCircle2 size={18} />
+                </button>
+              </div>
+            </section>
+
+            {/* Phase 3 */}
+            <section id="phase-3" className={`space-y-12 transition-all duration-700 ${state.completedPhases.includes('p3') ? 'opacity-40 grayscale-[0.5]' : 'opacity-100'}`}>
+              <header className="space-y-4">
+                <div className="flex items-center gap-3 text-stone-400 uppercase tracking-widest text-xs font-bold">
+                  <span className="bg-stone-100 px-2 py-1 rounded">阶段 03</span>
+                  <span>执行重点：保障系统</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight serif text-stone-900">游戏化计划 + 强制执行</h2>
+              </header>
+              <div className="space-y-10">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-2 text-xl font-bold serif text-stone-800">
+                    <Target className="text-stone-400" />
+                    <h3>核心技能树 / 主线任务</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {state.planning.skills.map((skill, idx) => (
+                      <div key={idx} className="bg-white border border-stone-200 p-5 rounded-2xl space-y-4 shadow-sm">
+                        <input placeholder="技能名称" value={skill.name} onChange={e => {
+                          const newSkills = [...state.planning.skills];
+                          newSkills[idx].name = e.target.value;
+                          updateState('planning.skills', newSkills);
+                        }} className="bg-transparent text-lg font-bold w-full outline-none border-b border-stone-100 pb-1" />
+                        <input type="range" min="0" max="10" value={skill.level} onChange={e => {
+                          const newSkills = [...state.planning.skills];
+                          newSkills[idx].level = parseInt(e.target.value);
+                          updateState('planning.skills', newSkills);
+                        }} className="w-full h-1 accent-stone-700" />
+                        <textarea placeholder="解锁条件..." value={skill.unlockCondition} onChange={e => {
+                          const newSkills = [...state.planning.skills];
+                          newSkills[idx].unlockCondition = e.target.value;
+                          updateState('planning.skills', newSkills);
+                        }} className="bg-stone- brux50/50 border border-stone-100 rounded-xl p-3 text-sm w-full h-20 outline-none" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4 bg-white p-6 rounded-3xl border border-stone-200 shadow-sm">
+                    <p className="text-xs text-stone-400 font-bold uppercase tracking-wider">选择心理杠杆：</p>
+                    {["公开承诺", "惩罚机制", "进度可视化", "物理隔离"].map(m => (
+                      <label key={m} className="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" checked={state.planning.mechanisms.includes(m)} onChange={e => {
+                          const newM = e.target.checked ? [...state.planning.mechanisms, m] : state.planning.mechanisms.filter(item => item !== m);
+                          updateState('planning.mechanisms', newM);
+                        }} className="w-4 h-4 rounded border-stone-300" />
+                        <span className="text-stone-600 text-sm">{m}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <ReflectionBox title="机制具体执行计划" description="写下具体的惩罚或公开承诺细节。" value={state.planning.mechanismsDetail} onChange={val => updateState('planning.mechanismsDetail', val)} minimal onExpand={() => handleAIExpand('planning.mechanismsDetail ' , "强制执行细节", "高压力的外部约束设计", state.planning.mechanismsDetail)} isExpanding={isExpanding === 'planning.mechanismsDetail'} />
+                </div>
+                <ReflectionBox title="短期里程碑：1周 / 1月 / 3月" description="接下来 90 天内最关键的几个可量化节点。" value={state.planning.milestones} onChange={val => updateState('planning.milestones', val)} onExpand={() => handleAIExpand('planning.milestones', "里程碑规划", "关键时间节点的目标拆解", state.planning.milestones)} isExpanding={isExpanding === 'planning.milestones'} icon={<Target className="text-stone-400" />} />
+              </div>
+              <div className="flex justify-end pt-8 border-t border-stone-200">
+                <button onClick={() => { togglePhaseCompletion('p3'); scrollToNext('summary'); }} className={`px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all ${state.completedPhases.includes('p3') ? 'bg-stone-200 text-stone-500' : 'bg-stone-900 text-stone-50'}`}>
+                  {state.completedPhases.includes('p3') ? '已确认' : '标记完成阶段 03'} <CheckCircle2 size={18} />
+                </button>
+              </div>
+            </section>
+
+            {/* Summary */}
+            <section id="summary" className="space-y-12 pt-16 border-t border-stone-200">
+              <header className="text-center space-y-4">
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight serif text-stone-900">人生修复协议</h2>
+                <p className="text-stone-500 text-lg">这是你与自己的终极契约。</p>
+              </header>
+              <div className="bg-white border border-stone-200 rounded-[2.5rem] p-10 md:p-16 space-y-12 shadow-xl shadow-stone-200/50 relative overflow-hidden">
+                <div className="flex flex-col md:flex-row justify-between items-start border-b border-stone-100 pb-8 gap-4">
+                  <div>
+                    <h3 className="text-2xl font-bold serif text-stone-900">人生修复协议</h3>
+                    <p className="text-stone-400 text-sm mt-1">签署日期：{state.date}</p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-12">
+                  <div className="space-y-10">
+                    <div>
+                      <h4 className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-3">我拒绝的未来</h4>
+                      <p className="text-stone-600 text-sm italic border-l-2 border-stone-100 pl-4">“{state.antiVision.summary || '未填写'}”</p>
+                    </div>
+                    <div>
+                      <h4 className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-3">新身份宣言</h4>
+                      <div className="whitespace-pre-wrap text-stone-900 text-lg font-bold serif leading-snug">{state.newIdentity.iAmStatements || '未填写'}</div>
+                    </div>
+                  </div>
+                  <div className="space-y-10">
+                    <div>
+                      <h4 className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-3">核心自然行为</h4>
+                      <p className="text-stone-500 text-sm whitespace-pre-wrap">{state.newIdentity.naturalActions || '未填写'}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-3">驱动力排序</h4>
+                      <p className="text-stone-500 text-sm">{state.newIdentity.drivers || '未填写'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row gap-4 justify-center no-print pb-32">
+                <button onClick={exportAsText} className="px-10 py-4 bg-stone-900 text-stone-50 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-stone-800 shadow-lg"><Copy size={20} /> 复制全部内容</button>
+                <button onClick={exportImage} className="px-10 py-4 bg-white text-stone-900 rounded-full font-bold flex items-center justify-center gap-2 border border-stone-200 shadow-sm"><Printer size={20} /> 打印 / 保存 PDF</button>
+              </div>
+            </section>
+          </div>
+
+          {/* Navigation */}
+          <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/70 backdrop-blur-xl border border-stone-200/50 px-8 py-3 rounded-full flex items-center gap-6 shadow-xl z-50 no-print">
+            <NavItem label="痛点" onClick={() => scrollToNext('phase-1')} completed={state.completedPhases.includes('p1')} />
+            <div className="w-[1px] h-3 bg-stone-200" />
+            <NavItem label="身份" onClick={() => scrollToNext('phase-2')} completed={state.completedPhases.includes('p2')} />
+            <div className="w-[1px] h-3 bg-stone-200" />
+            <NavItem label="系统" onClick={() => scrollToNext('phase-3')} completed={state.completedPhases.includes('p3')} />
+            <div className="w-[1px] h-3 bg-stone-200" />
+            <NavItem label="协议" onClick={() => scrollToNext('summary')} completed={true} />
+          </nav>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
