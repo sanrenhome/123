@@ -1,439 +1,204 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>人生修复指南 · 2026新生代码</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>除夕 · 人生重启协议</title>
 
-    <style>
-        :root {
-            --bg: #050505;
-            --surface: #121214;
-            --primary: #ff2a85;
-            --secondary: #b72aff;
-            --accent: #00f0ff;
-            --text-main: #ffffff;
-            --text-muted: #888899;
-            --gold: #ffd700;
-            --border: rgba(255,255,255,0.1);
-        }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans SC', sans-serif; -webkit-tap-highlight-color: transparent; }
+<style>
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1a1a1a, #000000);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    text-align: center;
+    padding: 40px 20px;
+}
 
-        body { background: #000; display: flex; justify-content: center; color: var(--text-main); line-height: 1.6; overflow: hidden; }
+.container {
+    max-width: 600px;
+    margin: auto;
+}
 
-        #app { width: 100%; max-width: 480px; height: 100dvh; background: var(--bg); position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
-        
-        /* 隐藏滚动条 */
-        #app::-webkit-scrollbar { display: none; }
+h1 {
+    font-size: 34px;
+    font-weight: 700;
+}
 
-        /* 页面切换动画 */
-        .page { display: none; padding: 30px 20px; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; min-height: 100%; }
-        .page.active { display: block; }
+.subtitle {
+    opacity: 0.7;
+    margin-bottom: 30px;
+}
 
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    background: #111;
+    color: white;
+    font-size: 15px;
+}
 
-        /* 标题与发光字 */
-        h1 { font-size: 28px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; }
-        .glow-text {
-            background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text; color: transparent;
-            text-shadow: 0 0 20px rgba(255,42,133,0.3);
-        }
-        .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+button {
+    padding: 14px 24px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
-        /* 按钮与表单 */
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; border: none; padding: 16px; width: 100%; border-radius: 12px;
-            font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;
-            box-shadow: 0 8px 25px rgba(183, 42, 255, 0.4); transition: transform 0.2s;
-        }
-        .btn:active { transform: scale(0.98); }
-        .btn-outline {
-            background: transparent; border: 1px solid var(--secondary);
-            box-shadow: none; color: var(--secondary); margin-top: 10px;
-        }
+.progress-container {
+    margin-top: 30px;
+}
 
-        input[type="text"], textarea {
-            width: 100%; background: var(--surface); border: 1px solid var(--border);
-            color: white; padding: 14px; border-radius: 8px; margin-bottom: 15px; font-size: 14px;
-            outline: none; transition: border-color 0.3s;
-        }
-        input[type="text"]:focus, textarea:focus { border-color: var(--secondary); }
+.progress-bar {
+    height: 10px;
+    background: #222;
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-        /* 选项卡片 (多选/单选) */
-        .choice-card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; padding: 15px; margin-bottom: 12px;
-            cursor: pointer; transition: all 0.3s; font-size: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .choice-card.selected {
-            border-color: var(--primary); background: rgba(255,42,133,0.1);
-            box-shadow: 0 0 15px rgba(255,42,133,0.2);
-        }
+.progress {
+    height: 10px;
+    background: linear-gradient(90deg, #ffb347, #ffcc33);
+    width: 0%;
+    transition: width 0.5s ease;
+}
 
-        /* 进度条 */
-        .progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: #222; z-index: 100; max-width: 480px; left: 50%; transform: translateX(-50%); }
-        .progress-fill { height: 100%; background: linear-gradient(to right, var(--primary), var(--accent)); width: 0%; transition: width 0.4s; }
+.counter {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+}
 
-        /* 证书生成区 */
-        #cert-capture {
-            background: radial-gradient(circle at top right, #2a0845, #000000);
-            padding: 40px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-            position: relative; overflow: hidden; margin-bottom: 20px;
-        }
-        #cert-capture::before {
-            content: ''; position: absolute; top: -50px; left: -50px; width: 150px; height: 150px;
-            background: var(--primary); filter: blur(100px); opacity: 0.3;
-        }
-        .cert-header { display: flex; justify-content: space-between; margin-bottom: 30px; font-size: 12px; color: var(--text-muted); }
-        .rarity-badge {
-            display: inline-block; padding: 5px 12px; border-radius: 20px;
-            font-weight: 900; font-size: 14px; letter-spacing: 2px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; box-shadow: 0 0 20px rgba(255,215,0,0.4);
-        }
-        .cert-code { font-size: 64px; font-weight: 900; letter-spacing: 5px; margin: 20px 0; background: linear-gradient(to bottom, #fff, #aaa); -webkit-background-clip: text; color: transparent; text-align: center; }
-        .cert-tag-wall { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-        .cert-tag { background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 4px; font-size: 12px; color: #ccc; }
-        .watermark { margin-top: 40px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px; text-align: center; font-size: 10px; color: #666; display: flex; justify-content: space-between;}
+#captureArea {
+    margin-top: 40px;
+    padding: 20px;
+    border-radius: 16px;
+    background: #111;
+}
 
-        /* 分享文案框 */
-        .share-box { background: var(--surface); padding: 15px; border-radius: 8px; font-size: 13px; color: #ccc; margin-bottom: 10px; position: relative; }
-        select { width: 100%; background: transparent; color: var(--accent); border: none; margin-bottom: 10px; outline: none; font-weight: bold; }
-
-        /* Toast 提示 */
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999; }
-    </style>
+.footer {
+    margin-top: 40px;
+    font-size: 13px;
+    opacity: 0.5;
+}
+</style>
 </head>
 <body>
 
-    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-    <div class="toast" id="toast">已复制到剪贴板</div>
+<div class="container">
 
-    <div id="app">
-        <div class="page active" id="page-1">
-            <h1 style="margin-top: 15vh;"><span class="glow-text">人生修复指南</span><br>2026 新生代码</h1>
-            <p class="subtitle">你不是在拖延，你只是在保护那个平庸的自己。<br>基于Dan Koe“反向愿景”理论的深度自省。</p>
-            <div style="height: 40px;"></div>
-            <p style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">请输入你的代号（选填）</p>
-            <input type="text" id="nickname" placeholder="例如：Neo" maxlength="10">
-            <button class="btn" onclick="goPage(2)">启动清理程序，直面真相</button>
-            <p style="text-align: center; margin-top: 20px; font-size: 12px; color: #555;">⚠️ 警告：包含轻微扎心内容，玻璃心慎入。</p>
-        </div>
+<h1>除夕 · 人生重启协议</h1>
+<div class="subtitle">写下旧身份 · 生成你的 2026 人生K线</div>
 
-        <div class="page" id="page-2">
-            <h1>构建你的<span class="glow-text">反向愿景</span></h1>
-            <p class="subtitle">人类改变的动力，逃离痛苦远大于追求快乐。选出你最恶心的未来（多选）：</p>
-            
-            <div id="antivision-list">
-                </div>
+<input id="oldIdentity" placeholder="你想清算的旧身份">
+<input id="newIdentity" placeholder="你2026的新身份">
 
-            <textarea id="worst-fear" rows="3" placeholder="用一句话总结：如果不改变，你最怕变成什么样？（50字内）"></textarea>
-            
-            <button class="btn-outline btn" onclick="copyAIPrompt()">🤖 AI辅助：生成我的深度剖析词</button>
-            <button class="btn" onclick="goPage(3)">够了，我不想变成这样</button>
-        </div>
+<button onclick="generateChart()">生成我的重启K线</button>
+<button onclick="downloadImage()">下载截图</button>
 
-        <div class="page" id="page-3">
-            <h1>重塑<span class="glow-text">新身份</span></h1>
-            <p class="subtitle">行为是身份的副产品。别说“我要减肥”，说“我是运动员”。选择你渴望的特质：</p>
-            
-            <p style="margin-top: 15px; color: var(--accent); font-size: 12px;">维度 I : 注意力流向</p>
-            <div class="choice-card single-choice" onclick="selectRadio(this, 'dim1', 'C')">
-                <span>创作者模式 (Creator)</span><span style="font-size:10px;color:#888;">输出>输入</span>
-            </div>
-            <div class="choice-card single-choice" onclick="selectRadio(this, 'dim1', 'O')">
-                <span>观察者模式 (Observer)</span><span style="font-size:10px;color:#888;">深度解析世界</span>
-            </div>
-
-            <p style="margin-top: 15px; color: var(--accent); font-size: 12px;">维度 II : 价值引擎</p>
-            <div class="choice-card single-choice" onclick="selectRadio(this, 'dim2', 'B')">
-                <span>构建者 (Builder)</span><span style="font-size:10px;color:#888;">打造系统与产品</span>
-            </div>
-            <div class="choice-card single-choice" onclick="selectRadio(this, 'dim2', 'C')">
-                <span>连接者 (Connector)</span><span style="font-size:10px;color:#888;">链接资源与人脉</span>
-            </div>
-
-            <p style="margin-top: 15px; color: var(--accent); font-size: 12px;">维度 III : 破局武器</p>
-            <div class="choice-card single-choice" onclick="selectRadio(this, 'dim3', 'F')">
-                <span>绝对专注 (Focus)</span><span style="font-size:10px;color:#888;">每天深度工作2小时</span>
-            </div>
-            <div class="choice-card single-choice" onclick="selectRadio(this, 'dim3', 'R')">
-                <span>极简主义 (Reduce)</span><span style="font-size:10px;color:#888;">砍掉90%无用欲望</span>
-            </div>
-
-            <button class="btn" onclick="checkAndGo(4)">提取我的新生代码</button>
-        </div>
-
-        <div class="page" id="page-4">
-            <h1>建立<span class="glow-text">强制机制</span></h1>
-            <p class="subtitle">动机是不可靠的，系统才是王道。设定你的1步行动：</p>
-
-            <p style="font-size: 13px; margin-bottom: 8px;">1. 抛开金钱，你现在最想专注的事：</p>
-            <input type="text" id="focus-thing" placeholder="例如：写完我的个人网站">
-
-            <p style="font-size: 13px; margin-bottom: 8px;">2. 每日的雷打不动仪式（极微小）：</p>
-            <input type="text" id="daily-ritual" placeholder="例如：早起喝水后先写100字">
-
-            <p style="font-size: 13px; margin-bottom: 8px;">3. 失败惩罚/强制绑定机制：</p>
-            <input type="text" id="punishment" placeholder="例如：做不到就给死对头打100块">
-
-            <button class="btn" onclick="generateFinal()">生成我的专属证书</button>
-            <button class="btn-outline btn" onclick="generateFinal()" style="border:none; color:#666; margin-top:0;">跳过，直接看代码</button>
-        </div>
-
-        <div class="page" id="page-5">
-            <div id="cert-capture">
-                <div class="cert-header">
-                    <span>STATUS: AWAKENED</span>
-                    <span id="cert-date">2026.XX.XX</span>
-                </div>
-                
-                <p style="font-size: 14px; color: #aaa;">IDENTIFICATION CODE</p>
-                <div class="cert-code" id="final-code">X-0000</div>
-                
-                <div style="text-align: center;">
-                    <span class="rarity-badge" id="cert-rarity">史诗级 EPIC</span>
-                </div>
-
-                <div class="cert-tag-wall">
-                    <div class="cert-tag" id="tag-name">用户：未知</div>
-                    <div class="cert-tag">拒绝平庸</div>
-                    <div class="cert-tag">反向愿景驱动</div>
-                    <div class="cert-tag" id="tag-focus">专注力锁定</div>
-                </div>
-
-                <div style="margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px;">
-                    <p style="font-size: 12px; color: #fff; font-style: italic;">"我不想变成这样："</p>
-                    <p style="font-size: 12px; color: var(--primary); margin-top: 5px;" id="cert-fear">每天刷短视频到凌晨，第二天继续后悔。</p>
-                </div>
-
-                <div class="watermark">
-                    <span>扫描寻找属于你的代码</span>
-                    <span>人生修复指南 · Dan Koe</span>
-                </div>
-            </div>
-
-            <p style="font-size: 14px; font-weight: bold; margin-top: 20px;">选择你的朋友圈文案：</p>
-            <div class="share-box">
-                <select id="share-tone" onchange="updateShareText()">
-                    <option value="ruthless">狠人宣言 (推荐)</option>
-                    <option value="versailles">凡尔赛 (炫耀)</option>
-                    <option value="gentle">自省治愈 (温柔)</option>
-                </select>
-                <p id="share-text">如果不想再被平庸恶心，就亲手干掉过去的自己。我的新生代码是[X-0000]，抽到了全网仅20%的史诗级。谁来碰碰运气？</p>
-            </div>
-
-            <button class="btn" onclick="downloadCert()">📸 一键保存证书，发个朋友圈</button>
-            <button class="btn-outline btn" onclick="copyShareText()">📝 复制文案</button>
-            <div style="height: 50px;"></div>
-        </div>
+<div class="progress-container">
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
     </div>
+    <div class="counter">
+        已有 <span id="count">128</span> / 1000 人重启
+        (<span id="percent">12.8</span>%)
+    </div>
+</div>
 
-    <script>
-        // 数据配置
-        const antivisionOptions = [
-            "每天刷短视频到凌晨，第二天依然空虚后悔",
-            "收藏夹里有1000个干货，脑子依然空空如也",
-            "一边嫉妒同龄人搞钱，一边连早起都做不到",
-            "总觉得“明天”会有奇迹，结果过了3年一模一样的生活",
-            "变成满肚子牢骚，只会抱怨大环境的中年人",
-            "因为没钱，面对喜欢的人和事物只能说“算了”"
-        ];
+<div id="captureArea">
+    <h2 id="resultTitle"></h2>
+    <canvas id="lifeChart" width="400" height="250"></canvas>
+</div>
 
-        let state = {
-            nickname: '',
-            fear: '',
-            codeStr: '',
-            rarityLevel: '',
-            rarityColor: ''
-        };
+<div class="footer">
+    前1000人将获得链上纪念空投资格（仅象征意义）
+</div>
 
-        // 初始化
-        window.onload = () => {
-            const list = document.getElementById('antivision-list');
-            antivisionOptions.forEach((opt, index) => {
-                const div = document.createElement('div');
-                div.className = 'choice-card multi-choice';
-                div.innerHTML = `<span>${opt}</span><span style="font-size:18px; color:#555;">+</span>`;
-                div.onclick = function() {
-                    this.classList.toggle('selected');
-                    const span = this.querySelector('span:last-child');
-                    span.innerText = this.classList.contains('selected') ? '✓' : '+';
-                    span.style.color = this.classList.contains('selected') ? 'var(--primary)' : '#555';
-                };
-                list.appendChild(div);
-            });
-            updateProgress(1);
-        };
+</div>
 
-        // 页面导航
-        function goPage(pageNum) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`page-${pageNum}`).classList.add('active');
-            updateProgress(pageNum);
-            document.getElementById('app').scrollTo(0,0);
+<script>
+
+let chart;
+let currentCount = 128;
+const target = 1000;
+
+function updateProgress() {
+    const percent = ((currentCount / target) * 100).toFixed(1);
+    document.getElementById("count").innerText = currentCount;
+    document.getElementById("percent").innerText = percent;
+    document.getElementById("progress").style.width = percent + "%";
+}
+
+function simulateGrowth() {
+    setInterval(() => {
+        if (currentCount < target) {
+            currentCount += Math.floor(Math.random() * 3);
+            updateProgress();
         }
+    }, 3000);
+}
 
-        function updateProgress(num) {
-            const total = 5;
-            document.getElementById('progress').style.width = `${(num / total) * 100}%`;
-        }
+function generateChart() {
+    const oldId = document.getElementById("oldIdentity").value;
+    const newId = document.getElementById("newIdentity").value;
 
-        // 单选逻辑
-        function selectRadio(el, group, val) {
-            // 清除同组选中状态
-            el.parentElement.querySelectorAll('.single-choice').forEach(card => {
-                if(card.getAttribute('onclick').includes(group)) {
-                    card.classList.remove('selected');
-                }
-            });
-            el.classList.add('selected');
-            el.dataset.val = val;
-        }
+    document.getElementById("resultTitle").innerText =
+        "从「" + oldId + "」到「" + newId + "」";
 
-        function checkAndGo(pageNum) {
-            // 简单的校验：确保选了三个维度的特征
-            const d1 = document.querySelector(`.choice-card.selected[onclick*="dim1"]`);
-            const d2 = document.querySelector(`.choice-card.selected[onclick*="dim2"]`);
-            const d3 = document.querySelector(`.choice-card.selected[onclick*="dim3"]`);
-            
-            if(!d1 || !d2 || !d3) {
-                showToast("请完成身份维度的选择");
-                return;
+    const ctx = document.getElementById('lifeChart').getContext('2d');
+
+    const data = {
+        labels: ['2024', '2025', '2026'],
+        datasets: [{
+            data: [20, 30, 85],
+            borderColor: '#ffcc33',
+            tension: 0.4
+        }]
+    };
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            plugins: { legend: { display: false }},
+            scales: {
+                y: { display: false }
             }
-            state.codeStr = (d1.dataset.val + d2.dataset.val + d3.dataset.val).toUpperCase() + "-" + Math.floor(Math.random()*99 + 10);
-            goPage(pageNum);
         }
+    });
 
-        // 生成最终结果
-        function generateFinal() {
-            state.nickname = document.getElementById('nickname').value || '匿名者';
-            let customFear = document.getElementById('worst-fear').value;
-            if(!customFear) {
-                const selected = document.querySelector('.multi-choice.selected span');
-                state.fear = selected ? selected.innerText : "在平庸中度过一生，没有留下任何痕迹。";
-            } else {
-                state.fear = customFear;
-            }
+    if (currentCount < target) {
+        currentCount += 1;
+        updateProgress();
+    }
+}
 
-            // 稀有度算法
-            const rand = Math.random();
-            if(rand < 0.05) { // 5%
-                state.rarityLevel = "传说级 LEGENDARY";
-                state.rarityColor = "linear-gradient(135deg, #ffd700, #ff8c00)";
-            } else if(rand < 0.25) { // 20%
-                state.rarityLevel = "史诗级 EPIC";
-                state.rarityColor = "linear-gradient(135deg, var(--secondary), var(--primary))";
-            } else { // 75%
-                state.rarityLevel = "稀有级 RARE";
-                state.rarityColor = "linear-gradient(135deg, #00f0ff, #0055ff)";
-            }
+function downloadImage() {
+    html2canvas(document.querySelector("#captureArea")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "人生重启K线.png";
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+}
 
-            // 渲染数据到证书
-            const d = new Date();
-            document.getElementById('cert-date').innerText = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-            document.getElementById('final-code').innerText = state.codeStr;
-            const badge = document.getElementById('cert-rarity');
-            badge.innerText = state.rarityLevel;
-            badge.style.background = state.rarityColor;
-            
-            document.getElementById('tag-name').innerText = `ID: ${state.nickname}`;
-            
-            let userFocus = document.getElementById('focus-thing').value;
-            document.getElementById('tag-focus').innerText = userFocus ? `核心目标:${userFocus.substring(0,6)}` : "专注力锁定";
-            
-            document.getElementById('cert-fear').innerText = state.fear;
+updateProgress();
+simulateGrowth();
 
-            updateShareText();
-            goPage(5);
-            triggerConfetti();
-        }
+</script>
 
-        // 粒子特效
-        function triggerConfetti() {
-            var duration = 3 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) { return clearInterval(interval); }
-                var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-
-        // 辅助功能
-        function updateShareText() {
-            const type = document.getElementById('share-tone').value;
-            let text = "";
-            let r = state.rarityLevel.split(" ")[0];
-            if(type === 'ruthless') {
-                text = `如果不想再被平庸恶心，就亲手干掉过去的自己。我的新生代码是【${state.codeStr}】，居然抽到了全网仅有的${r}。谁敢来碰碰运气？`;
-            } else if (type === 'versailles') {
-                text = `随便做了一个深度心理测试，一不小心抽到了【${r}】觉醒身份（代码${state.codeStr}）。2026不装了，我要拿回属于我的一切。`;
-            } else {
-                text = `今天做了一个基于Dan Koe的心理清理。直面不堪，然后重新出发。我的新生代码是${state.codeStr}，愿我们都在行动中被治愈。`;
-            }
-            document.getElementById('share-text').innerText = text;
-        }
-
-        function copyShareText() {
-            const text = document.getElementById('share-text').innerText;
-            navigator.clipboard.writeText(text).then(() => showToast("文案已复制，快去发朋友圈吧！"));
-        }
-
-        function copyAIPrompt() {
-            const text = `我正在进行自我提升的破局思考。我最害怕的未来是："${document.getElementById('worst-fear').value || '每天碌碌无为，被时代抛弃'}"。请扮演一个像Dan Koe一样犀利、直击本质的心理成长导师，给我一段不到150字的话，狠狠地骂醒我，并给我一个具体且极简的行动建议。`;
-            navigator.clipboard.writeText(text).then(() => showToast("提示词已复制！请去任意AI工具（如Kimi/ChatGPT）粘贴发送"));
-        }
-
-        // 图片导出
-        function downloadCert() {
-            const cert = document.getElementById('cert-capture');
-            const btn = document.querySelector('button[onclick="downloadCert()"]');
-            btn.innerText = "生成中...请稍候";
-            btn.style.opacity = 0.7;
-
-            html2canvas(cert, {
-                scale: 2, // 提高清晰度
-                backgroundColor: "#000000",
-                useCORS: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `新生代码_${state.codeStr}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                
-                btn.innerText = "📸 保存成功！快去分享吧";
-                btn.style.opacity = 1;
-                setTimeout(() => { btn.innerText = "📸 一键保存证书，发个朋友圈"; }, 3000);
-            }).catch(err => {
-                showToast("生成失败，请截图保存");
-                btn.innerText = "📸 一键保存证书，发个朋友圈";
-                btn.style.opacity = 1;
-            });
-        }
-
-        // Toast
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.opacity = 1;
-            setTimeout(() => { t.style.opacity = 0; }, 2500);
-        }
-    </script>
 </body>
 </html>
