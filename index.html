@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生修复指南 | Life Repair Protocol</title>
+    <title>人生修复协议 | Life Reset Protocol</title>
+    <script src="https://cdn.staticfile.org/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/7.22.10/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fcfaf7; color: #1c1917; margin: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap');
+        body { background-color: #fcfaf7; color: #1c1917; font-family: sans-serif; }
         .serif { font-family: 'Noto Serif SC', serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid #e7e5e4; }
-        textarea:focus { outline: none; border-color: #444; }
-        @media print { .no-print { display: none !important; } }
+        .card { background: white; border: 1px solid #e7e5e4; border-radius: 1.5rem; transition: all 0.3s ease; }
+        textarea { resize: none; border: none; width: 100%; height: 150px; padding: 1rem; border-radius: 1rem; background: #f9f8f6; }
+        textarea:focus { outline: 2px solid #1c1917; background: white; }
     </style>
 </head>
 <body>
@@ -26,110 +24,98 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // 简单的图标组件，兼容本地加载
-        const Icon = ({ name, size = 20, className = "" }) => {
-            useEffect(() => { lucide.createIcons(); }, []);
-            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
-        };
-
         const App = () => {
             const [state, setState] = useState(() => {
-                const saved = localStorage.getItem('life-repair-data-v2');
+                const saved = localStorage.getItem('life-reset-v3');
                 return saved ? JSON.parse(saved) : {
                     commitment: false,
-                    antiVision: { health: '', finance: '', work: '' },
-                    identity: { iam: '' }
+                    antiVision: { health: '', finance: '' },
+                    identity: ''
                 };
             });
 
             useEffect(() => {
-                localStorage.setItem('life-repair-data-v2', JSON.stringify(state));
-                lucide.createIcons(); // 初始加载图标
+                localStorage.setItem('life-reset-v3', JSON.stringify(state));
             }, [state]);
 
-            const updateField = (cat, field, val) => {
-                setState(prev => ({ ...prev, [cat]: { ...prev[cat], [field]: val } }));
-            };
-
-            const scrollTo = (id) => {
-                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-            };
+            const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
             return (
-                <div className="max-w-3xl mx-auto px-6 py-20 pb-32">
-                    {/* Header */}
-                    <section id="intro" className="min-h-[60vh] flex flex-col justify-center items-center text-center space-y-8">
-                        <h1 className="text-5xl font-bold serif tracking-tight">人生修复协议</h1>
-                        <div className="p-6 bg-white border border-stone-200 rounded-2xl italic text-stone-600 serif max-w-lg">
-                            “你想拥有的生活，建立在你不敢放手的废墟之上。”
-                        </div>
-                        <button 
-                            onClick={() => { setState(p => ({...p, commitment: true})); setTimeout(() => scrollTo('phase-1'), 100); }}
-                            className="px-10 py-4 bg-stone-900 text-white rounded-full font-bold shadow-xl hover:scale-105 transition-transform"
-                        >
-                            签写协议并进入系统
-                        </button>
-                    </section>
-
-                    {/* Phase 1 */}
-                    <section id="phase-1" className={`mt-32 space-y-12 transition-all duration-700 ${state.commitment ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
-                        <div className="flex items-center gap-3 border-b border-stone-200 pb-4">
-                            <Icon name="shield-alert" className="text-orange-600" />
-                            <h2 className="text-3xl font-bold serif">01. 反向愿景</h2>
-                        </div>
+                <div className="max-w-2xl mx-auto px-6 py-10 pb-32">
+                    {/* 头部 */}
+                    <header className="min-h-[60vh] flex flex-col justify-center items-center text-center">
+                        <h1 className="text-5xl font-bold serif mb-6">人生修复协议</h1>
+                        <p className="text-stone-400 mb-10 tracking-widest uppercase text-sm">Life Repair Protocol</p>
                         
-                        <div className="space-y-8">
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">健康与能量腐败</label>
-                                <textarea 
-                                    value={state.antiVision.health}
-                                    onChange={(e) => updateField('antiVision', 'health', e.target.value)}
-                                    placeholder="描述你不改变现状后，5年后的身体废墟..."
-                                    className="w-full h-40 p-6 bg-white border border-stone-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-stone-200"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">财务尊严丧失</label>
-                                <textarea 
-                                    value={state.antiVision.finance}
-                                    onChange={(e) => updateField('antiVision', 'finance', e.target.value)}
-                                    placeholder="如果你继续平庸，你将不得不对谁低头？"
-                                    className="w-full h-40 p-6 bg-white border border-stone-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-stone-200"
-                                />
-                            </div>
-                        </div>
-                        <button onClick={() => scrollTo('phase-2')} className="w-full py-4 border-2 border-stone-900 rounded-full font-bold hover:bg-stone-900 hover:text-white transition-all">
-                            下一步：重塑身份 →
-                        </button>
-                    </section>
-
-                    {/* Phase 2 */}
-                    <section id="phase-2" className="mt-32 space-y-12">
-                        <div className="flex items-center gap-3 border-b border-stone-200 pb-4">
-                            <Icon name="zap" className="text-yellow-500" />
-                            <h2 className="text-3xl font-bold serif">02. 身份重构</h2>
-                        </div>
-                        <textarea 
-                            value={state.identity.iam}
-                            onChange={(e) => updateField('identity', 'iam', e.target.value)}
-                            placeholder="我是谁？（例如：我是一个通过自律获得自由的创作者）"
-                            className="w-full h-48 p-8 bg-stone-900 text-stone-100 rounded-3xl shadow-2xl focus:ring-4 focus:ring-stone-700"
-                        />
-                        <div className="flex gap-4 no-print">
-                            <button onClick={() => window.print()} className="flex-1 py-4 bg-stone-800 text-white rounded-full font-bold flex items-center justify-center gap-2">
-                                <Icon name="printer" size={16} /> 导出协议
+                        {!state.commitment ? (
+                            <button 
+                                onClick={() => setState({...state, commitment: true})}
+                                className="bg-stone-900 text-white px-10 py-4 rounded-full font-bold shadow-lg hover:bg-stone-800"
+                            >
+                                签写协议并开始
                             </button>
-                            <button onClick={() => {localStorage.clear(); location.reload();}} className="px-6 py-4 text-stone-400 font-bold">重置</button>
-                        </div>
-                    </section>
+                        ) : (
+                            <button onClick={() => scrollTo('phase-1')} className="text-stone-400 animate-bounce">
+                                ⬇ 向下滑动开始修复
+                            </button>
+                        )}
+                    </header>
 
-                    {/* Fixed Nav */}
-                    <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 no-print">
-                        <div className="glass-card px-8 py-3 rounded-full flex gap-8 items-center text-[10px] font-bold text-stone-400 tracking-widest">
-                            <button onClick={() => scrollTo('intro')}>INTRO</button>
-                            <button onClick={() => scrollTo('phase-1')}>VISION</button>
-                            <button onClick={() => scrollTo('phase-2')}>IDENTITY</button>
+                    {state.commitment && (
+                        <div className="space-y-24 mt-20">
+                            {/* 阶段 1 */}
+                            <section id="phase-1" className="space-y-8">
+                                <h2 className="text-2xl font-bold serif border-b pb-4">01. 反向愿景 (你想逃离什么)</h2>
+                                <div className="card p-6 space-y-4">
+                                    <label className="text-xs font-bold text-stone-500">健康衰败的代价</label>
+                                    <textarea 
+                                        value={state.antiVision.health}
+                                        onChange={(e) => setState({...state, antiVision: {...state.antiVision, health: e.target.value}})}
+                                        placeholder="描述如果你继续挥霍身体，5年后的痛苦状态..."
+                                    />
+                                </div>
+                                <div className="card p-6 space-y-4">
+                                    <label className="text-xs font-bold text-stone-500">财务平庸的绝望</label>
+                                    <textarea 
+                                        value={state.antiVision.finance}
+                                        onChange={(e) => setState({...state, antiVision: {...state.antiVision, finance: e.target.value}})}
+                                        placeholder="如果你不努力，你将不得不忍受什么样的羞辱？"
+                                    />
+                                </div>
+                                <button onClick={() => scrollTo('phase-2')} className="w-full py-4 bg-stone-100 rounded-full font-bold">
+                                    定义新身份 →
+                                </button>
+                            </section>
+
+                            {/* 阶段 2 */}
+                            <section id="phase-2" className="space-y-8">
+                                <h2 className="text-2xl font-bold serif border-b pb-4">02. 身份重构 (你是谁)</h2>
+                                <div className="card p-8 bg-stone-900">
+                                    <label className="text-xs font-bold text-stone-500 mb-4 block">新身份宣言</label>
+                                    <textarea 
+                                        style={{background: '#1c1917', color: 'white'}}
+                                        value={state.identity}
+                                        onChange={(e) => setState({...state, identity: e.target.value})}
+                                        placeholder="我是那个即便在废墟中也能重建系统的人。"
+                                    />
+                                </div>
+                                <div className="flex gap-4">
+                                    <button onClick={() => window.print()} className="flex-1 py-4 bg-stone-900 text-white rounded-full font-bold">
+                                        导出 PDF
+                                    </button>
+                                    <button onClick={() => {localStorage.clear(); location.reload();}} className="px-6 py-4 text-stone-300">
+                                        重置
+                                    </button>
+                                </div>
+                            </section>
                         </div>
+                    )}
+
+                    {/* 极简导航 */}
+                    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md border border-stone-200 px-6 py-3 rounded-full flex gap-6 text-[10px] font-bold text-stone-400 tracking-widest shadow-xl">
+                        <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>TOP</button>
+                        <button onClick={() => scrollTo('phase-1')}>VISION</button>
+                        <button onClick={() => scrollTo('phase-2')}>IDENTITY</button>
                     </nav>
                 </div>
             );
