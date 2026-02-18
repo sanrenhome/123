@@ -3,126 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生修复协议 | Life Reset Protocol</title>
-    <script src="https://cdn.staticfile.org/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdn.staticfile.org/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.staticfile.org/babel-standalone/7.22.10/babel.min.js"></script>
+    <title>人生修复指南 | Life Repair Protocol</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap');
-        body { background-color: #fcfaf7; color: #1c1917; font-family: sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #fcfaf7; color: #1c1917; scroll-behavior: smooth; }
         .serif { font-family: 'Noto Serif SC', serif; }
-        .card { background: white; border: 1px solid #e7e5e4; border-radius: 1.5rem; transition: all 0.3s ease; }
-        textarea { resize: none; border: none; width: 100%; height: 150px; padding: 1rem; border-radius: 1rem; background: #f9f8f6; }
-        textarea:focus { outline: 2px solid #1c1917; background: white; }
+        .card { background: white; border: 1px solid #e7e5e4; border-radius: 1.5rem; padding: 2rem; shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        textarea { width: 100%; background: #f9f8f6; border-radius: 1rem; padding: 1.5rem; border: 1px solid #e7e5e4; min-height: 150px; outline: none; transition: all 0.2s; }
+        textarea:focus { background: white; border-color: #1c1917; ring: 2px solid #1c1917; }
+        .hidden-section { display: none; }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="pb-32">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+    <div class="max-w-2xl mx-auto px-6">
+        <section id="intro" class="min-h-screen flex flex-col justify-center items-center text-center space-y-8">
+            <h1 class="text-5xl md:text-6xl font-bold serif tracking-tight">人生修复指南</h1>
+            <p class="text-stone-400 uppercase tracking-[0.2em] text-xs">Life Repair Protocol v1.0</p>
+            
+            <div class="card italic serif text-stone-600 leading-relaxed text-lg max-w-lg">
+                “你想拥有的生活，建立在你不敢放手的废墟之上。”
+            </div>
 
-        const App = () => {
-            const [state, setState] = useState(() => {
-                const saved = localStorage.getItem('life-reset-v3');
-                return saved ? JSON.parse(saved) : {
-                    commitment: false,
-                    antiVision: { health: '', finance: '' },
-                    identity: ''
-                };
-            });
+            <div class="space-y-6 w-full max-w-sm">
+                <button onclick="startProtocol()" class="w-full py-4 bg-stone-900 text-white rounded-full font-bold shadow-2xl hover:scale-105 transition-transform">
+                    签写协议并开始
+                </button>
+                <p class="text-[10px] text-stone-400">数据将加密存储在您的本地浏览器中</p>
+            </div>
+        </section>
 
-            useEffect(() => {
-                localStorage.setItem('life-reset-v3', JSON.stringify(state));
-            }, [state]);
-
-            const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-
-            return (
-                <div className="max-w-2xl mx-auto px-6 py-10 pb-32">
-                    {/* 头部 */}
-                    <header className="min-h-[60vh] flex flex-col justify-center items-center text-center">
-                        <h1 className="text-5xl font-bold serif mb-6">人生修复协议</h1>
-                        <p className="text-stone-400 mb-10 tracking-widest uppercase text-sm">Life Repair Protocol</p>
-                        
-                        {!state.commitment ? (
-                            <button 
-                                onClick={() => setState({...state, commitment: true})}
-                                className="bg-stone-900 text-white px-10 py-4 rounded-full font-bold shadow-lg hover:bg-stone-800"
-                            >
-                                签写协议并开始
-                            </button>
-                        ) : (
-                            <button onClick={() => scrollTo('phase-1')} className="text-stone-400 animate-bounce">
-                                ⬇ 向下滑动开始修复
-                            </button>
-                        )}
-                    </header>
-
-                    {state.commitment && (
-                        <div className="space-y-24 mt-20">
-                            {/* 阶段 1 */}
-                            <section id="phase-1" className="space-y-8">
-                                <h2 className="text-2xl font-bold serif border-b pb-4">01. 反向愿景 (你想逃离什么)</h2>
-                                <div className="card p-6 space-y-4">
-                                    <label className="text-xs font-bold text-stone-500">健康衰败的代价</label>
-                                    <textarea 
-                                        value={state.antiVision.health}
-                                        onChange={(e) => setState({...state, antiVision: {...state.antiVision, health: e.target.value}})}
-                                        placeholder="描述如果你继续挥霍身体，5年后的痛苦状态..."
-                                    />
-                                </div>
-                                <div className="card p-6 space-y-4">
-                                    <label className="text-xs font-bold text-stone-500">财务平庸的绝望</label>
-                                    <textarea 
-                                        value={state.antiVision.finance}
-                                        onChange={(e) => setState({...state, antiVision: {...state.antiVision, finance: e.target.value}})}
-                                        placeholder="如果你不努力，你将不得不忍受什么样的羞辱？"
-                                    />
-                                </div>
-                                <button onClick={() => scrollTo('phase-2')} className="w-full py-4 bg-stone-100 rounded-full font-bold">
-                                    定义新身份 →
-                                </button>
-                            </section>
-
-                            {/* 阶段 2 */}
-                            <section id="phase-2" className="space-y-8">
-                                <h2 className="text-2xl font-bold serif border-b pb-4">02. 身份重构 (你是谁)</h2>
-                                <div className="card p-8 bg-stone-900">
-                                    <label className="text-xs font-bold text-stone-500 mb-4 block">新身份宣言</label>
-                                    <textarea 
-                                        style={{background: '#1c1917', color: 'white'}}
-                                        value={state.identity}
-                                        onChange={(e) => setState({...state, identity: e.target.value})}
-                                        placeholder="我是那个即便在废墟中也能重建系统的人。"
-                                    />
-                                </div>
-                                <div className="flex gap-4">
-                                    <button onClick={() => window.print()} className="flex-1 py-4 bg-stone-900 text-white rounded-full font-bold">
-                                        导出 PDF
-                                    </button>
-                                    <button onClick={() => {localStorage.clear(); location.reload();}} className="px-6 py-4 text-stone-300">
-                                        重置
-                                    </button>
-                                </div>
-                            </section>
-                        </div>
-                    )}
-
-                    {/* 极简导航 */}
-                    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md border border-stone-200 px-6 py-3 rounded-full flex gap-6 text-[10px] font-bold text-stone-400 tracking-widest shadow-xl">
-                        <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>TOP</button>
-                        <button onClick={() => scrollTo('phase-1')}>VISION</button>
-                        <button onClick={() => scrollTo('phase-2')}>IDENTITY</button>
-                    </nav>
+        <main id="main-content" class="hidden-section space-y-24 pt-20">
+            
+            <section id="phase-1" class="space-y-10">
+                <div class="border-b border-stone-200 pb-6">
+                    <h2 class="text-3xl font-bold serif">01. 反向愿景</h2>
+                    <p class="text-stone-500 mt-2">定义你想要逃离的痛苦现状。</p>
                 </div>
-            );
+
+                <div class="card space-y-4">
+                    <h3 class="font-bold text-sm tracking-widest uppercase">健康与能量</h3>
+                    <p class="text-xs text-stone-400">描述 5 年后你不改变习惯导致的虚弱和疾病。</p>
+                    <textarea id="health" oninput="saveData()" placeholder="开始书写你的恐惧..."></textarea>
+                </div>
+
+                <div class="card space-y-4">
+                    <h3 class="font-bold text-sm tracking-widest uppercase">财务与尊严</h3>
+                    <p class="text-xs text-stone-400">描述由于平庸导致的匮乏，以及不得不低头的时刻。</p>
+                    <textarea id="finance" oninput="saveData()" placeholder="那些让你感到羞愧的瞬间..."></textarea>
+                </div>
+
+                <button onclick="document.getElementById('phase-2').scrollIntoView()" class="w-full py-4 border-2 border-stone-900 rounded-full font-bold">
+                    下一步：身份重构 →
+                </button>
+            </section>
+
+            <section id="phase-2" class="space-y-10">
+                <div class="border-b border-stone-200 pb-6">
+                    <h2 class="text-3xl font-bold serif">02. 身份协议</h2>
+                    <p class="text-stone-500 mt-2">你不再是过去的你。定义你的新身份。</p>
+                </div>
+
+                <div class="card bg-stone-900 text-white space-y-4">
+                    <h3 class="font-bold text-sm tracking-widest uppercase text-stone-400">我是谁 (I AM)</h3>
+                    <textarea id="identity" oninput="saveData()" class="bg-stone-800 border-stone-700 text-white" placeholder="例如：我是一个通过深度工作创造价值的自由人。"></textarea>
+                </div>
+
+                <div class="flex gap-4 no-print">
+                    <button onclick="window.print()" class="flex-1 py-4 bg-stone-900 text-white rounded-full font-bold">导出协议 (PDF)</button>
+                    <button onclick="resetAll()" class="px-6 py-4 text-stone-400 text-sm">重置系统</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <nav id="navbar" class="hidden-section fixed bottom-8 left-1/2 -translate-x-1/2 no-print">
+        <div class="bg-white/80 backdrop-blur-md border border-stone-200 px-8 py-3 rounded-full flex gap-8 shadow-2xl items-center text-[10px] font-bold text-stone-400 tracking-[0.2em]">
+            <button onclick="window.scrollTo(0,0)">INTRO</button>
+            <button onclick="document.getElementById('phase-1').scrollIntoView()">VISION</button>
+            <button onclick="document.getElementById('phase-2').scrollIntoView()">IDENTITY</button>
+        </div>
+    </nav>
+
+    <script>
+        // 核心逻辑：无需 React，直接用原生 JS
+        const ids = ['health', 'finance', 'identity'];
+        
+        // 1. 启动协议
+        function startProtocol() {
+            document.getElementById('main-content').classList.remove('hidden-section');
+            document.getElementById('navbar').classList.remove('hidden-section');
+            document.getElementById('phase-1').scrollIntoView({ behavior: 'smooth' });
+            localStorage.setItem('protocol-started', 'true');
+        }
+
+        // 2. 保存数据
+        function saveData() {
+            const data = {};
+            ids.forEach(id => {
+                data[id] = document.getElementById(id).value;
+            });
+            localStorage.setItem('life-reset-v4', JSON.stringify(data));
+        }
+
+        // 3. 加载数据
+        window.onload = function() {
+            const savedData = localStorage.getItem('life-reset-v4');
+            const started = localStorage.getItem('protocol-started');
+            
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                ids.forEach(id => {
+                    if (data[id]) document.getElementById(id).value = data[id];
+                });
+            }
+
+            if (started === 'true') {
+                document.getElementById('main-content').classList.remove('hidden-section');
+                document.getElementById('navbar').classList.remove('hidden-section');
+            }
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        // 4. 重置
+        function resetAll() {
+            if (confirm('确定要清除所有自省记录吗？')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
     </script>
 </body>
 </html>
