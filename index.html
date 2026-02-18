@@ -3,173 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生修复指南 | Life Repair Guide</title>
+    <title>人生修复指南 | Life Repair Protocol</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fcfaf7; color: #1c1917; }
+        body { font-family: 'Inter', system-ui, sans-serif; background-color: #fcfaf7; color: #1c1917; }
         .serif { font-family: 'Noto Serif SC', serif; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #fcfaf7; }
-        ::-webkit-scrollbar-thumb { background: #e7e5e4; border-radius: 10px; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(231, 229, 228, 0.5); }
         @media print { .no-print { display: none !important; } }
-        /* 这里的 CSS 模拟了 Lucide 图标的显示 */
-        .icon { display: inline-block; width: 1em; height: 1em; stroke-width: 0; stroke: currentColor; fill: currentColor; }
     </style>
+</head>
+<body>
+    <div id="root"></div>
 
     <script type="importmap">
     {
       "imports": {
-        "react": "https://esm.sh/react@^18.2.0",
-        "react-dom": "https://esm.sh/react-dom@^18.2.0",
-        "lucide-react": "https://esm.sh/lucide-react@0.263.1",
-        "@google/genai": "https://esm.sh/@google/genai@1.41.0"
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "lucide-react": "https://esm.sh/lucide-react@0.263.1"
       }
     }
     </script>
-</head>
-<body>
-    <div id="root"></div>
 
     <script type="module">
         import React, { useState, useEffect } from 'react';
         import ReactDOM from 'react-dom';
         import * as Lucide from 'lucide-react';
-        import { GoogleGenAI } from "@google/genai";
 
-        // --- 数据常量 ---
         const QUOTES = [
             { cn: "你想拥有的生活，建立在你不敢放手的废墟之上。", en: "The life you want is built on the ruins of the life you are afraid to let go of." },
-            { cn: "如果你不知道自己想要什么，看看你讨厌什么。反向愿景通常比正向目标更具动力。", en: "If you don't know what you want, look at what you hate." }
+            { cn: "如果你不知道自己想要什么，看看你讨厌什么。反向愿景通常更具动力。", en: "If you don't know what you want, look at what you hate." },
+            { cn: "平庸是一种缓慢的死亡。意识到这一点并不残忍，无视它才残忍。", en: "Mediocrity is a slow death. Realizing this isn't cruel; ignoring it is." }
         ];
-
-        const INITIAL_STATE = {
-            date: new Date().toISOString().split('T')[0],
-            commitment: false,
-            antiVision: { health: '', relationships: '', finance: '', work: '', selfTalk: '', summary: '', rootCause: '' },
-            newIdentity: { naturalActions: '', iAmStatements: '', drivers: '', trueTodoList: '' },
-            planning: { skills: [{name:'', level:0, unlockCondition:''}, {name:'', level:0, unlockCondition:''}], mechanisms: [], mechanismsDetail: '', milestones: '' },
-            completedPhases: [],
-            aiOptimalPath: ''
-        };
-
-        // --- 组件部分 ---
-        const ReflectionBox = ({ title, description, value, onChange, onExpand, isExpanding, icon: Icon, minimal = false }) => (
-            <div className={`space-y-4 ${minimal ? '' : 'group'} relative`}>
-                <div className="flex justify-between items-start">
-                    <div className="space-y-1">
-                        {!minimal && (<div className="flex items-center gap-2">{Icon && <Icon className="text-orange-600/60" size={20} />}<h3 className="text-lg font-bold serif text-stone-800">{title}</h3></div>)}
-                        {minimal && <h4 className="text-xs font-bold text-stone-400 uppercase tracking-widest">{title}</h4>}
-                    </div>
-                    {onExpand && (
-                        <button onClick={onExpand} className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 text-stone-500 rounded-lg text-[10px] font-bold hover:bg-amber-50 transition-all">
-                            {isExpanding ? "扩写中..." : "AI扩写"}
-                        </button>
-                    )}
-                </div>
-                <p className="text-stone-400 text-xs">{description}</p>
-                <textarea 
-                    value={value} 
-                    onChange={(e) => onChange(e.target.value)} 
-                    placeholder="开始你的深度自省..." 
-                    className="w-full bg-white border border-stone-200 rounded-2xl p-6 text-stone-800 focus:outline-none focus:ring-4 focus:ring-stone-50 min-h-[160px] transition-all resize-none shadow-sm"
-                />
-            </div>
-        );
 
         const App = () => {
             const [state, setState] = useState(() => {
-                const saved = localStorage.getItem('life-reset-data');
-                return saved ? JSON.parse(saved) : INITIAL_STATE;
+                const saved = localStorage.getItem('life-repair-data');
+                return saved ? JSON.parse(saved) : {
+                    commitment: false,
+                    antiVision: { health: '', relationships: '', finance: '', work: '' },
+                    identity: { iam: '', actions: '' },
+                    currentPhase: 'intro'
+                };
             });
-            const [isExpanding, setIsExpanding] = useState(null);
 
             useEffect(() => {
-                localStorage.setItem('life-reset-data', JSON.stringify(state));
+                localStorage.setItem('life-repair-data', JSON.stringify(state));
             }, [state]);
 
-            const updateState = (path, value) => {
-                const keys = path.split('.');
-                const newState = { ...state };
-                let current = newState;
-                for (let i = 0; i < keys.length - 1; i++) current = current[keys[i]];
-                current[keys[keys.length - 1]] = value;
-                setState(newState);
+            const updateField = (category, field, value) => {
+                setState(prev => ({
+                    ...prev,
+                    [category]: { ...prev[category], [field]: value }
+                }));
             };
 
-            const scrollToNext = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            const simulateAIExpand = (category, field) => {
+                const currentText = state[category][field];
+                if (!currentText) return alert("请先输入一些内容，系统才能引导。");
+                
+                const prompts = [
+                    "\n\n[系统引导]：在这个问题下，你最害怕发生的‘连锁反应’是什么？",
+                    "\n\n[系统引导]：想象一个完全不受恐惧驱动的你，他会如何重写这段话？",
+                    "\n\n[系统引导]：这个痛苦的根源，是因为你在逃避哪个具体的责任？"
+                ];
+                const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+                updateField(category, field, currentText + randomPrompt);
+            };
+
+            const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
             return (
-                <div className="min-h-screen px-4 py-12">
-                    <div className="max-w-3xl mx-auto space-y-32">
+                <div className="max-w-3xl mx-auto px-6 py-20 space-y-32">
+                    {/* 引导部分 */}
+                    <section id="intro" className="min-h-[70vh] flex flex-col justify-center items-center text-center space-y-10">
+                        <div className="space-y-4">
+                            <h1 className="text-5xl md:text-7xl font-bold serif tracking-tight">人生修复协议</h1>
+                            <p className="text-stone-400 font-medium tracking-widest uppercase text-sm">Life Repair Protocol v1.0</p>
+                        </div>
                         
-                        {/* 引导页 */}
-                        <section id="intro" className="min-h-[80vh] flex flex-col justify-center items-center text-center space-y-8">
-                            <h1 className="text-4xl md:text-6xl font-bold serif">人生修复指南</h1>
-                            <div className="bg-white border p-8 rounded-3xl text-left space-y-6 shadow-sm">
-                                {QUOTES.map((q, i) => (
-                                    <div key={i}><p className="serif text-lg">“{q.cn}”</p></div>
-                                ))}
-                            </div>
-                            <div className="flex flex-col gap-6 w-full max-w-sm">
-                                <label className="flex items-center gap-3 cursor-pointer">
-                                    <input type="checkbox" checked={state.commitment} onChange={(e) => updateState('commitment', e.target.checked)} />
-                                    <span className="text-stone-500">我承诺今天花一整天深度自省</span>
-                                </label>
-                                <button 
-                                    disabled={!state.commitment} 
-                                    onClick={() => scrollToNext('phase-1')}
-                                    className={`py-4 rounded-full font-bold ${state.commitment ? 'bg-stone-900 text-stone-50' : 'bg-stone-200 text-stone-400'}`}
-                                >
-                                    开始修复 ↓
-                                </button>
-                            </div>
-                        </section>
+                        <div className="bg-white/50 border border-stone-200 p-8 rounded-3xl text-left max-w-xl italic serif text-stone-600 space-y-4">
+                            <p>“{QUOTES[0].cn}”</p>
+                            <p className="text-xs text-stone-400">— Dan Koe Philosophy</p>
+                        </div>
 
-                        {/* 阶段 1 */}
-                        <section id="phase-1" className="space-y-12">
-                            <h2 className="text-3xl font-bold serif">01. 反向愿景挖掘</h2>
-                            <ReflectionBox 
-                                title="健康与身体" 
-                                icon={Lucide.ShieldAlert}
-                                description="描述 5-10 年后最惨的样子。" 
-                                value={state.antiVision.health} 
-                                onChange={(val) => updateState('antiVision.health', val)} 
-                            />
-                            <ReflectionBox 
-                                title="财务焦虑的深度" 
-                                icon={Lucide.AlertTriangle}
-                                description="写下你不得不放弃尊严的时刻。" 
-                                value={state.antiVision.finance} 
-                                onChange={(val) => updateState('antiVision.finance', val)} 
-                            />
-                            <button onClick={() => scrollToNext('phase-2')} className="w-full py-4 border-2 border-stone-900 rounded-full font-bold hover:bg-stone-900 hover:text-white transition-all">
-                                完成第一阶段，定义身份 →
+                        <div className="flex flex-col items-center gap-6">
+                            <button 
+                                onClick={() => { setState(p => ({...p, commitment: true})); setTimeout(() => scrollTo('phase-1'), 100); }}
+                                className="px-12 py-4 bg-stone-900 text-stone-50 rounded-full font-bold hover:scale-105 transition-all shadow-xl"
+                            >
+                                签写协议并开始
                             </button>
-                        </section>
+                            <p className="text-stone-400 text-xs">这是一个私密的自省空间，数据仅保存在本地。</p>
+                        </div>
+                    </section>
 
-                        {/* 阶段 2 */}
-                        <section id="phase-2" className="space-y-12">
-                            <h2 className="text-3xl font-bold serif">02. 新身份定义</h2>
-                            <ReflectionBox 
-                                title="我是谁：坚定宣言" 
-                                icon={Lucide.Zap}
-                                description="写下 3-5 句以‘我是……的人’开头的陈述。" 
-                                value={state.newIdentity.iAmStatements} 
-                                onChange={(val) => updateState('newIdentity.iAmStatements', val)} 
+                    {/* 阶段一：反向愿景 */}
+                    <section id="phase-1" className={`space-y-16 transition-opacity duration-1000 ${state.commitment ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
+                        <div className="space-y-4">
+                            <h2 className="text-3xl font-bold serif flex items-center gap-3">
+                                <Lucide.ShieldAlert className="text-orange-600" /> 01. 定义痛苦（反向愿景）
+                            </h2>
+                            <p className="text-stone-500">如果你不改变，5年后最悲惨的现状会是什么样？</p>
+                        </div>
+
+                        {[
+                            { id: 'health', label: '健康与能量', desc: '描述那种由于不自律导致的臃肿、疲惫和慢性病。' },
+                            { id: 'finance', label: '财务与尊严', desc: '描述由于平庸导致的财务匮乏，以及不得不低头的时刻。' }
+                        ].map(item => (
+                            <div key={item.id} className="group space-y-4">
+                                <div className="flex justify-between items-end">
+                                    <label className="text-sm font-bold text-stone-800 uppercase tracking-wider">{item.label}</label>
+                                    <button 
+                                        onClick={() => simulateAIExpand('antiVision', item.id)}
+                                        className="text-[10px] font-bold px-3 py-1 bg-stone-100 rounded-md hover:bg-stone-900 hover:text-white transition-all uppercase"
+                                    >
+                                        深度引导
+                                    </button>
+                                </div>
+                                <textarea 
+                                    value={state.antiVision[item.id]}
+                                    onChange={(e) => updateField('antiVision', item.id, e.target.value)}
+                                    placeholder={item.desc}
+                                    className="w-full h-40 bg-white border-stone-200 border-2 rounded-2xl p-6 focus:ring-4 focus:ring-stone-100 focus:outline-none transition-all resize-none shadow-sm"
+                                />
+                            </div>
+                        ))}
+                        
+                        <button onClick={() => scrollTo('phase-2')} className="w-full py-4 border-2 border-stone-900 rounded-full font-bold hover:bg-stone-900 hover:text-white transition-all">
+                            保存并进入下一步：身份重塑 →
+                        </button>
+                    </section>
+
+                    {/* 阶段二：身份重塑 */}
+                    <section id="phase-2" className="space-y-16">
+                         <div className="space-y-4">
+                            <h2 className="text-3xl font-bold serif flex items-center gap-3">
+                                <Lucide.Zap className="text-yellow-500" /> 02. 身份协议
+                            </h2>
+                            <p className="text-stone-500">你不再是那个旧的你。现在，请定义新身份的底层逻辑。</p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <label className="text-sm font-bold text-stone-800 uppercase tracking-wider">我是谁 (I Am Statements)</label>
+                            <textarea 
+                                value={state.identity.iam}
+                                onChange={(e) => updateField('identity', 'iam', e.target.value)}
+                                placeholder="例如：我是一个每天凌晨5点起床、通过写作创造价值的人。"
+                                className="w-full h-40 bg-stone-900 text-stone-100 rounded-2xl p-6 focus:outline-none transition-all shadow-2xl"
                             />
-                            <button onClick={() => window.print()} className="w-full py-4 bg-stone-900 text-white rounded-full font-bold shadow-lg">
-                                导出协议 / 打印 PDF
+                        </div>
+
+                        <div className="flex gap-4 no-print">
+                            <button onClick={() => window.print()} className="flex-1 py-4 bg-stone-900 text-white rounded-full font-bold flex items-center justify-center gap-2">
+                                <Lucide.Printer size={18} /> 导出为 PDF
                             </button>
-                        </section>
-                    </div>
+                            <button onClick={() => { localStorage.clear(); location.reload(); }} className="px-8 py-4 border text-stone-400 rounded-full font-bold hover:text-red-500 transition-all">
+                                重置系统
+                            </button>
+                        </div>
+                    </section>
 
                     {/* 底部导航 */}
-                    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md border px-8 py-3 rounded-full flex gap-6 shadow-xl no-print">
-                        <button onClick={() => scrollToNext('intro')} className="text-xs font-bold text-stone-400">首页</button>
-                        <button onClick={() => scrollToNext('phase-1')} className="text-xs font-bold text-stone-400">痛点</button>
-                        <button onClick={() => scrollToNext('phase-2')} className="text-xs font-bold text-stone-400">身份</button>
+                    <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-4 no-print">
+                        <div className="glass-card px-6 py-3 rounded-full flex gap-8 shadow-2xl items-center text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+                            <button onClick={() => scrollTo('intro')} className="hover:text-stone-900 transition-colors">协议中心</button>
+                            <div className="w-px h-4 bg-stone-200"></div>
+                            <button onClick={() => scrollTo('phase-1')} className="hover:text-stone-900 transition-colors">痛苦定义</button>
+                            <div className="w-px h-4 bg-stone-200"></div>
+                            <button onClick={() => scrollTo('phase-2')} className="hover:text-stone-900 transition-colors">身份重构</button>
+                        </div>
                     </nav>
                 </div>
             );
