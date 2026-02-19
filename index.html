@@ -3,394 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生修复指南 v2.0</title>
+    <title>24小时生活重塑 - Dan Koe 风格</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #fcfaf7; --text: #1c1917; }
-        .dark { --bg: #171717; --text: #e7e5e4; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: all 0.4s; }
-        .serif { font-family: 'Noto Serif SC', serif; }
-        .card { background: white; border: 1px solid #e7e5e4; border-radius: 1.5rem; padding: 2rem; }
-        .dark .card { background: #262626; border-color: #44403c; }
-        textarea { background: #f9f8f6; border: 1px solid #e7e5e4; }
-        .dark textarea { background: #171717; border-color: #44403c; color: #e7e5e4; }
-        .section-hidden { display: none; }
-        input[type="range"] { accent-color: #1c1917; }
-        .dark input[type="range"] { accent-color: #d1d5db; }
+        body { font-family: 'Inter', sans-serif; background-color: #FDFDFD; color: #1A1A1A; }
+        .card { background: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #F0F0F0; }
+        .checkbox-custom:checked { background-color: #556B2F; border-color: #556B2F; }
     </style>
 </head>
-<body class="pb-32">
-<div class="max-w-3xl mx-auto px-6">
+<body class="p-6 md:p-12">
+    <div class="max-w-2xl mx-auto">
+        <header class="mb-12 text-center">
+            <h1 class="text-3xl font-light tracking-tight mb-2">24-Hour Life Reset</h1>
+            <p class="text-gray-400 text-sm italic">"Focus is the modern IQ." — Dan Koe</p>
+        </header>
 
-    <!-- 顶部栏 -->
-    <div class="flex justify-between items-center py-6 sticky top-0 bg-inherit z-50">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl font-bold serif">人生修复 v2.0</span>
-            <div id="progress-bar" class="h-1.5 bg-stone-200 dark:bg-stone-700 rounded-full w-32 overflow-hidden">
-                <div id="progress-fill" class="h-full bg-stone-900 dark:bg-white w-0 transition-all"></div>
+        <div class="card p-6 mb-8">
+            <div class="flex justify-between mb-2 text-sm font-medium">
+                <span>重塑进度</span>
+                <span id="progress-text">0%</span>
             </div>
-            <span id="progress-text" class="text-xs font-mono text-stone-500">0%</span>
+            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-[#556B2F] h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
         </div>
-        <div class="flex items-center gap-3">
-            <button onclick="toggleDark()" class="w-10 h-10 flex items-center justify-center text-2xl rounded-2xl border border-stone-300 dark:border-stone-600 hover:scale-110">🌙</button>
-            <button onclick="exportPDF()" class="px-6 py-2.5 text-sm font-bold bg-stone-900 text-white dark:bg-white dark:text-stone-900 rounded-3xl">导出 PDF</button>
-            <button onclick="shareAsImage()" class="px-6 py-2.5 text-sm font-bold border border-stone-900 dark:border-white rounded-3xl">分享卡片</button>
+
+        <div id="task-container" class="space-y-8">
+            <section>
+                <h2 class="text-lg font-semibold mb-4 text-[#556B2F]">Phase 1: 清理 (Environment)</h2>
+                <div class="space-y-3">
+                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
+                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
+                        <span>整理物理桌面与房间空间</span>
+                    </label>
+                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
+                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
+                        <span>清空手机/电脑桌面通知与垃圾文件</span>
+                    </label>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-semibold mb-4 text-[#556B2F]">Phase 2: 计划 (System)</h2>
+                <div class="space-y-3">
+                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
+                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
+                        <span>定义未来 6 个月的核心目标</span>
+                    </label>
+                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
+                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
+                        <span>拆解明日的 3 个非完成不可的任务</span>
+                    </label>
+                </div>
+            </section>
         </div>
+
+        <footer class="mt-20 text-center text-gray-300 text-xs">
+            Built with Intent. No-code Implementation.
+        </footer>
     </div>
 
-    <!-- 原有 header -->
-    <header id="intro" class="min-h-screen flex flex-col justify-center items-center text-center space-y-10">
-        <div class="space-y-4">
-            <h1 class="text-5xl md:text-6xl font-bold serif tracking-tight">人生修复指南</h1>
-            <p class="text-stone-400 dark:text-stone-500 uppercase tracking-[0.3em] text-xs">Based on Dan Koe Philosophy • v2.0</p>
-        </div>
-        <div class="card italic serif text-stone-600 dark:text-stone-400 leading-relaxed text-lg max-w-xl border-l-4 border-l-stone-900">
-            “身份驱动行为。除非你改变‘我是谁’，否则你的‘做什么’永远只是痛苦的博弈。”
-        </div>
-        <button onclick="showSection('phase-anti')" class="px-12 py-5 bg-stone-900 text-white rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-all">
-            签署协议：我承诺今天彻底自省
-        </button>
-    </header>
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+            const percentage = Math.round((checked.length / checkboxes.length) * 100);
+            
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').innerText = percentage + '%';
+            
+            // 保存到本地存储
+            const status = Array.from(checkboxes).map(cb => cb.checked);
+            localStorage.setItem('dan-koe-tasks', JSON.stringify(status));
+        }
 
-    <!-- 其余三个 section 与原版一致，仅增加 dark 类兼容 -->
-    <section id="phase-anti" class="section-hidden space-y-12 py-20">
-        <!-- 原内容保持不变，复制你原来的 phase-anti 即可 -->
-        <div class="border-b border-stone-200 dark:border-stone-700 pb-8">
-            <h2 class="text-4xl font-bold serif">01. 反向愿景挖掘</h2>
-            <p class="text-stone-500 dark:text-stone-400 mt-4">如果你不改变，看看 5-10 年后那个腐烂的未来。</p>
-        </div>
-        <!-- 四个 textarea 保持原样，id 不变 -->
-        <div class="grid gap-8">
-            <div class="card">
-                <h3 class="font-bold mb-2 flex items-center gap-2">🩺 健康与身体</h3>
-                <textarea id="av-health" oninput="sync()" placeholder="我看到的未来是..."></textarea>
-            </div>
-            <!-- finance, relationships, summary 同理 -->
-            <!-- 省略以节省篇幅，保持你原来的三个 + summary -->
-        </div>
-        <button onclick="showSection('phase-identity')" class="w-full py-5 bg-stone-900 text-white rounded-full font-bold text-lg">进入下一阶段：定义新身份 →</button>
-    </section>
-
-    <!-- phase-identity 同理，保持原样 -->
-
-    <!-- phase-plan 重磅升级 -->
-    <section id="phase-plan" class="section-hidden space-y-12 py-20">
-        <div class="border-b border-stone-200 dark:border-stone-700 pb-8">
-            <h2 class="text-4xl font-bold serif">03. 运行系统</h2>
-            <p class="text-stone-500 dark:text-stone-400 mt-4">把愿景拆解为可执行的硬技能和每日机制。</p>
-        </div>
-
-        <!-- 动态技能 -->
-        <div class="card">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold uppercase tracking-widest text-xs">核心技能解锁</h3>
-                <button onclick="addSkill()" class="px-5 py-2 text-xs font-bold border border-stone-900 dark:border-white rounded-3xl flex items-center gap-2">
-                    <span class="text-lg leading-none">+</span> 添加技能
-                </button>
-            </div>
-            <div id="skills-container" class="space-y-8"></div>
-        </div>
-
-        <!-- 每日承诺打卡 -->
-        <div class="card">
-            <h3 class="font-bold mb-2">每日不可妥协任务</h3>
-            <p class="text-xs text-stone-400 mb-6">今天必须完成的 3-5 件事，打卡后自动记录 streak</p>
-            <div id="daily-list" class="space-y-4"></div>
-            <button onclick="addDaily()" class="mt-6 w-full py-3 border border-dashed border-stone-400 dark:border-stone-600 rounded-2xl text-sm font-medium">+ 添加新任务</button>
-            <div class="mt-8 flex items-center justify-between bg-stone-100 dark:bg-stone-800 p-6 rounded-3xl">
-                <div>
-                    <div class="text-xs text-stone-500">连续打卡</div>
-                    <div id="streak" class="streak font-bold text-5xl text-amber-500">0</div>
-                    <div class="text-xs text-stone-500">天 🔥</div>
-                </div>
-                <button onclick="markTodayComplete()" class="px-10 py-5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-3xl text-lg transition">✅ 标记今天完成</button>
-            </div>
-        </div>
-
-        <div class="flex gap-4">
-            <button onclick="exportPDF()" class="flex-1 py-5 bg-stone-900 text-white rounded-full font-bold">导出我的生命协议 PDF</button>
-            <button onclick="resetAll()" class="px-8 py-5 text-stone-300 font-bold hover:text-red-500">重置全部</button>
-        </div>
-    </section>
-</div>
-
-<!-- 底部导航栏 -->
-<nav id="navbar" class="section-hidden fixed bottom-10 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-stone-900/90 backdrop-blur-xl border border-stone-200 dark:border-stone-700 px-10 py-4 rounded-full flex gap-8 shadow-2xl">
-    <button onclick="showSection('intro')" class="text-xs font-bold tracking-widest">INTRO</button>
-    <button onclick="showSection('phase-anti')" class="text-xs font-bold tracking-widest">ANTI-VISION</button>
-    <button onclick="showSection('phase-identity')" class="text-xs font-bold tracking-widest">IDENTITY</button>
-    <button onclick="showSection('phase-plan')" class="text-xs font-bold tracking-widest">SYSTEM</button>
-</nav>
-
-<script>
-// ==================== 核心功能 ====================
-let skills = [
-    {id:1, name:"写作", level:0},
-    {id:2, name:"专注", level:0},
-    {id:3, name:"阅读", level:0},
-    {id:4, name:"执行力", level:0}
-];
-
-let dailyTasks = [
-    {id:1, text:"4小时深度工作", done:false},
-    {id:2, text:"阅读20页", done:false},
-    {id:3, text:"运动30分钟", done:false}
-];
-
-let streakData = { lastDate: null, streak: 0 };
-
-const fieldIds = ['av-health','av-finance','av-relationships','av-summary','id-iam','id-drivers','plan-mechanisms'];
-
-// Tailwind dark mode
-function toggleDark() {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-}
-
-// 显示 section
-function showSection(id) {
-    document.querySelectorAll('.section-hidden').forEach(s => s.classList.add('section-hidden'));
-    document.getElementById(id).classList.remove('section-hidden');
-    if (id !== 'intro') document.getElementById('navbar').classList.remove('section-hidden');
-    window.scrollTo({top:0, behavior:'smooth'});
-    updateProgress();
-}
-
-// 动态渲染技能
-function renderSkills() {
-    const container = document.getElementById('skills-container');
-    container.innerHTML = '';
-    skills.forEach((skill, index) => {
-        const div = document.createElement('div');
-        div.className = 'skill-item flex flex-col gap-3';
-        div.innerHTML = `
-            <div class="flex justify-between items-center">
-                <input value="${skill.name}" oninput="updateSkillName(${index}, this.value)" class="bg-transparent border-b border-stone-300 dark:border-stone-600 focus:border-stone-900 dark:focus:border-white outline-none font-bold text-lg w-40">
-                <div class="flex items-center gap-4">
-                    <span id="skill-val-${index}" class="font-mono text-sm whitespace-nowrap">Level ${skill.level}</span>
-                    <button onclick="deleteSkill(${index})" class="text-red-400 hover:text-red-600 text-xl leading-none">×</button>
-                </div>
-            </div>
-            <input type="range" min="0" max="100" value="${skill.level}" oninput="updateSkillLevel(${index}, this.value)">
-        `;
-        container.appendChild(div);
-    });
-}
-
-function updateSkillName(index, val) { skills[index].name = val; sync(); }
-function updateSkillLevel(index, val) {
-    skills[index].level = parseInt(val);
-    document.getElementById(`skill-val-${index}`).textContent = `Level ${val}`;
-    sync();
-    updateProgress();
-}
-function addSkill() {
-    skills.push({id: Date.now(), name:"新技能", level:0});
-    renderSkills();
-    sync();
-}
-function deleteSkill(index) {
-    if(skills.length <= 1) return alert("至少保留一个技能");
-    skills.splice(index,1);
-    renderSkills();
-    sync();
-}
-
-// 每日任务
-function renderDaily() {
-    const container = document.getElementById('daily-list');
-    container.innerHTML = '';
-    dailyTasks.forEach((task, i) => {
-        const div = document.createElement('div');
-        div.className = 'flex items-center gap-3';
-        div.innerHTML = `
-            <input type="checkbox" ${task.done?'checked':''} onchange="toggleDaily(${i},this.checked)" class="w-5 h-5 accent-stone-900 dark:accent-white">
-            <input value="${task.text}" oninput="updateDailyText(${i},this.value)" class="flex-1 bg-transparent border-b border-stone-300 dark:border-stone-600 focus:border-stone-900 outline-none">
-            <button onclick="deleteDaily(${i})" class="text-stone-400 hover:text-red-500">×</button>
-        `;
-        container.appendChild(div);
-    });
-}
-function toggleDaily(i, checked) {
-    dailyTasks[i].done = checked;
-    sync();
-}
-function updateDailyText(i, val) { dailyTasks[i].text = val; sync(); }
-function addDaily() {
-    dailyTasks.push({id:Date.now(), text:"新任务", done:false});
-    renderDaily();
-    sync();
-}
-function deleteDaily(i) {
-    if(dailyTasks.length <= 1) return;
-    dailyTasks.splice(i,1);
-    renderDaily();
-    sync();
-}
-
-// 打卡 & streak
-function markTodayComplete() {
-    const today = new Date().toISOString().slice(0,10);
-    const allDone = dailyTasks.every(t => t.done);
-    if (!allDone) return alert("请先完成今天的所有任务再打卡！");
-
-    if (streakData.lastDate === today) {
-        alert("今天已经打卡啦！");
-        return;
-    }
-
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
-    if (streakData.lastDate === yesterday) {
-        streakData.streak++;
-    } else {
-        streakData.streak = 1;
-    }
-    streakData.lastDate = today;
-
-    document.getElementById('streak').textContent = streakData.streak;
-    sync();
-    alert(`🎉 打卡成功！当前连续 ${streakData.streak} 天`);
-}
-
-// 进度计算
-function updateProgress() {
-    let filled = 0;
-    fieldIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el.value.trim().length > 10) filled++;
-    });
-    // 技能平均等级 >30 算完成
-    const avgSkill = skills.reduce((a,s)=>a+s.level,0) / skills.length;
-    if (avgSkill > 30) filled++;
-
-    const total = fieldIds.length + 1;
-    const percent = Math.round((filled / total) * 100);
-    document.getElementById('progress-fill').style.width = percent + '%';
-    document.getElementById('progress-text').textContent = percent + '%';
-}
-
-// 保存 & 加载
-function sync() {
-    const data = {skills, dailyTasks, streakData};
-    fieldIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) data[id] = el.value;
-    });
-    localStorage.setItem('life-repair-v2', JSON.stringify(data));
-    updateProgress();
-}
-
-function loadData() {
-    const saved = localStorage.getItem('life-repair-v2');
-    if (saved) {
-        const data = JSON.parse(saved);
-        skills = data.skills || skills;
-        dailyTasks = data.dailyTasks || dailyTasks;
-        streakData = data.streakData || streakData;
-
-        fieldIds.forEach(id => {
-            if (data[id]) {
-                const el = document.getElementById(id);
-                if (el) el.value = data[id];
+        // 页面加载时恢复数据
+        window.onload = () => {
+            const saved = JSON.parse(localStorage.getItem('dan-koe-tasks'));
+            if (saved) {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                saved.forEach((isChecked, index) => {
+                    if(checkboxes[index]) checkboxes[index].checked = isChecked;
+                });
+                updateProgress();
             }
-        });
-    }
-    renderSkills();
-    renderDaily();
-    document.getElementById('streak').textContent = streakData.streak;
-    updateProgress();
-}
-
-// PDF 导出（超美）
-async function exportPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
-
-    // 标题
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(28);
-    doc.text("人生修复协议", 105, 30, {align:"center"});
-
-    doc.setFontSize(12);
-    doc.text(`签署日期：${new Date().toLocaleDateString('zh-CN')}`, 105, 45, {align:"center"});
-
-    // 内容
-    let y = 60;
-    doc.setFontSize(14);
-    doc.text("01 反向愿景", 20, y); y+=10;
-    doc.setFontSize(11);
-    doc.text(document.getElementById('av-summary').value || "未填写", 20, y, {maxWidth:170}); y+=30;
-
-    // 身份
-    doc.setFontSize(14);
-    doc.text("02 新身份", 20, y); y+=10;
-    doc.setFontSize(11);
-    doc.text(document.getElementById('id-iam').value || "未填写", 20, y, {maxWidth:170}); y+=40;
-
-    // 技能
-    doc.setFontSize(14);
-    doc.text("03 核心技能", 20, y); y+=10;
-    skills.forEach(s => {
-        doc.text(`${s.name} — Level ${s.level}`, 20, y);
-        y += 8;
-    });
-
-    // 打卡
-    doc.text(`当前 streak：${streakData.streak} 天 🔥`, 20, y+10);
-
-    doc.setFontSize(10);
-    doc.text("—— 我已签署此协议，从今天起彻底改变 ——", 105, 280, {align:"center"});
-
-    doc.save(`人生修复协议_${new Date().toISOString().slice(0,10)}.pdf`);
-}
-
-// 分享卡片 PNG
-async function shareAsImage() {
-    const card = document.createElement('div');
-    card.style.cssText = `width:600px;height:800px;background:linear-gradient(135deg,#1c1917,#44403c);color:white;padding:60px;display:flex;flex-direction:column;justify-content:space-between;font-family:system-ui;border-radius:24px;position:fixed;left:-9999px;`;
-    card.innerHTML = `
-        <div>
-            <div style="font-size:48px;font-weight:900;">人生修复指南</div>
-            <div style="margin-top:40px;font-size:22px;line-height:1.6;">${document.getElementById('id-iam').value || '我是一个每天都在变更好的人'}</div>
-        </div>
-        <div style="text-align:center;">
-            <div style="font-size:80px;">${streakData.streak}</div>
-            <div style="font-size:18px;opacity:0.7;">天连续打卡</div>
-            <div style="margin-top:60px;font-size:14px;opacity:0.6;">${new Date().toLocaleDateString('zh-CN')}</div>
-        </div>
-    `;
-    document.body.appendChild(card);
-
-    const canvas = await html2canvas(card, {scale:2});
-    document.body.removeChild(card);
-
-    const link = document.createElement('a');
-    link.download = '我的修复卡片.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-}
-
-// 重置
-function resetAll() {
-    if(confirm('确定要清空所有数据重新开始吗？')) {
-        localStorage.removeItem('life-repair-v2');
-        location.reload();
-    }
-}
-
-// 初始化
-window.onload = () => {
-    // 主题
-    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-    }
-    loadData();
-    // 默认显示 intro
-    showSection('intro');
-};
-</script>
+        };
+    </script>
 </body>
 </html>
