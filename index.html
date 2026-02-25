@@ -2,93 +2,1063 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>24小时生活重塑 - Dan Koe 风格</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>人生修复指南 · 2026新生代码</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #FDFDFD; color: #1A1A1A; }
-        .card { background: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #F0F0F0; }
-        .checkbox-custom:checked { background-color: #556B2F; border-color: #556B2F; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --bg-beige: #F9F7F0;
+            --text-charcoal: #2C2C2C;
+            --accent-gold: #D4A574;
+            --accent-purple: #6B5B95;
+            --border-light: #E5E1D8;
+        }
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-beige);
+            color: var(--text-charcoal);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hammer-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+        
+        .hammer-card:active {
+            transform: scale(0.98);
+        }
+        
+        .option-card {
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .option-card.selected {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, rgba(212,165,116,0.1) 0%, rgba(212,165,116,0.05) 100%);
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: var(--border-light);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-purple) 100%);
+            transition: width 0.5s ease;
+        }
+        
+        .btn-primary {
+            background: var(--text-charcoal);
+            color: white;
+            border-radius: 28px;
+            padding: 16px 32px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--text-charcoal);
+            color: var(--text-charcoal);
+            border-radius: 28px;
+            padding: 14px 30px;
+            font-weight: 600;
+        }
+        
+        .rarity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .rarity-legendary {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255,215,0,0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        .rarity-epic {
+            background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);
+            color: white;
+        }
+        
+        .rarity-rare {
+            background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+            color: white;
+        }
+        
+        .rarity-common {
+            background: linear-gradient(135deg, #95A5A6 0%, #7F8C8D 100%);
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.5); }
+            50% { box-shadow: 0 0 30px rgba(255,215,0,0.8); }
+        }
+        
+        .certificate-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .certificate-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .code-display {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        .tag-wall {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tag {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .ai-prompt-box {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            border: 1px solid #333;
+        }
+        
+        textarea, input {
+            width: 100%;
+            background: #FAFAFA;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            background: white;
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.3;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 10;
+        }
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-2xl mx-auto">
-        <header class="mb-12 text-center">
-            <h1 class="text-3xl font-light tracking-tight mb-2">24-Hour Life Reset</h1>
-            <p class="text-gray-400 text-sm italic">"Focus is the modern IQ." — Dan Koe</p>
-        </header>
-
-        <div class="card p-6 mb-8">
-            <div class="flex justify-between mb-2 text-sm font-medium">
-                <span>重塑进度</span>
-                <span id="progress-text">0%</span>
+<body>
+    <!-- 进度条 -->
+    <div class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md px-4 pt-4 pb-2">
+        <div class="max-w-md mx-auto">
+            <div class="flex justify-between text-xs text-gray-500 mb-2">
+                <span>新生进度</span>
+                <span id="progress-text">1/6</span>
             </div>
-            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                <div id="progress-bar" class="bg-[#556B2F] h-full transition-all duration-500" style="width: 0%"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 16%"></div>
             </div>
         </div>
+    </div>
 
-        <div id="task-container" class="space-y-8">
-            <section>
-                <h2 class="text-lg font-semibold mb-4 text-[#556B2F]">Phase 1: 清理 (Environment)</h2>
-                <div class="space-y-3">
-                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
-                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
-                        <span>整理物理桌面与房间空间</span>
-                    </label>
-                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
-                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
-                        <span>清空手机/电脑桌面通知与垃圾文件</span>
-                    </label>
-                </div>
-            </section>
-
-            <section>
-                <h2 class="text-lg font-semibold mb-4 text-[#556B2F]">Phase 2: 计划 (System)</h2>
-                <div class="space-y-3">
-                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
-                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
-                        <span>定义未来 6 个月的核心目标</span>
-                    </label>
-                    <label class="card p-4 flex items-center cursor-pointer hover:bg-gray-50 transition">
-                        <input type="checkbox" class="checkbox-custom w-5 h-5 rounded border-gray-300 mr-4 transition" onchange="updateProgress()">
-                        <span>拆解明日的 3 个非完成不可的任务</span>
-                    </label>
-                </div>
-            </section>
+    <!-- 第1页：开场 -->
+    <div class="page active" id="page-1">
+        <div class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full pt-16">
+            <div class="text-center mb-8">
+                <div class="text-xs font-bold tracking-widest text-gray-400 mb-4 uppercase">Based on Dan Koe</div>
+                <h1 class="serif text-4xl font-black mb-4 leading-tight text-gray-900">
+                    人生修复指南<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 to-purple-600">2026新生代码</span>
+                </h1>
+                <p class="text-gray-600 text-lg leading-relaxed mb-2">"敢玩的人都不简单"</p>
+                <p class="text-gray-400 text-sm">用5分钟，重写你的身份底层代码</p>
+            </div>
+            
+            <div class="hammer-card p-6 mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">你的代号（选填）</label>
+                <input type="text" id="nickname" placeholder="输入昵称或留白" maxlength="12" class="text-center text-lg">
+                <p class="text-xs text-gray-400 mt-2 text-center">这将出现在你的新生证书上</p>
+            </div>
+            
+            <button onclick="nextPage()" class="btn-primary w-full text-lg">
+                开始修复 →
+            </button>
+            
+            <p class="text-center text-xs text-gray-400 mt-6">已帮助 <span class="font-bold text-gray-600">12,847</span> 人完成身份重构</p>
         </div>
+    </div>
 
-        <footer class="mt-20 text-center text-gray-300 text-xs">
-            Built with Intent. No-code Implementation.
-        </footer>
+    <!-- 第2页：反向愿景 -->
+    <div class="page" id="page-2">
+        <div class="flex-1 max-w-md mx-auto w-full pt-16">
+            <h2 class="serif text-2xl font-bold mb-2">如果不改变，<br>5年后你会怎样？</h2>
+            <p class="text-gray-500 text-sm mb-6">选择所有击中你的选项（多选）</p>
+            
+            <div class="space-y-3 mb-6" id="fear-options">
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">💼 职业停滞</div>
+                            <div class="text-xs text-gray-500 mt-1">还在同一个不喜欢的工作中抱怨，加薪幅度跑不过通胀</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">💸 财务焦虑</div>
+                            <div class="text-xs text-gray-500 mt-1">银行账户依然捉襟见肘，为每一笔意外支出 panic</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">🫃 身体崩塌</div>
+                            <div class="text-xs text-gray-500 mt-1">身体因久坐和垃圾食品而臃肿，体检报告不敢看</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">💔 关系空心化</div>
+                            <div class="text-xs text-gray-500 mt-1">亲密关系变得可有可无，深夜emo无人可诉</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">🧠 认知退化</div>
+                            <div class="text-xs text-gray-500 mt-1">创造力被短视频彻底杀死，无法专注超过5分钟</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">📁 梦想落灰</div>
+                            <div class="text-xs text-gray-500 mt-1">那个"总有一天"要做的项目，成为从未打开过的文件夹</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">😰 焦虑常态</div>
+                            <div class="text-xs text-gray-500 mt-1">焦虑成为默认情绪状态，睡前 routine 是复盘后悔</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">🪞 自我厌恶</div>
+                            <div class="text-xs text-gray-500 mt-1">镜子里的陌生人让你失望，讨厌自己的软弱</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">⏰ 时间奴役</div>
+                            <div class="text-xs text-gray-500 mt-1">时间自由仍是奢侈品，为别人的梦想燃烧生命</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">👥 被抛弃感</div>
+                            <div class="text-xs text-gray-500 mt-1">同龄人已把你远远甩在身后，聚会插不上话</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-4 cursor-pointer" onclick="toggleOption(this, 'fear')">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded border-2 border-gray-300 flex items-center justify-center mt-0.5 checkbox"></div>
+                        <div>
+                            <div class="font-semibold text-sm">💀 精神死亡</div>
+                            <div class="text-xs text-gray-500 mt-1">彻底忘记自己曾经想要什么，眼神失去光彩</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hammer-card p-4 mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">最扎心的一句话总结（50字内）</label>
+                <textarea id="fear-summary" rows="2" maxlength="50" placeholder="我害怕5年后自己..."></textarea>
+                <div class="flex justify-between mt-2">
+                    <span class="text-xs text-gray-400" id="char-count">0/50</span>
+                    <button onclick="showAIPrompt('fear')" class="text-xs text-purple-600 font-semibold flex items-center gap-1">
+                        <span>✨ AI辅助</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="prevPage()" class="btn-secondary flex-1">返回</button>
+                <button onclick="nextPage()" class="btn-primary flex-1">继续</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第3页：新身份 -->
+    <div class="page" id="page-3">
+        <div class="flex-1 max-w-md mx-auto w-full pt-16">
+            <h2 class="serif text-2xl font-bold mb-2">选择你的<br>新身份维度</h2>
+            <p class="text-gray-500 text-sm mb-6">基于Dan Koe身份理论，单选最共振的</p>
+            
+            <div class="space-y-4 mb-8" id="identity-options">
+                <div class="option-card hammer-card p-5 cursor-pointer relative overflow-hidden" onclick="selectIdentity(this, 'A')">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-100 to-transparent rounded-bl-full opacity-50"></div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-2">👁️</div>
+                        <div class="font-bold text-lg mb-1">觉醒者 Awakening</div>
+                        <div class="text-sm text-gray-600">看清世界运行规则，不再被无意识编程控制</div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-5 cursor-pointer relative overflow-hidden" onclick="selectIdentity(this, 'C')">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-100 to-transparent rounded-bl-full opacity-50"></div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-2">🎨</div>
+                        <div class="font-bold text-lg mb-1">创造者 Creator</div>
+                        <div class="text-sm text-gray-600">从消费者转为生产者，用作品说话，建立数字资产</div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-5 cursor-pointer relative overflow-hidden" onclick="selectIdentity(this, 'W')">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-100 to-transparent rounded-bl-full opacity-50"></div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-2">⚔️</div>
+                        <div class="font-bold text-lg mb-1">战士 Warrior</div>
+                        <div class="text-sm text-gray-600">极致自律，每天对抗阻力，在不舒服中成长</div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-5 cursor-pointer relative overflow-hidden" onclick="selectIdentity(this, 'N')">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-100 to-transparent rounded-bl-full opacity-50"></div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-2">🤝</div>
+                        <div class="font-bold text-lg mb-1">连接者 Connector</div>
+                        <div class="text-sm text-gray-600">建立深度关系，影响他人，构建支持性网络</div>
+                    </div>
+                </div>
+                
+                <div class="option-card hammer-card p-5 cursor-pointer relative overflow-hidden" onclick="selectIdentity(this, 'E')">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-100 to-transparent rounded-bl-full opacity-50"></div>
+                    <div class="relative z-10">
+                        <div class="text-2xl mb-2">🚀</div>
+                        <div class="font-bold text-lg mb-1">探索者 Explorer</div>
+                        <div class="text-sm text-gray-600">突破边界，持续学习新技能，拥抱不确定性</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="prevPage()" class="btn-secondary w-full mb-3">返回</button>
+            <button id="identity-next" onclick="nextPage()" class="btn-primary w-full opacity-50 cursor-not-allowed" disabled>继续</button>
+        </div>
+    </div>
+
+    <!-- 第4页：简单计划 -->
+    <div class="page" id="page-4">
+        <div class="flex-1 max-w-md mx-auto w-full pt-16">
+            <h2 class="serif text-2xl font-bold mb-2">极简行动计划</h2>
+            <p class="text-gray-500 text-sm mb-6">三个问题定义你的2026（可跳过）</p>
+            
+            <div class="space-y-5 mb-8">
+                <div class="hammer-card p-5">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        1. 真正想做的事 <span class="text-xs font-normal text-gray-400">（如果钱不是问题）</span>
+                    </label>
+                    <input type="text" id="true-desire" placeholder="例如：写小说、环游世界、创立品牌..." class="text-sm">
+                    <button onclick="showAIPrompt('desire')" class="text-xs text-purple-600 mt-2 font-semibold">✨ AI辅助挖掘</button>
+                </div>
+                
+                <div class="hammer-card p-5">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        2. 每日仪式 <span class="text-xs font-normal text-gray-400">（仅需15分钟）</span>
+                    </label>
+                    <input type="text" id="daily-ritual" placeholder="例如：晨间写作、冥想、冷水浴..." class="text-sm">
+                    <div class="text-xs text-gray-400 mt-2">关键是每天都要做，小到不可能失败</div>
+                </div>
+                
+                <div class="hammer-card p-5">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        3. 强制机制 <span class="text-xs font-normal text-gray-400">（做不到就...）</span>
+                    </label>
+                    <input type="text" id="accountability" placeholder="例如：给讨厌的人发200元红包..." class="text-sm">
+                    <div class="text-xs text-gray-400 mt-2">让不行动的代价高到无法承受</div>
+                </div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="skipPlan()" class="text-gray-400 text-sm underline">跳过此步</button>
+                <div class="flex-1"></div>
+                <button onclick="prevPage()" class="btn-secondary px-6">返回</button>
+                <button onclick="generateCertificate()" class="btn-primary px-8">生成证书 🎉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第5页：证书 -->
+    <div class="page" id="page-5">
+        <div class="flex-1 max-w-md mx-auto w-full pt-12 pb-24">
+            <div class="text-center mb-6">
+                <h2 class="serif text-2xl font-bold mb-2">你的新生身份已激活</h2>
+                <p class="text-gray-500 text-sm">截图分享，或导出高清证书</p>
+            </div>
+            
+            <!-- 证书预览 -->
+            <div id="certificate" class="certificate-container rounded-2xl p-8 text-white relative mb-6 shadow-2xl">
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <div class="text-xs opacity-60 tracking-widest uppercase mb-1">Identity Code</div>
+                            <div class="code-display text-4xl font-black tracking-wider" id="cert-code">ACWNE</div>
+                        </div>
+                        <div id="rarity-badge" class="rarity-badge rarity-epic">史诗级</div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="text-xs opacity-60 tracking-widest uppercase mb-2">Bearer</div>
+                        <div class="text-2xl font-bold serif" id="cert-name">匿名修复者</div>
+                        <div class="text-sm opacity-80 mt-1" id="cert-date">2026.02.25</div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="text-xs opacity-60 tracking-widest uppercase mb-3">Core Identity</div>
+                        <div class="text-lg font-semibold mb-2" id="cert-identity">创造者 Creator</div>
+                        <div class="tag-wall" id="cert-tags">
+                            <span class="tag">#突破舒适区</span>
+                            <span class="tag">#作品导向</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-white/20 pt-6">
+                        <div class="text-xs opacity-60 tracking-widest uppercase mb-2">2026 Mission</div>
+                        <div class="text-sm leading-relaxed opacity-90" id="cert-mission">
+                            从消费者转为生产者，建立数字资产，每天创造15分钟。
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-4 border-t border-white/10 flex justify-between items-center text-xs opacity-40">
+                        <span>人生修复指南 · 2026新生代码</span>
+                        <span>ID: <span id="cert-id">#8X2M9</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分享文案选择 -->
+            <div class="hammer-card p-5 mb-4">
+                <label class="block text-sm font-bold text-gray-700 mb-3">选择分享风格</label>
+                <select id="share-style" onchange="updateShareText()" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm mb-3">
+                    <option value="gentle">🌿 温柔觉醒版</option>
+                    <option value="hard">⚡ 硬核破局版</option>
+                    <option value="flex">👑 凡尔赛版</option>
+                </select>
+                <div class="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 relative">
+                    <p id="share-text" class="leading-relaxed"></p>
+                    <button onclick="copyShareText()" class="absolute top-2 right-2 text-xs bg-white border border-gray-200 px-2 py-1 rounded shadow-sm">
+                        复制
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="space-y-3">
+                <button onclick="exportCertificate()" class="btn-primary w-full flex items-center justify-center gap-2">
+                    <span>📸</span> 导出高清证书
+                </button>
+                <button onclick="showConfetti()" class="btn-secondary w-full">
+                    再庆祝一次 🎊
+                </button>
+                <button onclick="restart()" class="text-gray-400 text-sm w-full py-2">
+                    重新生成代码
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第6页：结尾/回流 -->
+    <div class="page" id="page-6" style="display: none;">
+        <div class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-6">
+            <div class="text-center text-white max-w-sm">
+                <div class="text-4xl mb-4">🎯</div>
+                <h3 class="serif text-2xl font-bold mb-4">分享你的新生代码</h3>
+                <p class="text-gray-300 mb-8 text-sm leading-relaxed">
+                    当你公开承诺时，改变就已开始。<br>
+                    标签 <span class="text-yellow-400">#2026新生代码</span> 寻找同类
+                </p>
+                <button onclick="closeEnding()" class="btn-primary w-full mb-4">
+                    返回查看证书
+                </button>
+                <a href="#" onclick="restart(); return false;" class="text-gray-400 text-sm underline">
+                    生成你的新代码
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI辅助弹窗 -->
+    <div class="modal" id="ai-modal" onclick="closeModal(event)">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4" onclick="event.stopPropagation()">
+            <h3 class="font-bold text-lg mb-2">AI辅助提示词</h3>
+            <p class="text-sm text-gray-600 mb-4">复制以下内容，发送给ChatGPT/Claude/DeepSeek</p>
+            <div class="ai-prompt-box mb-4 overflow-auto max-h-60" id="ai-prompt-content">
+                <!-- 动态内容 -->
+            </div>
+            <button onclick="copyAIPrompt()" class="btn-primary w-full">复制提示词</button>
+            <button onclick="closeModal()" class="text-gray-400 text-sm w-full mt-3">关闭</button>
+        </div>
+    </div>
+
+    <!-- 水印 -->
+    <div class="watermark text-gray-400">
+        人生修复指南 · 2026
     </div>
 
     <script>
-        function updateProgress() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
-            const percentage = Math.round((checked.length / checkboxes.length) * 100);
+        // 全局状态
+        let currentPage = 1;
+        const totalPages = 5;
+        let userData = {
+            nickname: '',
+            fears: [],
+            fearSummary: '',
+            identity: '',
+            identityLetter: '',
+            desire: '',
+            ritual: '',
+            accountability: ''
+        };
+
+        // 初始化
+        window.onload = function() {
+            loadData();
+            updateProgress();
+            setupAutoSave();
             
-            document.getElementById('progress-bar').style.width = percentage + '%';
-            document.getElementById('progress-text').innerText = percentage + '%';
-            
-            // 保存到本地存储
-            const status = Array.from(checkboxes).map(cb => cb.checked);
-            localStorage.setItem('dan-koe-tasks', JSON.stringify(status));
+            // 监听输入字数
+            document.getElementById('fear-summary')?.addEventListener('input', function(e) {
+                document.getElementById('char-count').textContent = e.target.value.length + '/50';
+            });
+        };
+
+        // 页面导航
+        function nextPage() {
+            if (currentPage < totalPages) {
+                document.getElementById(`page-${currentPage}`).classList.remove('active');
+                currentPage++;
+                document.getElementById(`page-${currentPage}`).classList.add('active');
+                updateProgress();
+                saveData();
+                
+                if (currentPage === 5) {
+                    setTimeout(showConfetti, 500);
+                }
+            }
         }
 
-        // 页面加载时恢复数据
-        window.onload = () => {
-            const saved = JSON.parse(localStorage.getItem('dan-koe-tasks'));
-            if (saved) {
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                saved.forEach((isChecked, index) => {
-                    if(checkboxes[index]) checkboxes[index].checked = isChecked;
-                });
+        function prevPage() {
+            if (currentPage > 1) {
+                document.getElementById(`page-${currentPage}`).classList.remove('active');
+                currentPage--;
+                document.getElementById(`page-${currentPage}`).classList.add('active');
                 updateProgress();
             }
-        };
+        }
+
+        function updateProgress() {
+            const percent = (currentPage / totalPages) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `${currentPage}/${totalPages}`;
+        }
+
+        // 选项处理
+        function toggleOption(element, type) {
+            element.classList.toggle('selected');
+            const checkbox = element.querySelector('.checkbox');
+            
+            if (element.classList.contains('selected')) {
+                checkbox.innerHTML = '✓';
+                checkbox.classList.add('bg-yellow-600', 'border-yellow-600', 'text-white');
+                checkbox.classList.remove('border-gray-300');
+            } else {
+                checkbox.innerHTML = '';
+                checkbox.classList.remove('bg-yellow-600', 'border-yellow-600', 'text-white');
+                checkbox.classList.add('border-gray-300');
+            }
+            
+            // 保存选择
+            const index = Array.from(element.parentNode.children).indexOf(element);
+            if (element.classList.contains('selected')) {
+                if (!userData.fears.includes(index)) userData.fears.push(index);
+            } else {
+                userData.fears = userData.fears.filter(i => i !== index);
+            }
+            saveData();
+        }
+
+        function selectIdentity(element, letter) {
+            document.querySelectorAll('#identity-options .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            userData.identity = element.querySelector('.font-bold').textContent;
+            userData.identityLetter = letter;
+            
+            document.getElementById('identity-next').disabled = false;
+            document.getElementById('identity-next').classList.remove('opacity-50', 'cursor-not-allowed');
+            saveData();
+        }
+
+        // 数据持久化
+        function saveData() {
+            userData.nickname = document.getElementById('nickname')?.value || '';
+            userData.fearSummary = document.getElementById('fear-summary')?.value || '';
+            userData.desire = document.getElementById('true-desire')?.value || '';
+            userData.ritual = document.getElementById('daily-ritual')?.value || '';
+            userData.accountability = document.getElementById('accountability')?.value || '';
+            localStorage.setItem('lifeFix2026', JSON.stringify(userData));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('lifeFix2026');
+            if (saved) {
+                userData = JSON.parse(saved);
+                document.getElementById('nickname').value = userData.nickname || '';
+                document.getElementById('fear-summary').value = userData.fearSummary || '';
+                document.getElementById('true-desire').value = userData.desire || '';
+                document.getElementById('daily-ritual').value = userData.ritual || '';
+                document.getElementById('accountability').value = userData.accountability || '';
+                
+                // 恢复恐惧选项
+                userData.fears.forEach(index => {
+                    const option = document.querySelectorAll('#fear-options .option-card')[index];
+                    if (option) toggleOption(option, 'fear');
+                });
+            }
+        }
+
+        function setupAutoSave() {
+            document.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', saveData);
+            });
+        }
+
+        // 代码生成与稀有度
+        function generateCode() {
+            const letters = ['A', 'C', 'W', 'N', 'E'];
+            let code = '';
+            
+            // 基于选择生成5位代码
+            code += userData.identityLetter || letters[Math.floor(Math.random() * 5)];
+            
+            // 基于恐惧数量生成第二位
+            const fearCount = userData.fears.length;
+            code += letters[Math.min(fearCount, 4)];
+            
+            // 随机生成剩余三位，但加入时间种子增加真实性
+            const seed = Date.now() % 1000;
+            for (let i = 0; i < 3; i++) {
+                const weightedIndex = Math.floor((Math.random() * 5 + (seed / 1000)) % 5);
+                code += letters[weightedIndex];
+            }
+            
+            return code;
+        }
+
+        function calculateRarity(code) {
+            // 检查是否为传说级（全相同）
+            if (code.split('').every(char => char === code[0])) {
+                return { level: 'legendary', name: '传说级', probability: '5%' };
+            }
+            
+            // 检查是否为史诗级（4个相同或连续）
+            const sorted = code.split('').sort().join('');
+            const unique = new Set(code).size;
+            if (unique <= 2 || /A{C,E}|C{E,W}|E{W,N}|W{N,A}/.test(sorted)) {
+                return { level: 'epic', name: '史诗级', probability: '20%' };
+            }
+            
+            // 检查是否为稀有级
+            if (unique === 3 || code.includes('AC') || code.includes('WE')) {
+                return { level: 'rare', name: '稀有级', probability: '25%' };
+            }
+            
+            return { level: 'common', name: '精英级', probability: '50%' };
+        }
+
+        // 证书生成
+        function generateCertificate() {
+            saveData();
+            
+            const code = generateCode();
+            const rarity = calculateRarity(code);
+            
+            document.getElementById('cert-code').textContent = code;
+            document.getElementById('cert-name').textContent = userData.nickname || '匿名修复者';
+            document.getElementById('cert-date').textContent = new Date().toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replace(/\//g, '.');
+            document.getElementById('cert-identity').textContent = userData.identity || '多元探索者';
+            document.getElementById('cert-id').textContent = '#' + Math.random().toString(36).substr(2, 5).toUpperCase();
+            
+            // 设置稀有度徽章
+            const badge = document.getElementById('rarity-badge');
+            badge.className = `rarity-badge rarity-${rarity.level}`;
+            badge.textContent = rarity.name;
+            
+            // 生成标签
+            const tags = generateTags();
+            const tagContainer = document.getElementById('cert-tags');
+            tagContainer.innerHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            // 设置mission
+            const mission = generateMission();
+            document.getElementById('cert-mission').textContent = mission;
+            
+            // 预置分享文案
+            updateShareText();
+            
+            nextPage();
+        }
+
+        function generateTags() {
+            const tags = ['#2026新生', '#身份重构'];
+            if (userData.fears.includes(0)) tags.push('#职业觉醒');
+            if (userData.fears.includes(2)) tags.push('#身体管理');
+            if (userData.fears.includes(4)) tags.push('#认知升级');
+            if (userData.identityLetter === 'C') tags.push('#创造者经济');
+            if (userData.identityLetter === 'W') tags.push('#自律即自由');
+            if (userData.desire) tags.push('#' + userData.desire.slice(0, 4));
+            return tags.slice(0, 4);
+        }
+
+        function generateMission() {
+            if (userData.desire) {
+                return `致力于${userData.desire}，通过${userData.ritual || '每日行动'}实现身份跃迁。`;
+            }
+            return '打破旧身份束缚，建立新的行为系统，在不舒服中持续进化。';
+        }
+
+        function skipPlan() {
+            nextPage();
+        }
+
+        // 分享文案
+        function updateShareText() {
+            const style = document.getElementById('share-style').value;
+            const name = userData.nickname || '我';
+            const identity = userData.identity || '新身份';
+            const code = document.getElementById('cert-code').textContent;
+            
+            const templates = {
+                gentle: `今天完成了「人生修复指南」的测试，获得了${code}身份代码。\n\n原来一直拖延，不是因为懒，而是在保护旧身份。选择成为"${identity}"，不是变成另一个人，而是让真实的自己长出来。\n\n2026，温柔地拥抱改变。🌱\n\n#2026新生代码 #身份重构`,
+                
+                hard: `刚测完Dan Koe的「人生修复指南」，代码${code}，评级${document.getElementById('rarity-badge').textContent}。\n\n5年后的恐惧清单让我冷汗直冒：${userData.fearSummary || '继续腐烂'}。\n\n不再做消费者，开始生产。不再等待准备好，现在就是时刻。不破不立，这是我的新身份⚔️\n\n#2026新生代码 #执行力`,
+                
+                flex: `随便测了一下最近很火的「人生修复指南」，结果出了${document.getElementById('rarity-badge').textContent}代码${code}，据说只有5%概率？🤷‍♀️\n\n看来我注定是要成为${identity.split(' ')[0]}的人。其实也没什么难的，就是每天${userData.ritual || '行动'}而已。\n\n有人要一起修复人生吗？👇\n\n#2026新生代码 #凡尔赛`
+            };
+            
+            document.getElementById('share-text').textContent = templates[style];
+        }
+
+        function copyShareText() {
+            const text = document.getElementById('share-text').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('文案已复制！');
+            });
+        }
+
+        // 导出证书
+        function exportCertificate() {
+            const cert = document.getElementById('certificate');
+            
+            html2canvas(cert, {
+                scale: 2,
+                backgroundColor: null,
+                logging: false,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `人生修复证书-${userData.nickname || '2026'}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                // 显示结尾页引导分享
+                setTimeout(() => {
+                    document.getElementById('page-6').style.display = 'flex';
+                }, 1000);
+            });
+        }
+
+        function closeEnding() {
+            document.getElementById('page-6').style.display = 'none';
+        }
+
+        // 特效
+        function showConfetti() {
+            const duration = 3000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            const random = (min, max) => Math.random() * (max - min) + min;
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#D4A574', '#6B5B95', '#FFD700']
+                });
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#D4A574', '#6B5B95', '#FFD700']
+                });
+            }, 250);
+        }
+
+        // AI辅助
+        function showAIPrompt(type) {
+            const modal = document.getElementById('ai-modal');
+            const content = document.getElementById('ai-prompt-content');
+            
+            const prompts = {
+                fear: `基于Dan Koe的"反愿景"（Anti-Vision）理论，分析以下我对未来5年最恐惧的场景：\n\n"${userData.fearSummary || '我还在原地踏步，看着机会流逝'}"。\n\n请帮我：\n1. 深挖这些恐惧背后的"旧身份"保护机制（我如何通过保持不变来获得安全感）\n2. 识别其中哪些是真实风险，哪些是自我设限的叙事\n3. 将这些恐惧转化为具体的"反愿景"陈述（If I don't change...）\n4. 生成对应的"新身份" affirmations（I am becoming...）\n\n要求：直接、犀利、不留情面，用第二人称"你"直接对话。`,
+                
+                desire: `基于Dan Koe的"真实工作"（True Work）概念，帮我挖掘我真正想做的事。\n\n我目前的输入是："${document.getElementById('true-desire')?.value || '还没想清楚'}"。\n\n请通过5个为什么（5 Whys）技术，层层递进追问，帮我找到：\n1. 表面欲望下的身份渴望（我想成为什么样的人，而不仅是做什么）\n2. 这个欲望是为了逃避痛苦（push）还是追求愉悦（pull）\n3. 如果钱不是问题，我会免费做什么\n4. 如何用最小可行行动（MVA）在7天内开始验证这个方向\n\n语气：像一位严厉但关心你的导师，直接挑战我的借口。`
+            };
+            
+            content.textContent = prompts[type];
+            modal.classList.add('active');
+        }
+
+        function closeModal(e) {
+            if (!e || e.target.id === 'ai-modal') {
+                document.getElementById('ai-modal').classList.remove('active');
+            }
+        }
+
+        function copyAIPrompt() {
+            const text = document.getElementById('ai-prompt-content').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('提示词已复制，去粘贴给AI吧！');
+                closeModal();
+            });
+        }
+
+        // 重新开始
+        function restart() {
+            localStorage.removeItem('lifeFix2026');
+            location.reload();
+        }
+
+        // 触摸滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentPage < totalPages) {
+                    // 左滑下一页
+                    // nextPage(); // 暂时禁用，避免误触
+                } else if (diff < 0 && currentPage > 1) {
+                    // 右滑上一页
+                    // prevPage();
+                }
+            }
+        }
     </script>
 </body>
 </html>
